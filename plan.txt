@@ -1,0 +1,6 @@
+- ogarnąć state management.
+- ogarnąć formularze
+- pytania do api
+- wyświetlanie wyników
+- wstępne ui
+- 
