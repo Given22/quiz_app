@@ -67,7 +67,7 @@ export default defineComponent({
 
     <label for="category" class="form-title">Select Category:</label>
     <select id="category" class="form-input" v-model="category">
-      <option value="any">Any Category</option>
+      <option value="any" checked>Any Category</option>
       <option value="9">General Knowledge</option>
       <option value="10">Entertainment: Books</option>
       <option value="11">Entertainment: Film</option>
@@ -149,6 +149,7 @@ export default defineComponent({
   padding: 0.5rem;
   margin-bottom: 2rem;
   box-shadow: 0px 5px 0px rgba(0, 0, 0, 0.25);
+  
 }
 
 .form-input-range {

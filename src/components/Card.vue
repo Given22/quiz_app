@@ -105,6 +105,7 @@ export default defineComponent({
   .card {
     padding: 3rem;
     border-radius: 10px;
+    max-width: 75%;
   }
 
   .card-body {
