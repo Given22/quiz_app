@@ -1,96 +1,111 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from "vue-router";
 import HelloWorld from "./components/HelloWorld.vue";
-
-import { useQuiz } from "@/stores/quiz";
-
-const store = useQuiz();
-console.log(store);
 </script>
 
 <template>
-  <header>
-    <img
-      alt="Vue logo"
-      class="logo"
-      src="@/assets/logo.svg"
-      width="125"
-      height="125"
-    />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
+  <nav id="navbar">
+    <h3 class="navbar-header">Quiz App</h3>
+    <div class="navbar-button">
+      <a class="navbar-button__link" href="/">Next Quiz</a>
     </div>
-  </header>
+  </nav>
 
   <RouterView />
 </template>
 
-<style scoped>
-header {
-  line-height: 1.5;
-  max-height: 100vh;
-}
-
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-nav {
+<style lang="scss">
+#navbar {
+  padding: 20px;
+  display: flex;
   width: 100%;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
+  box-sizing: border-box;
+  justify-content: space-between;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  z-index: 5;
 }
-
-nav a.router-link-exact-active {
-  color: var(--color-text);
+.navbar-header {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--color-yellow);
 }
-
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
-}
-
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
-}
-
-nav a:first-of-type {
-  border: 0;
-}
-
-@media (min-width: 1024px) {
-  header {
+.navbar-button {
+  display: flex;
+  align-items: center;
+  background-color: var(--color-yellow);
+  border-radius: 10px;
+  font-weight: bold;
+  box-shadow: 0px 5px 0px rgba(233, 196, 106, 0.3),
+    3px 10px 5px rgba(0, 0, 0, 0.25);
+  transition: all 0.3s ease-in-out;
+  &:hover {
+    transform: translateY(5px);
+    box-shadow: 0px 0px 0px rgba(233, 196, 106, 0.25),
+      0px 0px 0px rgba(0, 0, 0, 0.25);
+  }
+  .navbar-button__link {
+    color: var(--color-green-dark);
+    font-size: 1.3rem;
+    font-weight: bold;
+    text-decoration: none;
+    padding: 10px;
+    transition: all 0.3s ease-in-out;
+    font-family: "Righteous";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 28px;
+    line-height: 35px;
     display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
+    align-items: center;
+    text-align: center;
+    &:hover {
+      color: var(--color-green-light);
+    }
   }
+}
 
-  .logo {
-    margin: 0 2rem 0 0;
+@media screen and (min-width: 1024px) {
+  #navbar {
+    width: 80%;
+    left: 50%;
+    transform: translateX(-50%);
   }
+}
 
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
+@media screen and (max-width: 1023px) and (min-width: 768px) {
+  #navbar {
+    width: 90%;
+    left: 50%;
+    transform: translateX(-50%);
   }
+  .navbar-header {
+    font-size: 1.7rem;
+  }
+  .navbar-button {
+    .navbar-button__link {
+      text-decoration: none;
+      padding: 5px 30px;
+      font-weight: 400;
+      font-size: 20px;
+      line-height: 35px;
+    }
+  }
+}
 
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
+@media screen and (max-width: 767px) {
+  .navbar-header {
+    font-size: 1.7rem;
+  }
+  .navbar-button {
+    .navbar-button__link {
+      text-decoration: none;
+      padding: 5px 30px;
+      font-weight: 400;
+      font-size: 20px;
+      line-height: 35px;
+    }
   }
 }
 </style>

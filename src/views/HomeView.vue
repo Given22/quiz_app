@@ -1,9 +1,13 @@
 <script setup lang="ts">
-import HomeSection from "@/components/HomeSection.vue";
+import FormSection from "@/components/FormSection.vue";
 </script>
 
 <template>
   <main>
-    <HomeSection />
+    <FormSection />
   </main>
 </template>
+
+<style lang="scss">
+  main{ width: 100%; height: 100%; }
+</style>

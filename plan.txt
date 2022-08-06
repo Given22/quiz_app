@@ -1,6 +1,4 @@
-- ogarnąć state management.
-- ogarnąć formularze
-- pytania do api
-- wyświetlanie wyników
-- wstępne ui
-- 
+
+- jeśli ktoś wejdzie na nieistniejącą strone to zostanie przekierowany na stronę główną
+
+- zmienić scroll bara w wyszukiwarce kategorii

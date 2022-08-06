@@ -1,21 +1,25 @@
-import { defineStore } from "pinia";
+import { createStore } from "vuex";
+import arrayShuffle from "array-shuffle";
 
-export const useQuiz = defineStore({
-  id: "quiz",
-  state: () => ({
-    quiz: { results: [] },
-  }),
-  getters: {
-    getQuiz: (state) => state.quiz,
+// Create a new store instance.
+export const store = createStore({
+  state: {
+    quiz: { results: [] }
   },
-  actions: {
-    async setQuiz() {
-      const data = await fetch(
-        "https://opentdb.com/api.php?amount=10&category=19&type=multiple"
-      );
-      const quiz = await data.json();
-      this.quiz = quiz;
-      console.log(this.quiz.results);
+  mutations: {
+    async setQuiz(state, prop) {
+      state.quiz = prop.data;
+      console.log(state.quiz);
     },
+    saveQuiz(state){
+      state.quiz.results.map(result =>{
+        result.answers = arrayShuffle(result.incorrect_answers.concat(result.correct_answer));
+      })
+      localStorage.setItem('quiz', JSON.stringify(state.quiz));
+    },
+    removeQuiz(){
+      localStorage.removeItem('quiz');
+    }
   },
+  getters: { quiz: (state) => state.quiz },
 });
