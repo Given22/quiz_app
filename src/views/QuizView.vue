@@ -125,6 +125,7 @@ export default defineComponent({
       :centeredSlides="true"
       :slidesPerView="1"
       :spaceBetween="60"
+      :threshold="30"
       v-if="started"
       @slideChange="updateSlideIndex"
     >

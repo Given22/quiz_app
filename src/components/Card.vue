@@ -65,10 +65,13 @@ export default defineComponent({
   top: 50%;
   transform: translate(-50%, -50%);
   background-color: var(--color-green-light);
-  padding: 3rem;
   border-radius: 10px;
   box-shadow: 2px 10px 5px rgba(0, 0, 0, 0.25);
   color: var(--color-green-dark);
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
 }
 
 .card-body {
@@ -95,7 +98,7 @@ export default defineComponent({
   .card {
     padding: 3rem;
     border-radius: 10px;
-    max-width: 60%;
+    max-width: 80%;
   }
 
   .card-body {
@@ -108,22 +111,25 @@ export default defineComponent({
 
 @media screen and (max-width: 1023px) and (min-width: 768px) {
   .card {
-    padding: 3rem;
     border-radius: 10px;
-    max-width: 75%;
+    max-width: 90%;
+    max-height: 80%;
+    font-size: 1.2rem;
+    padding: 2rem;
   }
 
   .card-body {
     border-radius: 6px;
     padding: 1rem;
     margin-top: 1rem;
-    font-size: 1.5rem;
+    font-size: 1.3rem;
+    width: 100%;
   }
 }
 
 @media screen and (max-width: 767px) {
   .card {
-    padding: 3rem;
+    padding: 2rem;
     font-size: 1rem;
     border-radius: 10px;
     width: 85%;
@@ -134,6 +140,7 @@ export default defineComponent({
     font-size: 1rem;
     padding: 1rem;
     margin-top: 1rem;
+    width: 100%;
   }
 }
 </style>
