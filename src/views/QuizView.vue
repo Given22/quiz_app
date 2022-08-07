@@ -309,6 +309,7 @@ export default defineComponent({
 .swipe-icon-center,
 .swipe-icon-left {
   transition: all 0.3s ease-in-out;
+    transform-origin: bottom;
   &:hover,
   &:active {
     animation: right 1.5s ease-in-out;
@@ -317,6 +318,7 @@ export default defineComponent({
 
 .swipe-icon-right {
   transition: all 0.3s ease-in-out;
+    transform-origin: bottom;
   &:hover,
   &:active {
     animation: left 1.5s ease-in-out;
