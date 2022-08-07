@@ -326,8 +326,11 @@ input[type="radio"] {
 }
 
 @media screen and (max-width: 1023px) and (min-width: 768px) {
+  .quiz-question {
+    font-size: 1.3rem;
+  }
   .quiz-answer {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     width: 100%;
     .quiz-answer-label {
       width: 80%;
