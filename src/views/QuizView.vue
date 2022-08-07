@@ -241,6 +241,7 @@ export default defineComponent({
     transform: translateY(5px);
     box-shadow: 0px 0px 0px rgba(233, 196, 106, 0.25),
       0px 0px 0px rgba(0, 0, 0, 0.25);
+      color: var(--color-green-light);
   }
 }
 
