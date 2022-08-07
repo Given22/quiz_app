@@ -380,7 +380,8 @@ export default defineComponent({
     cursor: grabbing;
   }
   .quiz-info{
-    opacity: 0.4;
+    opacity: 0.5;
+    color: var(--color-green-light);
   }
 }
 
