@@ -106,6 +106,7 @@ export default defineComponent({
     padding: 1rem;
     margin-top: 1rem;
     font-size: 1.5rem;
+    width: 100%;
   }
 }
 
