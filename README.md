@@ -2,12 +2,12 @@
 
 Quiz App, created with Trivia API.
 
-    * One question visible on the screen at once
-    * Ability to go back to any question and change given answer - if quiz is not finished
-    * Showing progress of the quiz
-    * After submitting you can see the result, time spent on the entire quiz and the result of individual tasks.
-    * Application is responsive and work on desktop, tablet and mobile devices
-    * Nice loooking UI.
+   * One question visible on the screen at once
+   * Ability to go back to any question and change given answer - if quiz is not finished
+   * Showing progress of the quiz
+   * After submitting you can see the result, time spent on the entire quiz and the result of individual tasks.
+   * Application is responsive and work on desktop, tablet and mobile devices
+   * Nice loooking UI.
 
 ## Recommended IDE Setup
 
