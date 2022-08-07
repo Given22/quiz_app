@@ -6,6 +6,7 @@ import Card from "@/components/Card.vue";
 
 interface Quiz {
   answers?: string[];
+  playerAnswer?: string;
   category: string;
   correct_answer: string;
   incorrect_answers: string[];

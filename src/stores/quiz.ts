@@ -1,10 +1,19 @@
 import { createStore } from "vuex";
 import arrayShuffle from "array-shuffle";
 
+interface Quiz {
+  answers?: string[];
+  category: string;
+  correct_answer: string;
+  incorrect_answers: string[];
+  question: string;
+  type: string;
+}
+
 // Create a new store instance.
 export const store = createStore({
   state: {
-    quiz: { results: [] }
+    quiz: { results: [] as Quiz[] }
   },
   mutations: {
     async setQuiz(state, prop) {
@@ -13,7 +22,7 @@ export const store = createStore({
     },
     saveQuiz(state){
       state.quiz.results.map(result =>{
-        result.answers = arrayShuffle(result.incorrect_answers.concat(result.correct_answer));
+        result.answers = arrayShuffle(result?.incorrect_answers.concat(result.correct_answer));
       })
       localStorage.setItem('quiz', JSON.stringify(state.quiz));
     },

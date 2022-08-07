@@ -1,7 +1,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { decode } from "html-entities";
-import { Swiper, SwiperSlide } from "swiper/vue";
+import { Swiper, SwiperSlide, useSwiper } from "swiper/vue";
 
 import FooterQuiz from "@/components/FooterQuiz.vue";
 
@@ -9,11 +9,28 @@ import "swiper/css";
 
 import "swiper/css/pagination";
 
+interface Quiz {
+  answers: string[];
+  category: string;
+  correct_answer: string;
+  incorrect_answers: string[];
+  question: string;
+  type: string;
+}
+
+interface Answers {
+  [key: string]: string;
+}
+
+const swiper = useSwiper();
+
+console.log(swiper);
+
 export default defineComponent({
   data: () => ({
-    quiz: [],
+    quiz: [] as Quiz[],
     started: false,
-    answers: {},
+    answers: {} as Answers,
     timer_start: 0,
     time: "00:00:00",
     swiperOptions: {
@@ -41,14 +58,13 @@ export default defineComponent({
       }
     },
     save() {
+      console.log(this.answers);
       localStorage.setItem("answers", JSON.stringify(this.answers));
     },
     decode(str: string) {
       return decode(str);
     },
     finish() {
-      console.log(JSON.stringify(this.answers));
-
       window.location.href = "/answers";
     },
     convertMsToTime(milliseconds: number) {
@@ -69,18 +85,18 @@ export default defineComponent({
       return num.toString().padStart(2, "0");
     },
     prev() {
-      console.log("prev");
-      const swiper = document.querySelector(".swiper").swiper;
+      // @ts-ignore
+      const swiper = document.querySelector(".swiper")?.swiper;
       swiper.slidePrev();
     },
     next() {
-      console.log("test");
-      const swiper = document.querySelector(".swiper").swiper;
+      // @ts-ignore
+      const swiper = document.querySelector(".swiper")?.swiper;
       swiper.slideNext();
-      console.log(swiper);
     },
     updateSlideIndex() {
-      const swiper = document.querySelector(".swiper").swiper;
+      // @ts-ignore
+      const swiper = document.querySelector(".swiper")?.swiper;
       this.activeSlide = swiper.activeIndex;
     },
   },
@@ -102,6 +118,7 @@ export default defineComponent({
     <button class="quiz_button" v-if="!started" @click="start">Start</button>
     <Swiper
       class="swiper"
+      ref="swiperRef"
       :centeredSlides="true"
       :slidesPerView="1"
       :spaceBetween="60"
@@ -109,9 +126,9 @@ export default defineComponent({
       @slideChange="updateSlideIndex"
     >
       <swiper-slide v-for="(item, index) in quiz">
-        <p class="quiz-question">{{ decode(item.question) }}</p>
+        <p class="quiz-question">{{ decode(item?.question) }}</p>
         <div class="quiz-answers" v-bind:class="item.type">
-          <div v-for="ask in item.answers" class="quiz-answer">
+          <div v-for="ask in item?.answers" class="quiz-answer">
             <input
               type="radio"
               v-on:change="save"
@@ -124,7 +141,7 @@ export default defineComponent({
               class="quiz-answer-label"
               :class="{ false: ask === 'False', true: ask === 'True' }"
               v-bind:for="ask + index"
-              v-bind:name="item.question"
+              v-bind:name="item?.question"
               >{{ decode(ask) }}</label
             >
           </div>

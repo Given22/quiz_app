@@ -5,8 +5,15 @@
   "compilerOptions": {
     "composite": true,
     "baseUrl": ".",
+    "strict": true,
     "paths": {
       "@/*": ["./src/*"]
-    }
+    },
+    "target": "es2016",
+    "lib": [
+        "es2017",
+        "dom",
+        "scripthost",
+    ],
   }
 }

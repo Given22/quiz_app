@@ -3,7 +3,7 @@ import { defineComponent } from "vue";
 import { decode } from "html-entities";
 
 interface Quiz {
-  answers?: string[];
+  answers: string[];
   category: string;
   correct_answer: string;
   incorrect_answers: string[];
@@ -26,13 +26,13 @@ export default defineComponent({
 <template>
   <div class="card-back">
     <div class="card">
-      <h2>{{ decode(question.question) }}</h2>
+      <h2>{{ decode(question?.question) }}</h2>
       <div class="card-body">
-        <div class="card-text" v-for="answer in question.answers">
+        <div class="card-text" v-for="answer in question?.answers">
           <p
             v-bind:class="{
-              correct: answer === question.correct_answer,
-              playerAnswer: answer === question.playerAnswer,
+              correct: answer === question?.correct_answer,
+              playerAnswer: answer === question?.playerAnswer,
             }"
           >
             {{ decode(answer) }}
