@@ -401,7 +401,7 @@ export default defineComponent({
     flex-wrap: wrap;
     align-items: center;
     justify-content: center;
-    line-height: 0.5rem;
+    line-height: 1rem;
   }
 }
 
