@@ -6,9 +6,10 @@ import { defineComponent, ref } from "vue";
 export default defineComponent({
   data: () => ({
     amount: 10,
-    category: "",
-    difficulty: "",
-    type: "",
+    category: "any",
+    difficulty: "any",
+    type: "any",
+    notfound: false,
   }),
 
   setup() {
@@ -27,9 +28,15 @@ export default defineComponent({
     getQuestions() {
       const URL = "https://opentdb.com/api.php?";
       const amount = this.amount ? `amount=${this.amount}` : "";
-      const category = this.category ? `category=${this.category}` : "";
-      const difficulty = this.difficulty ? `difficulty=${this.difficulty}` : "";
-      const type = this.type ? `type=${this.type}` : "";
+      const category =
+        this.category && this.category !== "any"
+          ? `category=${this.category}`
+          : "";
+      const difficulty =
+        this.difficulty && this.difficulty !== "any"
+          ? `difficulty=${this.difficulty}`
+          : "";
+      const type = this.type && this.type !== "any" ? `type=${this.type}` : "";
       const options = [amount, category, difficulty, type]
         .filter(Boolean)
         .join("&");
@@ -39,12 +46,23 @@ export default defineComponent({
       fetch(`${URL}${options}`)
         .then((response) => response.json())
         .then((data) => {
+          if (data.response_code !== 0) throw new Error("quiz not found");
+          return data;
+        })
+        .then((data) => {
           store.commit("setQuiz", {
             data: data,
           });
           this.$store.commit("saveQuiz");
         })
-        .then(() => (window.location.href = "/quiz"));
+        .then(() => (window.location.href = "/quiz"))
+        .catch((err) => {
+          console.log(err);
+          this.notfound = true;
+        });
+    },
+    hideCard() {
+      this.notfound = false;
     },
   },
 });
@@ -67,7 +85,7 @@ export default defineComponent({
 
     <label for="category" class="form-title">Select Category:</label>
     <select id="category" class="form-input" v-model="category">
-      <option value="any" checked>Any Category</option>
+      <option value="any">Any Category</option>
       <option value="9">General Knowledge</option>
       <option value="10">Entertainment: Books</option>
       <option value="11">Entertainment: Film</option>
@@ -115,6 +133,13 @@ export default defineComponent({
     </select>
     <br />
     <button class="form-submit" @click="getQuestions">Search Quiz</button>
+    <div class="noquiz" v-if="notfound" @click="hideCard">
+      <div class="noquiz-card-back">
+        <div class="noquiz-card">
+          <h2>No quiz found. Try other options.</h2>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -149,7 +174,6 @@ export default defineComponent({
   padding: 0.5rem;
   margin-bottom: 2rem;
   box-shadow: 0px 5px 0px rgba(0, 0, 0, 0.25);
-  
 }
 
 .form-input-range {
@@ -167,6 +191,7 @@ export default defineComponent({
 
 .form-submit {
   cursor: pointer;
+  z-index: 3;
   height: 3.5rem;
   border: 0px solid;
   color: var(--color-green-dark);
@@ -193,7 +218,7 @@ input[type="range"] {
   appearance: none;
   background: transparent;
   cursor: grab;
-  &:active{
+  &:active {
     cursor: grabbing;
   }
 }
@@ -212,17 +237,38 @@ input[type="range"]::-moz-range-track {
 }
 
 input[type="range"]::-webkit-slider-thumb {
-   -webkit-appearance: none; 
+  -webkit-appearance: none;
   box-shadow: 0px 5px 0px rgba(0, 0, 0, 0.25);
-   appearance: none;
-   margin-top: -4px;
-   background-color: var(--color-yellow);
-   height: 1rem;
-   width: 1rem;    
-   border-radius: 50%;
+  appearance: none;
+  margin-top: -4px;
+  background-color: var(--color-yellow);
+  height: 1rem;
+  width: 1rem;
+  border-radius: 50%;
 }
 
+.noquiz {
+  position: absolute;
+  background-color: #2646537c;
+  backdrop-filter: blur(10px);
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 5;
+}
 
+.noquiz-card-back {
+  background-color: var(--color-green-light);
+  padding: 3rem;
+  border-radius: 10px;
+  box-shadow: 2px 10px 5px rgba(0, 0, 0, 0.25);
+  color: var(--color-green-dark);
+}
 
 @media screen and (min-width: 1024px) {
   .form-input,
