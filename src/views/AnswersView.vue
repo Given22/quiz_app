@@ -31,6 +31,7 @@ export default defineComponent({
     activeCard: {} as Quiz,
     activeAnswer: "",
     percents: 0,
+    endMsg: '',
     trophyColor: "",
   }),
   components: {
@@ -60,11 +61,14 @@ export default defineComponent({
         (this.correct_answers / this.quiz.results.length) * 100
       );
       if (this.percents >= 80) {
-        this.trophyColor = "var(--color-gold)";
+        this.trophyColor = "var(--color-yellow)";
+        this.endMsg = "You are a true Quiz Master!";
       } else if (this.percents >= 60) {
         this.trophyColor = "var(--color-silver)";
+        this.endMsg = "That was close to be a Quiz Master!";
       } else {
         this.trophyColor = "var(--color-green-light)";
+        this.endMsg = "Next time will be better!";
       }
       console.log(this.trophyColor);
     },
@@ -111,7 +115,7 @@ export default defineComponent({
   <div class="answers">
     <div class="answers-head">
       <Icon icon="fluent:trophy-48-filled" height="100" class="trophy" />
-      <p>Congratulations!</p>
+      <p>{{endMsg}}</p>
       <br />
       <p>Your score is: {{ percents }}%</p>
       <p>Your time: {{ convertMsToTime(time) }}</p>

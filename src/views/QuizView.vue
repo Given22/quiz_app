@@ -14,6 +14,7 @@ import "swiper/css/pagination";
 interface Quiz {
   answers: string[];
   category: string;
+  difficulty: string;
   correct_answer: string;
   incorrect_answers: string[];
   question: string;
@@ -131,7 +132,10 @@ export default defineComponent({
       @slideChange="updateSlideIndex"
     >
       <swiper-slide v-for="(item, index) in quiz">
-        <p class="quiz-question">{{ decode(item?.question) }}</p>
+        <div class="quiz-head">
+          <p class="quiz-question">{{ decode(item?.question) }}</p>
+          <p class="quiz-info">{{ decode(item.category) }}, {{ decode(item.difficulty)}}</p>
+        </div>
         <div class="quiz-answers" v-bind:class="item.type">
           <div v-for="ask in item?.answers" class="quiz-answer">
             <input
@@ -302,14 +306,14 @@ export default defineComponent({
 .swipe-icon-center,  .swipe-icon-left {
   transition: all 0.3s ease-in-out;
   &:hover, &:active {
-    animation: right 2s ease-in-out;
+    animation: right 1.5s ease-in-out;
   }
 }
 
 .swipe-icon-right {
   transition: all 0.3s ease-in-out;
   &:hover, &:active {
-    animation: left 2s ease-in-out;
+    animation: left 1.5s ease-in-out;
   }
 }
 
@@ -365,6 +369,18 @@ export default defineComponent({
   gap: 2vh;
   flex-direction: column;
   align-items: center;
+}
+
+.quiz-head{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  &:active {
+    cursor: grabbing;
+  }
+  .quiz-info{
+    opacity: 0.4;
+  }
 }
 
 .quiz-answer {
