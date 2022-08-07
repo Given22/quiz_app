@@ -134,7 +134,10 @@ export default defineComponent({
       <swiper-slide v-for="(item, index) in quiz">
         <div class="quiz-head">
           <p class="quiz-question">{{ decode(item?.question) }}</p>
-          <p class="quiz-info">{{ decode(item.category) }}, {{ decode(item.difficulty)}}</p>
+          <div class="quiz-info">
+            <p>{{ decode(item.category) }}</p>
+            <p>, {{ decode(item.difficulty) }}</p>
+          </div>
         </div>
         <div class="quiz-answers" v-bind:class="item.type">
           <div v-for="ask in item?.answers" class="quiz-answer">
@@ -241,7 +244,7 @@ export default defineComponent({
     transform: translateY(5px);
     box-shadow: 0px 0px 0px rgba(233, 196, 106, 0.25),
       0px 0px 0px rgba(0, 0, 0, 0.25);
-      color: var(--color-green-light);
+    color: var(--color-green-light);
   }
 }
 
@@ -262,7 +265,6 @@ export default defineComponent({
 .swiper-wrapper {
   align-items: center;
   height: 100%;
-  
 }
 
 .swiper-buttons {
@@ -304,16 +306,19 @@ export default defineComponent({
   z-index: 5;
 }
 
-.swipe-icon-center,  .swipe-icon-left {
+.swipe-icon-center,
+.swipe-icon-left {
   transition: all 0.3s ease-in-out;
-  &:hover, &:active {
+  &:hover,
+  &:active {
     animation: right 1.5s ease-in-out;
   }
 }
 
 .swipe-icon-right {
   transition: all 0.3s ease-in-out;
-  &:hover, &:active {
+  &:hover,
+  &:active {
     animation: left 1.5s ease-in-out;
   }
 }
@@ -322,10 +327,10 @@ export default defineComponent({
   0% {
     transform: rotate(0deg);
   }
-  25%{
+  25% {
     transform: rotate(-30deg);
   }
-  75%{
+  75% {
     transform: rotate(30deg);
   }
   100% {
@@ -337,10 +342,10 @@ export default defineComponent({
   0% {
     transform: rotate(0deg);
   }
-  25%{
+  25% {
     transform: rotate(30deg);
   }
-  75%{
+  75% {
     transform: rotate(-30deg);
   }
   100% {
@@ -372,16 +377,22 @@ export default defineComponent({
   align-items: center;
 }
 
-.quiz-head{
+.quiz-head {
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 1rem;
   &:active {
     cursor: grabbing;
   }
-  .quiz-info{
+  .quiz-info {
     opacity: 0.5;
     color: var(--color-green-light);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    line-height: 0.5rem;
   }
 }
 
