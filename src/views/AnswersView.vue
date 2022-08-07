@@ -75,10 +75,11 @@ export default defineComponent({
     },
     showCard(id: number) {
       console.log(this.quiz.results[id].question);
-      
-      this.quiz.results[id].playerAnswer = this.answers[this.quiz.results[id].question];
+
+      this.quiz.results[id].playerAnswer =
+        this.answers[this.quiz.results[id].question];
       console.log(id, this.quiz.results[id]);
-      
+
       this.show = true;
       this.activeCard = this.quiz.results[id];
     },
@@ -136,14 +137,13 @@ export default defineComponent({
         </div>
       </div>
     </section>
+    <Card v-if="show" :question="activeCard" @click="hideCard" />
   </div>
-  <Card v-if="show" :question="activeCard" @click="hideCard" />
 </template>
 
 <style lang="scss">
 .answers {
-  min-height: 100vh;
-  margin: 10vh auto;
+  min-height: 50vh;
   color: rgb(207, 207, 207);
   font-size: 1.5rem;
   display: flex;
@@ -151,6 +151,8 @@ export default defineComponent({
   align-items: center;
   justify-content: center;
   gap: 3rem;
+  position: absolute;
+  top: 20vh;
 }
 
 .answers__questions {
@@ -160,6 +162,7 @@ export default defineComponent({
   justify-content: center;
   flex-wrap: wrap;
   gap: 20px;
+  margin-bottom: 10vh;
 }
 
 .answers__card {
@@ -168,12 +171,11 @@ export default defineComponent({
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  
-  
+
   &.correct {
     color: rgb(207, 207, 207);
   }
-  
+
   &.incorrect {
     color: var(--color-green-darker);
   }
@@ -181,8 +183,9 @@ export default defineComponent({
   .answers__card__incorrect {
     background-color: var(--color-orange);
     box-shadow: 0px 5px 0px rgba(233, 196, 106, 0.25),
-      4px 10px 0px rgba(0, 0, 0, 0.25);
-    &:active, &:hover {
+      4px 10px 3px rgba(0, 0, 0, 0.25);
+    &:active,
+    &:hover {
       box-shadow: 0px 0px 0px rgba(233, 196, 106, 0.25),
         0px 0px 0px rgba(0, 0, 0, 0.25);
       transform: translateY(5px);
@@ -191,8 +194,9 @@ export default defineComponent({
   .answers__card__correct {
     background-color: var(--color-green-light);
     box-shadow: 0px 5px 0px rgba(83, 182, 132, 0.25),
-      4px 10px 0px rgba(0, 0, 0, 0.25);
-    &:active, &:hover {
+      4px 10px 3px rgba(0, 0, 0, 0.25);
+    &:active,
+    &:hover {
       box-shadow: 0px 0px 0px rgba(83, 182, 132, 0.25),
         0px 0px 0px rgba(0, 0, 0, 0.25);
       transform: translateY(5px);
@@ -219,22 +223,43 @@ export default defineComponent({
 
 @media screen and (min-width: 1024px) {
   .answers {
-    width: 60%;
+    width: 100%;
     margin: 0 auto;
+  }
+  .answer-icon {
+    height: 5vh;
+    width: 5vw;
+  }
+  .answers__questions {
+    max-width: 90%;
   }
 }
 
 @media screen and (max-width: 1023px) and (min-width: 768px) {
   .answers {
-    width: 75%;
+    width: 100%;
     margin: 0 auto;
+  }
+  .answer-icon {
+    height: 2.5rem;
+    width: 15vw;
+  }
+  .answers__questions {
+    max-width: 80%;
   }
 }
 
 @media screen and (max-width: 767px) {
   .answers {
-    width: 90%;
-    margin: 7vh auto;
+    width: 100%;
+    margin: 0 auto;
+  }
+  .answer-icon {
+    height: 2rem;
+    width: 17vw;
+  }
+  .answers__questions {
+    max-width: 90%;
   }
 }
 </style>

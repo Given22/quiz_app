@@ -26,18 +26,18 @@ export default defineComponent({
 <template>
   <div class="card-back">
     <div class="card">
-      <h2>{{ decode(question?.question) }}</h2>
+      <p>{{ decode(question?.question) }}</p>
       <div class="card-body">
-        <div class="card-text" v-for="answer in question?.answers">
-          <p
-            v-bind:class="{
-              correct: answer === question?.correct_answer,
-              playerAnswer: answer === question?.playerAnswer,
-            }"
-          >
-            {{ decode(answer) }}
-          </p>
-        </div>
+        <p
+          class="card-text"
+          v-for="answer in question?.answers"
+          v-bind:class="{
+            correct: answer === question?.correct_answer,
+            playerAnswer: answer === question?.playerAnswer,
+          }"
+        >
+          {{ decode(answer) }}
+        </p>
       </div>
     </div>
   </div>
@@ -45,7 +45,7 @@ export default defineComponent({
 
 <style lang="scss">
 .card-back {
-  position: absolute;
+  position: fixed;
   background-color: #2646537c;
   backdrop-filter: blur(10px);
   top: 0;
@@ -56,9 +56,14 @@ export default defineComponent({
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  z-index: 5;
 }
 
 .card {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
   background-color: var(--color-green-light);
   padding: 3rem;
   border-radius: 10px;
@@ -119,15 +124,16 @@ export default defineComponent({
 @media screen and (max-width: 767px) {
   .card {
     padding: 3rem;
+    font-size: 1rem;
     border-radius: 10px;
-    max-width: 85%;
+    width: 85%;
   }
 
   .card-body {
     border-radius: 6px;
+    font-size: 1rem;
     padding: 1rem;
     margin-top: 1rem;
-    font-size: 1.5rem;
   }
 }
 </style>

@@ -3,6 +3,8 @@ import { store } from "@/stores/quiz";
 import { useStore } from "vuex";
 import { defineComponent, ref } from "vue";
 
+import Alert from "@/components/Alert.vue";
+
 export default defineComponent({
   data: () => ({
     amount: 10,
@@ -11,7 +13,9 @@ export default defineComponent({
     type: "any",
     notfound: false,
   }),
-
+  components: {
+    Alert,
+  },
   setup() {
     const store = useStore();
     const count = ref(store.state);
@@ -23,7 +27,6 @@ export default defineComponent({
       inc,
     };
   },
-
   methods: {
     getQuestions() {
       const URL = "https://opentdb.com/api.php?";
@@ -60,9 +63,6 @@ export default defineComponent({
           console.log(err);
           this.notfound = true;
         });
-    },
-    hideCard() {
-      this.notfound = false;
     },
   },
 });
@@ -133,13 +133,11 @@ export default defineComponent({
     </select>
     <br />
     <button class="form-submit" @click="getQuestions">Search Quiz</button>
-    <div class="noquiz" v-if="notfound" @click="hideCard">
-      <div class="noquiz-card-back">
-        <div class="noquiz-card">
-          <h2>No quiz found. Try other options.</h2>
-        </div>
-      </div>
-    </div>
+    <Alert
+      v-if="notfound"
+      @click="notfound = false"
+      msg="Quiz not found. Please try other options."
+    />
   </div>
 </template>
 

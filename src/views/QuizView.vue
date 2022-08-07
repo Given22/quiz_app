@@ -4,6 +4,7 @@ import { decode } from "html-entities";
 import { Swiper, SwiperSlide, useSwiper } from "swiper/vue";
 
 import FooterQuiz from "@/components/FooterQuiz.vue";
+import Alert from "@/components/Alert.vue";
 
 import "swiper/css";
 
@@ -22,10 +23,6 @@ interface Answers {
   [key: string]: string;
 }
 
-const swiper = useSwiper();
-
-console.log(swiper);
-
 export default defineComponent({
   data: () => ({
     quiz: [] as Quiz[],
@@ -40,6 +37,7 @@ export default defineComponent({
       touchRatio: 0.2,
     },
     activeSlide: 0,
+    alert: false,
   }),
   methods: {
     start() {
@@ -65,7 +63,11 @@ export default defineComponent({
       return decode(str);
     },
     finish() {
-      window.location.href = "/answers";
+      if(Object.keys(this.answers).length > 0){
+        window.location.href = "/answers";
+      } else{
+        this.alert = true;
+      }
     },
     convertMsToTime(milliseconds: number) {
       let seconds = Math.floor(milliseconds / 1000);
@@ -101,6 +103,7 @@ export default defineComponent({
     },
   },
   components: {
+    Alert,
     Swiper,
     SwiperSlide,
     FooterQuiz,
@@ -148,7 +151,9 @@ export default defineComponent({
         </div>
       </swiper-slide>
       <swiper-slide>
-        <button class="quiz_button finish" @click="finish">Finish</button>
+        <div class="final-slide">
+          <button class="quiz_button finish" @click="finish">Finish</button>
+        </div>
       </swiper-slide>
     </Swiper>
     <div v-if="started" class="swiper-buttons">
@@ -167,6 +172,7 @@ export default defineComponent({
         next
       </div>
     </div>
+    <Alert v-if="alert" @click="alert = false" msg="You must answer at least one question"/>
     <FooterQuiz
       :time="time"
       :answers="Object.keys(answers).length"
@@ -210,7 +216,17 @@ export default defineComponent({
 
 .swiper {
   width: 80%;
-  height: 60%;
+  min-height: 60%;
+  // margin: 7rem 0;
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+}
+
+.swiper-wrapper {
+  align-items: center;
+  height: 100%;
 }
 
 .swiper-buttons {
@@ -224,6 +240,7 @@ export default defineComponent({
 }
 
 .swiper-slide {
+  min-height: 60vh;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
@@ -309,9 +326,16 @@ input[type="radio"] {
   display: none;
 }
 
+.final-slide{
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center
+}
+
 @media screen and (min-width: 1024px) {
   .quiz-answer {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     width: 100%;
     .quiz-answer-label {
       width: 60%;
@@ -330,7 +354,7 @@ input[type="radio"] {
     font-size: 1.3rem;
   }
   .quiz-answer {
-    font-size: 1.3rem;
+    font-size: 1rem;
     width: 100%;
     .quiz-answer-label {
       width: 80%;
@@ -345,8 +369,11 @@ input[type="radio"] {
 }
 
 @media screen and (max-width: 767px) {
+  .quiz-question {
+    font-size: 1rem;
+  }
   .quiz-answer {
-    font-size: 1.3rem;
+    font-size: 1rem;
     width: 100%;
     .quiz-answer-label {
       width: 100%;
