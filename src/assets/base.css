@@ -85,7 +85,7 @@ body {
   min-height: 100vh;
 }
 
-p, h1, h2, h3, h4, h5, h6, a, label, span, .swiper-button{
+p, h1, h2, h3, h4, h5, h6, a, label, span, .swiper-button, button{
   -webkit-user-select: none;
   -webkit-touch-callout: none;
   -moz-user-select: none;

@@ -56,7 +56,6 @@ export default defineComponent({
       }
     },
     save() {
-      console.log(this.answers);
       localStorage.setItem("answers", JSON.stringify(this.answers));
     },
     decode(str: string) {

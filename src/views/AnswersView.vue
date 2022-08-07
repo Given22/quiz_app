@@ -49,7 +49,6 @@ export default defineComponent({
       return false;
     },
     check_answers() {
-      console.log(this.answers);
       this.quiz.results.forEach((question: Quiz) => {
         if (this.check_answer(question.question)) {
           this.correct_answers++;
@@ -74,11 +73,7 @@ export default defineComponent({
       return num.toString().padStart(2, "0");
     },
     showCard(id: number) {
-      console.log(this.quiz.results[id].question);
-
-      this.quiz.results[id].playerAnswer =
-        this.answers[this.quiz.results[id].question];
-      console.log(id, this.quiz.results[id]);
+      this.quiz.results[id].playerAnswer = this.answers[this.quiz.results[id].question];
 
       this.show = true;
       this.activeCard = this.quiz.results[id];

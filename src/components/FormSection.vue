@@ -2,6 +2,7 @@
 import { store } from "@/stores/quiz";
 import { useStore } from "vuex";
 import { defineComponent, ref } from "vue";
+import arrayShuffle from "array-shuffle";
 
 import Alert from "@/components/Alert.vue";
 
@@ -43,9 +44,6 @@ export default defineComponent({
       const options = [amount, category, difficulty, type]
         .filter(Boolean)
         .join("&");
-      // console.log(amount, category, difficulty, type);
-      // console.log(`${URL}${options}`);
-      // console.log("http://localhost:5173/quiz");
       fetch(`${URL}${options}`)
         .then((response) => response.json())
         .then((data) => {
@@ -60,9 +58,18 @@ export default defineComponent({
         })
         .then(() => (window.location.href = "/quiz"))
         .catch((err) => {
-          console.log(err);
           this.notfound = true;
         });
+    },
+    randomQuiz() {
+      this.amount = Math.floor(Math.random() * (25 - 1 + 1)) + 1;
+
+      const arr: string[] = ["any"];
+      for (var i = 9; i <= 32; i++) {
+        arr.push(i.toString());
+      }
+
+      this.category = arrayShuffle(arr)[0].toString();
     },
   },
 });
@@ -131,7 +138,7 @@ export default defineComponent({
       <option value="multiple">Multiple Choice</option>
       <option value="boolean">True / False</option>
     </select>
-    <br />
+    <button class="form-random" @click="randomQuiz">Random</button>
     <button class="form-submit" @click="getQuestions">Search Quiz</button>
     <Alert
       v-if="notfound"
@@ -206,6 +213,22 @@ export default defineComponent({
     transform: translateY(5px);
     box-shadow: 0px 0px 0px rgba(233, 196, 106, 0.25),
       0px 0px 0px rgba(0, 0, 0, 0.25);
+  }
+}
+
+.form-random {
+  color: var(--color-green-light);
+  cursor: pointer;
+  background-color: transparent;
+  border: 0px solid;
+  font-size: 1.5rem;
+  font-family: "Righteous";
+  padding: 0.5rem 2rem;
+  &:hover {
+    transform: scale(0.95);
+  }
+  &:active {
+    transform: scale(0.95);
   }
 }
 
