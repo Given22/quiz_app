@@ -2,6 +2,7 @@
 import { defineComponent } from "vue";
 import { decode } from "html-entities";
 import { Swiper, SwiperSlide, useSwiper } from "swiper/vue";
+import { Icon } from "@iconify/vue";
 
 import FooterQuiz from "@/components/FooterQuiz.vue";
 import Alert from "@/components/Alert.vue";
@@ -62,9 +63,9 @@ export default defineComponent({
       return decode(str);
     },
     finish() {
-      if(Object.keys(this.answers).length > 0){
+      if (Object.keys(this.answers).length > 0) {
         window.location.href = "/answers";
-      } else{
+      } else {
         this.alert = true;
       }
     },
@@ -103,6 +104,7 @@ export default defineComponent({
   },
   components: {
     Alert,
+    Icon,
     Swiper,
     SwiperSlide,
     FooterQuiz,
@@ -172,7 +174,35 @@ export default defineComponent({
         next
       </div>
     </div>
-    <Alert v-if="alert" @click="alert = false" msg="You must answer at least one question"/>
+    <Icon
+      v-if="started"
+      class="swipe-icon swipe-icon-center"
+      :class="{ hide: activeSlide === 0 || activeSlide === quiz.length }"
+      icon="ic:outline-swipe"
+      color="var(--color-green-light)"
+      height="50"
+    />
+    <Icon
+      v-if="started"
+      class="swipe-icon swipe-icon-left"
+      :class="{ hide: activeSlide !== 0 }"
+      icon="ic:outline-swipe-left"
+      color="var(--color-green-light)"
+      height="50"
+    />
+    <Icon
+      v-if="started"
+      class="swipe-icon swipe-icon-right"
+      :class="{ hide: activeSlide !== quiz.length }"
+      icon="ic:outline-swipe-right"
+      color="var(--color-green-light)"
+      height="50"
+    />
+    <Alert
+      v-if="alert"
+      @click="alert = false"
+      msg="You must answer at least one question"
+    />
     <FooterQuiz
       :time="time"
       :answers="Object.keys(answers).length"
@@ -227,6 +257,7 @@ export default defineComponent({
 .swiper-wrapper {
   align-items: center;
   height: 100%;
+  
 }
 
 .swiper-buttons {
@@ -244,6 +275,9 @@ export default defineComponent({
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
+  &:active {
+    cursor: grabbing;
+  }
 }
 
 .swiper-button {
@@ -255,6 +289,57 @@ export default defineComponent({
   }
   &:active {
     transform: scale(0.95);
+  }
+}
+
+.swipe-icon {
+  position: fixed;
+  bottom: 5rem;
+  opacity: 0.4;
+  z-index: 5;
+}
+
+.swipe-icon-center,  .swipe-icon-left {
+  transition: all 0.3s ease-in-out;
+  &:hover, &:active {
+    animation: right 2s ease-in-out;
+  }
+}
+
+.swipe-icon-right {
+  transition: all 0.3s ease-in-out;
+  &:hover, &:active {
+    animation: left 2s ease-in-out;
+  }
+}
+
+@keyframes left {
+  0% {
+    transform: rotate(0deg);
+  }
+  25%{
+    transform: rotate(-30deg);
+  }
+  75%{
+    transform: rotate(30deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+@keyframes right {
+  0% {
+    transform: rotate(0deg);
+  }
+  25%{
+    transform: rotate(30deg);
+  }
+  75%{
+    transform: rotate(-30deg);
+  }
+  100% {
+    transform: rotate(0deg);
   }
 }
 
@@ -320,17 +405,20 @@ input[type="radio"]:checked + .quiz-answer-label {
 
 input[type="radio"]:not(:checked) + .quiz-answer-label {
   opacity: 0.5;
+  &:hover {
+    opacity: 1;
+  }
 }
 
 input[type="radio"] {
   display: none;
 }
 
-.final-slide{
+.final-slide {
   min-height: 60vh;
   display: flex;
   align-items: center;
-  justify-content: center
+  justify-content: center;
 }
 
 @media screen and (min-width: 1024px) {
