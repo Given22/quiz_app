@@ -1,28 +1,29 @@
 import { createRouter, createWebHistory } from "vue-router";
-import HomeView from "../views/HomeView.vue";
+
+import { defineAsyncComponent } from "vue";
 
 const routes = [
   {
     path: "/",
     name: "home",
-    component: HomeView,
+    component: () => Promise.resolve(defineAsyncComponent(() => import("../views/HomeView.vue"))),
   },
   {
     path: "/:pathMatch(.*)*",
     name: "different",
-    component: () => import("../views/HomeView.vue"),
+    component: () => Promise.resolve(defineAsyncComponent(() => import("../views/HomeView.vue"))),
   },
   {
     path: "/quiz",
     name: "quiz",
-    component: () =>
-      import(/* webpackChunkName: "quizview" */ "@/views/QuizView.vue"),
+    component: () => Promise.resolve(defineAsyncComponent(() =>
+      import(/* webpackChunkName: "quizview" */ "@/views/QuizView.vue"))),
   },
   {
     path: "/answers",
     name: "answers",
-    component: () =>
-      import(/* webpackChunkName: "answersview" */ "@/views/AnswersView.vue"),
+    component: () => Promise.resolve(defineAsyncComponent(() =>
+      import(/* webpackChunkName: "answersview" */ "@/views/AnswersView.vue"))),
   },
 ];
 

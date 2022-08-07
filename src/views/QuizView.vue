@@ -119,106 +119,113 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="quiz">
-    <button class="quiz_button" v-if="!started" @click="start">Start</button>
-    <Swiper
-      class="swiper"
-      ref="swiperRef"
-      :centeredSlides="true"
-      :slidesPerView="1"
-      :spaceBetween="60"
-      :threshold="30"
-      v-if="started"
-      @slideChange="updateSlideIndex"
-    >
-      <swiper-slide v-for="(item, index) in quiz">
-        <div class="quiz-head">
-          <p class="quiz-question">{{ decode(item?.question) }}</p>
-          <div class="quiz-info">
-            <p>{{ decode(item.category) }}</p>
-            <p>, {{ decode(item.difficulty) }}</p>
+  <Suspense>
+    <template #default>
+      <div class="quiz">
+        <button class="quiz_button" v-if="!started" @click="start">
+          Start
+        </button>
+        <Swiper
+          class="swiper"
+          ref="swiperRef"
+          :centeredSlides="true"
+          :slidesPerView="1"
+          :spaceBetween="60"
+          :threshold="30"
+          v-if="started"
+          @slideChange="updateSlideIndex"
+        >
+          <swiper-slide v-for="(item, index) in quiz">
+            <div class="quiz-head">
+              <p class="quiz-question">{{ decode(item?.question) }}</p>
+              <div class="quiz-info">
+                <p>{{ decode(item.category) }}</p>
+                <p>, {{ decode(item.difficulty) }}</p>
+              </div>
+            </div>
+            <div class="quiz-answers" v-bind:class="item.type">
+              <div v-for="ask in item?.answers" class="quiz-answer">
+                <input
+                  type="radio"
+                  v-on:change="save"
+                  v-bind:id="ask + index"
+                  v-bind:value="ask"
+                  v-bind:name="item.question"
+                  v-model="answers[item.question]"
+                />
+                <label
+                  class="quiz-answer-label"
+                  :class="{ false: ask === 'False', true: ask === 'True' }"
+                  v-bind:for="ask + index"
+                  v-bind:name="item?.question"
+                  >{{ decode(ask) }}</label
+                >
+              </div>
+            </div>
+          </swiper-slide>
+          <swiper-slide>
+            <div class="final-slide">
+              <button class="quiz_button finish" @click="finish">Finish</button>
+            </div>
+          </swiper-slide>
+        </Swiper>
+        <div v-if="started" class="swiper-buttons">
+          <div
+            class="swiper-button swiper-button-prev"
+            :class="{ hide: activeSlide === 0 }"
+            @click="prev()"
+          >
+            prev
+          </div>
+          <div
+            class="swiper-button swiper-button-next"
+            :class="{ hide: activeSlide >= quiz.length }"
+            @click="next()"
+          >
+            next
           </div>
         </div>
-        <div class="quiz-answers" v-bind:class="item.type">
-          <div v-for="ask in item?.answers" class="quiz-answer">
-            <input
-              type="radio"
-              v-on:change="save"
-              v-bind:id="ask + index"
-              v-bind:value="ask"
-              v-bind:name="item.question"
-              v-model="answers[item.question]"
-            />
-            <label
-              class="quiz-answer-label"
-              :class="{ false: ask === 'False', true: ask === 'True' }"
-              v-bind:for="ask + index"
-              v-bind:name="item?.question"
-              >{{ decode(ask) }}</label
-            >
-          </div>
-        </div>
-      </swiper-slide>
-      <swiper-slide>
-        <div class="final-slide">
-          <button class="quiz_button finish" @click="finish">Finish</button>
-        </div>
-      </swiper-slide>
-    </Swiper>
-    <div v-if="started" class="swiper-buttons">
-      <div
-        class="swiper-button swiper-button-prev"
-        :class="{ hide: activeSlide === 0 }"
-        @click="prev()"
-      >
-        prev
+        <Icon
+          v-if="started"
+          class="swipe-icon swipe-icon-center"
+          :class="{ hide: activeSlide === 0 || activeSlide === quiz.length }"
+          icon="ic:outline-swipe"
+          color="var(--color-green-light)"
+          height="50"
+        />
+        <Icon
+          v-if="started"
+          class="swipe-icon swipe-icon-left"
+          :class="{ hide: activeSlide !== 0 }"
+          icon="ic:outline-swipe-left"
+          color="var(--color-green-light)"
+          height="50"
+        />
+        <Icon
+          v-if="started"
+          class="swipe-icon swipe-icon-right"
+          :class="{ hide: activeSlide !== quiz.length }"
+          icon="ic:outline-swipe-right"
+          color="var(--color-green-light)"
+          height="50"
+        />
+        <Alert
+          v-if="alert"
+          @click="alert = false"
+          msg="You must answer at least one question"
+        />
+        <FooterQuiz
+          :time="time"
+          :answers="Object.keys(answers).length"
+          :questions="quiz.length"
+        />
       </div>
-      <div
-        class="swiper-button swiper-button-next"
-        :class="{ hide: activeSlide >= quiz.length }"
-        @click="next()"
-      >
-        next
-      </div>
-    </div>
-    <Icon
-      v-if="started"
-      class="swipe-icon swipe-icon-center"
-      :class="{ hide: activeSlide === 0 || activeSlide === quiz.length }"
-      icon="ic:outline-swipe"
-      color="var(--color-green-light)"
-      height="50"
-    />
-    <Icon
-      v-if="started"
-      class="swipe-icon swipe-icon-left"
-      :class="{ hide: activeSlide !== 0 }"
-      icon="ic:outline-swipe-left"
-      color="var(--color-green-light)"
-      height="50"
-    />
-    <Icon
-      v-if="started"
-      class="swipe-icon swipe-icon-right"
-      :class="{ hide: activeSlide !== quiz.length }"
-      icon="ic:outline-swipe-right"
-      color="var(--color-green-light)"
-      height="50"
-    />
-    <Alert
-      v-if="alert"
-      @click="alert = false"
-      msg="You must answer at least one question"
-    />
-    <FooterQuiz
-      :time="time"
-      :answers="Object.keys(answers).length"
-      :questions="quiz.length"
-    />
-  </div>
+    </template>
+  </Suspense>
 </template>
 
 <style lang="scss" scoped>
+
 .quiz {
   display: flex;
   width: 100vw;
@@ -309,7 +316,7 @@ export default defineComponent({
 .swipe-icon-center,
 .swipe-icon-left {
   transition: all 0.3s ease-in-out;
-    transform-origin: bottom;
+  transform-origin: bottom;
   &:hover,
   &:active {
     animation: right 1.5s ease-in-out;
@@ -318,7 +325,7 @@ export default defineComponent({
 
 .swipe-icon-right {
   transition: all 0.3s ease-in-out;
-    transform-origin: bottom;
+  transform-origin: bottom;
   &:hover,
   &:active {
     animation: left 1.5s ease-in-out;

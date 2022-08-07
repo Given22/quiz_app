@@ -1,5 +1,15 @@
-<script setup lang="ts">
-import { RouterLink, RouterView } from "vue-router";
+<script lang="ts">
+import Loading from "@/components/Loading.vue";
+import { defineComponent } from "vue";
+
+export default defineComponent({
+  components: {
+    Loading,
+  },
+  setup() {
+    return {};
+  },
+});
 </script>
 
 <template>
@@ -10,7 +20,19 @@ import { RouterLink, RouterView } from "vue-router";
     </div>
   </nav>
 
-  <RouterView />
+  <router-view v-slot="{ Component }">
+    <suspense timeout="0">
+      <!-- Default -->
+      <template #default>
+        <component :is="Component" />
+      </template>
+
+      <!-- Loading -->
+      <template #fallback>
+        <Loading />
+      </template>
+    </suspense>
+  </router-view>
 </template>
 
 <style lang="scss">

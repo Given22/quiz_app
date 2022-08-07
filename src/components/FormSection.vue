@@ -3,6 +3,7 @@ import { store } from "@/stores/quiz";
 import { useStore } from "vuex";
 import { defineComponent, ref } from "vue";
 import arrayShuffle from "array-shuffle";
+import { Icon } from "@iconify/vue";
 
 import Alert from "@/components/Alert.vue";
 
@@ -13,9 +14,11 @@ export default defineComponent({
     difficulty: "any",
     type: "any",
     notfound: false,
+    searching: false,
   }),
   components: {
     Alert,
+    Icon,
   },
   setup() {
     const store = useStore();
@@ -59,6 +62,7 @@ export default defineComponent({
         .then(() => (window.location.href = "/quiz"))
         .catch((err) => {
           this.notfound = true;
+          this.searching = false;
         });
     },
     randomQuiz() {
@@ -139,7 +143,19 @@ export default defineComponent({
       <option value="boolean">True / False</option>
     </select>
     <button class="form-random" @click="randomQuiz">Random</button>
-    <button class="form-submit" @click="getQuestions">Search Quiz</button>
+    <Icon
+      v-if="searching"
+      icon="eos-icons:loading"
+      color="var(--color-yellow)"
+      height="50"
+    />
+    <button
+      v-if="!searching"
+      class="form-submit"
+      @click="getQuestions(), (searching = true)"
+    >
+      Search Quiz
+    </button>
     <Alert
       v-if="notfound"
       @click="notfound = false"
@@ -213,7 +229,7 @@ export default defineComponent({
     transform: translateY(5px);
     box-shadow: 0px 0px 0px rgba(233, 196, 106, 0.25),
       0px 0px 0px rgba(0, 0, 0, 0.25);
-      color: var(--color-green-light);
+    color: var(--color-green-light);
   }
 }
 
