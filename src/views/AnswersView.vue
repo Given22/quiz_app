@@ -30,6 +30,8 @@ export default defineComponent({
     show: false,
     activeCard: {} as Quiz,
     activeAnswer: "",
+    percents: 0,
+    trophyColor: "",
   }),
   components: {
     Card,
@@ -54,6 +56,17 @@ export default defineComponent({
           this.correct_answers++;
         }
       });
+      this.percents = Math.floor(
+        (this.correct_answers / this.quiz.results.length) * 100
+      );
+      if (this.percents >= 80) {
+        this.trophyColor = "var(--color-gold)";
+      } else if (this.percents >= 60) {
+        this.trophyColor = "var(--color-silver)";
+      } else {
+        this.trophyColor = "var(--color-bronze)";
+      }
+      console.log(this.trophyColor);
     },
     convertMsToTime(milliseconds: number) {
       let seconds = Math.floor(milliseconds / 1000);
@@ -73,7 +86,8 @@ export default defineComponent({
       return num.toString().padStart(2, "0");
     },
     showCard(id: number) {
-      this.quiz.results[id].playerAnswer = this.answers[this.quiz.results[id].question];
+      this.quiz.results[id].playerAnswer =
+        this.answers[this.quiz.results[id].question];
 
       this.show = true;
       this.activeCard = this.quiz.results[id];
@@ -95,8 +109,13 @@ export default defineComponent({
 
 <template>
   <div class="answers">
-    <p>Your score is: {{ correct_answers }} / {{ quiz.results.length }}</p>
-    <p>Your time: {{ convertMsToTime(time) }}</p>
+    <div class="answers-head">
+      <Icon icon="fluent:trophy-48-filled" height="100" class="trophy" />
+      <p>Congratulations!</p>
+      <br />
+      <p>Your score is: {{ percents }}%</p>
+      <p>Your time: {{ convertMsToTime(time) }}</p>
+    </div>
     <section class="answers__questions">
       <div
         v-for="question in quiz.results"
@@ -158,6 +177,15 @@ export default defineComponent({
   flex-wrap: wrap;
   gap: 20px;
   margin-bottom: 10vh;
+}
+
+.answers-head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  svg path {
+    color: v-bind(trophyColor);
+  }
 }
 
 .answers__card {
@@ -228,6 +256,11 @@ export default defineComponent({
   .answers__questions {
     max-width: 90%;
   }
+  .answers-head {
+    svg {
+      height: 9rem;
+    }
+  }
 }
 
 @media screen and (max-width: 1023px) and (min-width: 768px) {
@@ -242,6 +275,11 @@ export default defineComponent({
   .answers__questions {
     max-width: 80%;
   }
+  .answers-head {
+    svg {
+      height: 7rem;
+    }
+  }
 }
 
 @media screen and (max-width: 767px) {
@@ -255,6 +293,11 @@ export default defineComponent({
   }
   .answers__questions {
     max-width: 90%;
+  }
+  .answers-head {
+    svg {
+      height: 6rem;
+    }
   }
 }
 </style>
