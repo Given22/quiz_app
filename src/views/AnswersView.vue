@@ -64,7 +64,7 @@ export default defineComponent({
       } else if (this.percents >= 60) {
         this.trophyColor = "var(--color-silver)";
       } else {
-        this.trophyColor = "var(--color-bronze)";
+        this.trophyColor = "var(--color-green-light)";
       }
       console.log(this.trophyColor);
     },
