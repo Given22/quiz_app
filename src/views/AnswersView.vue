@@ -70,7 +70,6 @@ export default defineComponent({
         this.trophyColor = "var(--color-green-light)";
         this.endMsg = "Next time will be better!";
       }
-      console.log(this.trophyColor);
     },
     convertMsToTime(milliseconds: number) {
       let seconds = Math.floor(milliseconds / 1000);
