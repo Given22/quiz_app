@@ -1,3 +1,5 @@
+<!-- Alert card component for showing error messages -->
+
 <script lang="ts">
 import { defineComponent } from "vue";
 import { decode } from "html-entities";

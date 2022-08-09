@@ -1,6 +1,5 @@
 import { createApp } from "vue";
 import { store } from "@/stores/quiz";
-// import { createPinia } from "pinia";
 
 import App from "./App.vue";
 import router from "./router";

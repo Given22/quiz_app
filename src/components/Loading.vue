@@ -1,3 +1,5 @@
+<!-- Loading screen when data is loaded -->
+
 <template>
   <div class="loading-screen">
     <Icon icon="eos-icons:loading" color="var(--color-yellow)" height="8vh" />

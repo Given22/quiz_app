@@ -1,2 +1,34 @@
 @import "./base.css";
 
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+body {
+  min-height: 100vh;
+  color: var(--color-silver);
+  background: var(--color-green-dark);
+  line-height: 1.6;
+  font-family: 'Righteous';
+  font-size: 16px;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#app{
+  width:  100%;
+  min-height: 100vh;
+}
+
+/* Remove user select */
+p, h1, h2, h3, h4, h5, h6, a, label, span, .swiper-button, button{
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}

@@ -1,18 +1,12 @@
+<!-- Card component for showing the questions with a answers -->
+
 <script lang="ts">
 import { defineComponent } from "vue";
 import { decode } from "html-entities";
 
-interface Quiz {
-  answers: string[];
-  category: string;
-  correct_answer: string;
-  incorrect_answers: string[];
-  question: string;
-  type: string;
-}
-
 export default defineComponent({
   methods: {
+    // decode html entities
     decode(str: string) {
       return decode(str);
     },

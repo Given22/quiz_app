@@ -1,27 +1,17 @@
 import { createStore } from "vuex";
 import arrayShuffle from "array-shuffle";
 
-interface Quiz {
-  answers?: string[];
-  category: string;
-  correct_answer: string;
-  incorrect_answers: string[];
-  question: string;
-  type: string;
-}
-
-interface Answer {
-  [key: string]: string;
-}
+import type { Quiz, Answers } from "@/types/types";
 
 // Create a new store instance.
 export const store = createStore({
   state: {
     quiz: { results: [] as Quiz[] },
-    playerAnswers: [] as Answer[],
+    playerAnswers: [] as Answers[],
     time: "",
   },
   mutations: {
+    //Set the state of quiz
     setQuiz(state, prop) {
       prop.data.results.map((quiz: Quiz) => {
         quiz.answers = arrayShuffle(
@@ -31,16 +21,14 @@ export const store = createStore({
       state.quiz = prop.data;
     },
 
+    // Set the state of player answers
     setAnswers(state, prop) {
       state.playerAnswers = prop.answers;
     },
 
+    // Set the state of time
     setTime(state, prop) {
       state.time = prop.time;
-    },
-
-    removeQuiz() {
-      localStorage.removeItem("quiz");
     },
   },
   getters: {

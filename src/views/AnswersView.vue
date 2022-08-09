@@ -1,3 +1,5 @@
+<!-- Final Page with answer and player stats -->
+
 <script lang="ts">
 import { useStore } from "vuex";
 import { defineComponent } from "vue";
@@ -22,10 +24,12 @@ export default defineComponent({
     Icon,
   },
   methods: {
+    // decode html entities
     decode(str: string) {
       return decode(str);
     },
     
+    // check if answer is correct
     check_answer(question: string) {
       const que = this.quiz.find((q) => q.question === question);
       if(!this.answers[question]) return;
@@ -33,12 +37,15 @@ export default defineComponent({
       return false;
     },
     
+    // check all questions and calculate percentage of correct answers
     check_answers() {
       this.quiz.forEach((question: Quiz) => {
         if (this.check_answer(question.question)) {
           this.correct_answers++;
         }
       });
+      
+      // calculate percentage of correct answers
       this.percents = Math.floor(
         (this.correct_answers / this.quiz.length) * 100
       );
@@ -55,25 +62,32 @@ export default defineComponent({
         this.endMsg = "Next time will be better!";
       }
     },
+    
+    // show card with question and answers
     showCard(id: number) {
       this.quiz[id].playerAnswer = this.answers[this.quiz[id].question];
 
       this.show = true;
       this.activeCard = this.quiz[id];
     },
+    
+    // hide card with question and answers
     hideCard() {
       this.show = false;
     },
   },
   beforeMount() {
+    // check answers before component is mounted
     this.check_answers();
   },
   setup() {
+    // get data from Vuex store
     const store = useStore();
     const quiz: Quiz[] = store.getters.quiz.results;
     const answers: Answers = store.getters.answers;
     const time: string = store.getters.time;
 
+    // IF quiz is empty, go to home page
     if (quiz.length === 0)
       window.location.href = "/";
 
@@ -225,6 +239,8 @@ export default defineComponent({
   height: 4rem;
   width: 6rem;
 }
+
+// responsive design
 
 @media screen and (min-width: 1024px) {
   .answers {

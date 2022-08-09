@@ -1,3 +1,5 @@
+<!-- Footer component for showing time and progress information -->
+
 <script lang="ts">
 interface cssVars {
   [key: string]: string;

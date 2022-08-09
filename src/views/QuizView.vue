@@ -11,8 +11,6 @@ import Alert from "@/components/Alert.vue";
 
 import "swiper/css";
 
-import "swiper/css/pagination";
-
 import type { Quiz, Answers } from "@/types/types";
 
 interface Data {
@@ -36,9 +34,11 @@ export default defineComponent({
     alert: false,
   }),
   methods: {
+    // decode html entities
     decode(str: string) {
       return decode(str);
     },
+    // start quiz and timer
     start() {
       this.timer_start = new Date().getTime();
 
@@ -54,13 +54,16 @@ export default defineComponent({
         this.$router.push("/");
       }
     },
+    // set answers to store
     setAnswers() {
       this.$store.commit("setAnswers", { answers: this.answers });
     },
+    // finish quiz and redirect to results
     finish() {
       this.setAnswers();
       this.$router.push("/answers");
     },
+    // convert milliseconds to good looking time format
     convertMsToTime(milliseconds: number) {
       let seconds = Math.floor(milliseconds / 1000);
       let minutes = Math.floor(seconds / 60);
@@ -73,16 +76,20 @@ export default defineComponent({
     padTo2Digits(num: number) {
       return num.toString().padStart(2, "0");
     },
+    // Swiper navigation methods
+    // previous slide
     prev() {
       // @ts-ignore
       const swiper = document.querySelector(".swiper")?.swiper;
       swiper.slidePrev();
     },
+    // next slide
     next() {
       // @ts-ignore
       const swiper = document.querySelector(".swiper")?.swiper;
       swiper.slideNext();
     },
+    // update active slide index
     updateSlideIndex() {
       // @ts-ignore
       const swiper = document.querySelector(".swiper")?.swiper;
@@ -96,8 +103,8 @@ export default defineComponent({
     SwiperSlide,
     FooterQuiz,
   },
-  mounted() {},
   setup() {
+    // get data form store
     const store = useStore();
     const quiz: Quiz[] = store.getters.quiz.results;
 
@@ -225,34 +232,8 @@ export default defineComponent({
   align-items: center;
   justify-content: center;
 }
-.quiz_button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  height: 3.5rem;
-  border: 0px solid;
-  color: var(--color-green-dark);
-  background-color: var(--color-yellow);
-  font-size: 2rem;
-  font-family: "Righteous";
-  border-radius: 10px;
-  padding: 0.5rem 2rem;
-  box-shadow: 0px 5px 0px rgba(233, 196, 106, 0.3),
-    3px 10px 5px rgba(0, 0, 0, 0.25);
-  transition: all 0.3s ease-in-out;
-  &:hover {
-    transform: translateY(5px);
-    box-shadow: 0px 0px 0px rgba(233, 196, 106, 0.25),
-      0px 0px 0px rgba(0, 0, 0, 0.25);
-    color: var(--color-green-light);
-  }
-}
 
-.hide {
-  display: none;
-}
-
+// Swiper
 .swiper {
   width: 80%;
   min-height: 60%;
@@ -278,6 +259,7 @@ export default defineComponent({
   }
 }
 
+// Swipe icons
 .swipe-icon {
   position: fixed;
   bottom: 3.5rem;
@@ -304,6 +286,8 @@ export default defineComponent({
     animation: left 1.5s ease-in-out;
   }
 }
+
+// swipe icons animation
 
 @keyframes left {
   0% {
@@ -335,6 +319,7 @@ export default defineComponent({
   }
 }
 
+// Swiper custom buttons
 .swiper-buttons {
   position: fixed;
   width: 80%;
@@ -362,6 +347,31 @@ export default defineComponent({
 
 .swiper-button-prev {
   margin-right: auto;
+}
+
+// One question
+.quiz_button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  height: 3.5rem;
+  border: 0px solid;
+  color: var(--color-green-dark);
+  background-color: var(--color-yellow);
+  font-size: 2rem;
+  font-family: "Righteous";
+  border-radius: 10px;
+  padding: 0.5rem 2rem;
+  box-shadow: 0px 5px 0px rgba(233, 196, 106, 0.3),
+    3px 10px 5px rgba(0, 0, 0, 0.25);
+  transition: all 0.3s ease-in-out;
+  &:hover {
+    transform: translateY(5px);
+    box-shadow: 0px 0px 0px rgba(233, 196, 106, 0.25),
+      0px 0px 0px rgba(0, 0, 0, 0.25);
+    color: var(--color-green-light);
+  }
 }
 
 .quiz-question {
@@ -430,6 +440,7 @@ export default defineComponent({
     }
   }
 }
+
 input[type="radio"]:checked + .quiz-answer-label {
   color: #fff;
   opacity: 1;
@@ -446,12 +457,16 @@ input[type="radio"] {
   display: none;
 }
 
+
+// Slide with finish button
 .final-slide {
   min-height: 60vh;
   display: flex;
   align-items: center;
   justify-content: center;
 }
+
+// responsive design
 
 @media screen and (min-width: 1024px) {
   .quiz-question {
@@ -530,5 +545,9 @@ input[type="radio"] {
     font-size: 1.5rem;
     width: 40%;
   }
+}
+
+.hide {
+  display: none;
 }
 </style>

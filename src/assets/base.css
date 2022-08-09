@@ -1,47 +1,17 @@
-/* color palette from <https://github.com/vuejs/theme> */
-
+/* Import font from google fonts */
 @import url('https://fonts.googleapis.com/css2?family=Righteous&display=swap');
 
-:root {
+:root { 
+  /* Base color pallete */
   --color-yellow: #E9C46A;
   --color-green-dark: #264653;
   --color-green-darker: #162c35;
   --color-green-light: #2A9D8F;
   --color-orange: #E76F51;
   
+  
+  /* Trophy colors */
   --color-gold: #FFD700;
   --color-silver: #C0C0C0;
   --color-bronze: #CD7F32;
-}
-
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-  margin: 0;
-}
-
-body {
-  min-height: 100vh;
-  color: var(--color-silver);
-  background: var(--color-green-dark);
-  line-height: 1.6;
-  font-family: 'Righteous';
-  font-size: 16px;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-#app{
-  width:  100%;
-  min-height: 100vh;
-}
-
-p, h1, h2, h3, h4, h5, h6, a, label, span, .swiper-button, button{
-  -webkit-user-select: none;
-  -webkit-touch-callout: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
 }

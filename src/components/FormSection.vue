@@ -1,8 +1,11 @@
+<!-- Form component for creating request to Trivia API -->
+
 <script lang="ts">
 import { store } from "@/stores/quiz";
 import { defineComponent } from "vue";
-import arrayShuffle from "array-shuffle";
 import { Icon } from "@iconify/vue";
+
+import arrayShuffle from "array-shuffle";
 
 import Alert from "@/components/Alert.vue";
 
@@ -20,39 +23,45 @@ export default defineComponent({
     Icon,
   },
   methods: {
+    // Create request to Trivia API
     getQuestions() {
       const URL = "https://opentdb.com/api.php?";
+      //Amount of questions
       const amount = this.amount ? `amount=${this.amount}` : "";
 
+      // Category paremeter
       const category =
         this.category && this.category !== "any"
           ? `category=${this.category}`
           : "";
-
+          
+      // Difficulty parameter
       const difficulty =
         this.difficulty && this.difficulty !== "any"
           ? `difficulty=${this.difficulty}`
           : "";
           
+      // Type parameter
       const type = 
         this.type && this.type !== "any" 
           ? `type=${this.type}` 
           : "";
           
+      // Combine all parameters into one string and filter out empty values
       const options = [amount, category, difficulty, type]
         .filter(Boolean)
         .join("&");
         
+      // Combine URL and options and send request to Trivia API        
       fetch(`${URL}${options}`)
         .then((response) => response.json())
+        // check if response is successful
         .then((data) => {
           if (data.response_code !== 0) throw new Error("quiz not found");
           return data;
         })
         .then((data) => {
-          store.commit("setQuiz", {
-            data: data,
-          });
+          store.commit("setQuiz", { data: data });
         })
         .then(() => this.$router.push("/quiz"))
         .catch((err) => {
@@ -60,14 +69,19 @@ export default defineComponent({
           this.searching = false;
         });
     },
+    
+    // Randomize form questions
     randomQuiz() {
+      // Random numer of questions
       this.amount = Math.floor(Math.random() * (25 - 1 + 1)) + 1;
 
+      // Create array of posible categories
       const arr: string[] = ["any"];
       for (var i = 9; i <= 32; i++) {
         arr.push(i.toString());
       }
 
+      // Randomize category
       this.category = arrayShuffle(arr)[0].toString();
     },
   },
@@ -160,6 +174,8 @@ export default defineComponent({
 </template>
 
 <style lang="scss">
+
+// Style form
 .form {
   position: absolute;
   width: 100%;
@@ -281,28 +297,7 @@ input[type="range"]::-webkit-slider-thumb {
   border-radius: 50%;
 }
 
-.noquiz {
-  position: absolute;
-  background-color: #2646537c;
-  backdrop-filter: blur(10px);
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  z-index: 5;
-}
-
-.noquiz-card-back {
-  background-color: var(--color-green-light);
-  padding: 3rem;
-  border-radius: 10px;
-  box-shadow: 2px 10px 5px rgba(0, 0, 0, 0.25);
-  color: var(--color-green-dark);
-}
+// responsive design
 
 @media screen and (min-width: 1024px) {
   .form-input,
