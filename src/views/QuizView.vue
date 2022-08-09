@@ -1,4 +1,6 @@
 <script lang="ts">
+import { store } from "@/stores/quiz";
+import { useStore } from "vuex";
 import { defineComponent } from "vue";
 import { decode } from "html-entities";
 import { Swiper, SwiperSlide, useSwiper } from "swiper/vue";
@@ -11,23 +13,15 @@ import "swiper/css";
 
 import "swiper/css/pagination";
 
-interface Quiz {
-  answers: string[];
-  category: string;
-  difficulty: string;
-  correct_answer: string;
-  incorrect_answers: string[];
-  question: string;
-  type: string;
-}
+import type { Quiz, Answers } from "@/types/types";
 
-interface Answers {
-  [key: string]: string;
+interface Data {
+  response_code: string;
+  results: Quiz[];
 }
 
 export default defineComponent({
   data: () => ({
-    quiz: [] as Quiz[],
     started: false,
     answers: {} as Answers,
     timer_start: 0,
@@ -42,47 +36,39 @@ export default defineComponent({
     alert: false,
   }),
   methods: {
+    decode(str: string) {
+      return decode(str);
+    },
     start() {
-      const data = JSON.parse(localStorage.getItem("quiz") as string);
       this.timer_start = new Date().getTime();
 
       setInterval(() => {
         let time = new Date().getTime() - this.timer_start;
         this.time = this.convertMsToTime(time);
-        localStorage.setItem("time", time.toString());
+        this.$store.commit("setTime", { time: this.time });
       }, 1000);
 
-      if (data.results.length > 0) {
-        this.quiz = data.results;
+      if (this.quiz.length > 0) {
         this.started = true;
+      } else {
+        this.$router.push("/");
       }
     },
-    save() {
-      localStorage.setItem("answers", JSON.stringify(this.answers));
-    },
-    decode(str: string) {
-      return decode(str);
+    setAnswers() {
+      this.$store.commit("setAnswers", { answers: this.answers });
     },
     finish() {
-      if (Object.keys(this.answers).length > 0) {
-        window.location.href = "/answers";
-      } else {
-        this.alert = true;
-      }
+      this.setAnswers();
+      this.$router.push("/answers");
     },
     convertMsToTime(milliseconds: number) {
       let seconds = Math.floor(milliseconds / 1000);
       let minutes = Math.floor(seconds / 60);
       let hours = Math.floor(minutes / 60);
 
-      seconds = seconds % 60;
-      minutes = minutes % 60;
-
-      hours = hours % 24;
-
-      return `${this.padTo2Digits(hours)}:${this.padTo2Digits(
-        minutes
-      )}:${this.padTo2Digits(seconds)}`;
+      return `${this.padTo2Digits(hours % 24)}:${this.padTo2Digits(
+        minutes % 60
+      )}:${this.padTo2Digits(seconds % 60)}`;
     },
     padTo2Digits(num: number) {
       return num.toString().padStart(2, "0");
@@ -112,8 +98,14 @@ export default defineComponent({
   },
   mounted() {},
   setup() {
-    const data = JSON.parse(localStorage.getItem("quiz") as string);
-    if (!data) window.location.href = "/";
+    const store = useStore();
+    const quiz: Quiz[] = store.getters.quiz.results;
+
+    if (quiz.length === 0) window.location.href = "/";
+
+    return {
+      quiz,
+    };
   },
 });
 </script>
@@ -147,7 +139,7 @@ export default defineComponent({
               <div v-for="ask in item?.answers" class="quiz-answer">
                 <input
                   type="radio"
-                  v-on:change="save"
+                  v-on:change="setAnswers"
                   v-bind:id="ask + index"
                   v-bind:value="ask"
                   v-bind:name="item.question"
@@ -165,7 +157,7 @@ export default defineComponent({
           </swiper-slide>
           <swiper-slide>
             <div class="final-slide">
-              <button class="quiz_button finish" @click="finish">Finish</button>
+              <button class="quiz_button" @click="finish">Finish</button>
             </div>
           </swiper-slide>
         </Swiper>
@@ -225,7 +217,6 @@ export default defineComponent({
 </template>
 
 <style lang="scss" scoped>
-
 .quiz {
   display: flex;
   width: 100vw;
@@ -235,6 +226,9 @@ export default defineComponent({
   justify-content: center;
 }
 .quiz_button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
   height: 3.5rem;
   border: 0px solid;
@@ -274,16 +268,6 @@ export default defineComponent({
   height: 100%;
 }
 
-.swiper-buttons {
-  position: fixed;
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  bottom: 3rem;
-  padding: 0.5rem 1.5rem;
-  z-index: 3;
-}
-
 .swiper-slide {
   min-height: 60vh;
   display: flex;
@@ -294,23 +278,12 @@ export default defineComponent({
   }
 }
 
-.swiper-button {
-  color: var(--color-green-light);
-  font-size: 2rem;
-  cursor: pointer;
-  &:hover {
-    transform: scale(0.95);
-  }
-  &:active {
-    transform: scale(0.95);
-  }
-}
-
 .swipe-icon {
   position: fixed;
-  bottom: 5rem;
+  bottom: 3.5rem;
   opacity: 0.4;
   z-index: 5;
+  height: 5vh;
 }
 
 .swipe-icon-center,
@@ -362,6 +335,27 @@ export default defineComponent({
   }
 }
 
+.swiper-buttons {
+  position: fixed;
+  width: 80%;
+  display: flex;
+  justify-content: space-between;
+  bottom: 3rem;
+  padding: 0.5rem 1.5rem;
+  z-index: 3;
+}
+
+.swiper-button {
+  color: var(--color-green-light);
+  cursor: pointer;
+  &:hover {
+    transform: scale(0.95);
+  }
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
 .swiper-button-next {
   margin-left: auto;
 }
@@ -390,7 +384,7 @@ export default defineComponent({
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1rem;
+  justify-content: space-between;
   &:active {
     cursor: grabbing;
   }
@@ -460,37 +454,54 @@ input[type="radio"] {
 }
 
 @media screen and (min-width: 1024px) {
+  .quiz-question {
+    font-size: 1.1rem;
+  }
   .quiz-answer {
-    font-size: 1.3rem;
+    font-size: 1.2rem;
     width: 100%;
     .quiz-answer-label {
       width: 60%;
-      padding: 0.5rem 1rem;
+      padding: 0.4rem 1rem;
       letter-spacing: 0.1em;
     }
   }
-  .finish {
-    width: 50%;
-    margin: 0 auto;
+  .swiper-buttons {
+    width: 80%;
+  }
+  .swiper-button {
+    font-size: 1.7rem;
+  }
+  .quiz_button {
+    height: 3rem;
+    font-size: 1.5rem;
+    width: 30%;
   }
 }
 
 @media screen and (max-width: 1023px) and (min-width: 768px) {
   .quiz-question {
-    font-size: 1.3rem;
+    font-size: 1.1rem;
   }
   .quiz-answer {
     font-size: 1rem;
     width: 100%;
     .quiz-answer-label {
       width: 80%;
-      padding: 0.5rem 1rem;
+      padding: 0.2rem 0.5rem;
       letter-spacing: 0.1em;
     }
   }
-  .finish {
-    width: 70%;
-    margin: 0 auto;
+  .swiper-buttons {
+    width: 90%;
+  }
+  .swiper-button {
+    font-size: 1.5rem;
+  }
+  .quiz_button {
+    height: 3rem;
+    font-size: 1.5rem;
+    width: 40%;
   }
 }
 
@@ -507,9 +518,17 @@ input[type="radio"] {
       letter-spacing: 0.1em;
     }
   }
-  .finish {
-    width: 90%;
-    margin: 0 auto;
+  .swiper-buttons {
+    width: 100%;
+  }
+  .swiper-button {
+    font-size: 1.3rem;
+  }
+
+  .quiz_button {
+    height: 3rem;
+    font-size: 1.5rem;
+    width: 40%;
   }
 }
 </style>

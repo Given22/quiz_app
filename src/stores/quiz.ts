@@ -10,25 +10,42 @@ interface Quiz {
   type: string;
 }
 
+interface Answer {
+  [key: string]: string;
+}
+
 // Create a new store instance.
 export const store = createStore({
   state: {
-    quiz: { results: [] as Quiz[] }
+    quiz: { results: [] as Quiz[] },
+    playerAnswers: [] as Answer[],
+    time: "",
   },
   mutations: {
-    async setQuiz(state, prop) {
+    setQuiz(state, prop) {
+      prop.data.results.map((quiz: Quiz) => {
+        quiz.answers = arrayShuffle(
+          quiz?.incorrect_answers.concat(quiz.correct_answer)
+        );
+      });
       state.quiz = prop.data;
-      console.log(state.quiz);
     },
-    saveQuiz(state){
-      state.quiz.results.map(result =>{
-        result.answers = arrayShuffle(result?.incorrect_answers.concat(result.correct_answer));
-      })
-      localStorage.setItem('quiz', JSON.stringify(state.quiz));
+
+    setAnswers(state, prop) {
+      state.playerAnswers = prop.answers;
     },
-    removeQuiz(){
-      localStorage.removeItem('quiz');
-    }
+
+    setTime(state, prop) {
+      state.time = prop.time;
+    },
+
+    removeQuiz() {
+      localStorage.removeItem("quiz");
+    },
   },
-  getters: { quiz: (state) => state.quiz },
+  getters: {
+    quiz: (state) => state.quiz,
+    answers: (state) => state.playerAnswers,
+    time: (state) => state.time,
+  },
 });

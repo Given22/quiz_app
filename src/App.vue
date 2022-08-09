@@ -93,6 +93,18 @@ export default defineComponent({
     left: 50%;
     transform: translateX(-50%);
   }
+  .navbar-header {
+    font-size: 1.4rem;
+  }
+  .navbar-button {
+    .navbar-button__link {
+      text-decoration: none;
+      padding: 5px 30px;
+      font-weight: 400;
+      font-size: 1.3rem;
+      line-height: 2rem;
+    }
+  }
 }
 
 @media screen and (max-width: 1023px) and (min-width: 768px) {
@@ -100,17 +112,18 @@ export default defineComponent({
     width: 90%;
     left: 50%;
     transform: translateX(-50%);
+    padding: 1rem;
   }
   .navbar-header {
-    font-size: 1.7rem;
+    font-size: 1.3rem;
   }
   .navbar-button {
     .navbar-button__link {
       text-decoration: none;
       padding: 5px 30px;
       font-weight: 400;
-      font-size: 20px;
-      line-height: 35px;
+      font-size: 1rem;
+      line-height: 1.5rem;
     }
   }
 }
@@ -124,8 +137,8 @@ export default defineComponent({
       text-decoration: none;
       padding: 5px 30px;
       font-weight: 400;
-      font-size: 20px;
-      line-height: 35px;
+      font-size: 1.2rem;
+      line-height: 1.5rem;
     }
   }
 }

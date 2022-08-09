@@ -1,37 +1,20 @@
 <script lang="ts">
+import { useStore } from "vuex";
 import { defineComponent } from "vue";
 import { decode } from "html-entities";
 import { Icon } from "@iconify/vue";
 import Card from "@/components/Card.vue";
 
-interface Quiz {
-  answers?: string[];
-  playerAnswer?: string;
-  category: string;
-  correct_answer: string;
-  incorrect_answers: string[];
-  question: string;
-  type: string;
-}
-
-interface Quizes {
-  response_code: string;
-  results: Quiz[];
-}
+import type { Quiz, Answers } from "@/types/types";
 
 export default defineComponent({
   data: () => ({
-    quiz: JSON.parse(localStorage.getItem("quiz") as string) as Quizes,
-    answers: JSON.parse(localStorage.getItem("answers") as string) as {
-      [key: string]: string;
-    },
-    time: JSON.parse(localStorage.getItem("time") as string) as number,
     correct_answers: 0,
     show: false,
     activeCard: {} as Quiz,
     activeAnswer: "",
     percents: 0,
-    endMsg: '',
+    endMsg: "",
     trophyColor: "",
   }),
   components: {
@@ -42,24 +25,25 @@ export default defineComponent({
     decode(str: string) {
       return decode(str);
     },
+    
     check_answer(question: string) {
-      const que = this.quiz.results.find((q) => q.question === question);
-      if (que) {
-        if (que.correct_answer === this.answers[question]) {
-          return true;
-        }
-      }
+      const que = this.quiz.find((q) => q.question === question);
+      if(!this.answers[question]) return;
+      if (que && que.correct_answer === this.answers[question]) return true; 
       return false;
     },
+    
     check_answers() {
-      this.quiz.results.forEach((question: Quiz) => {
+      this.quiz.forEach((question: Quiz) => {
         if (this.check_answer(question.question)) {
           this.correct_answers++;
         }
       });
       this.percents = Math.floor(
-        (this.correct_answers / this.quiz.results.length) * 100
+        (this.correct_answers / this.quiz.length) * 100
       );
+      
+      // set trophy Color and message
       if (this.percents >= 80) {
         this.trophyColor = "var(--color-yellow)";
         this.endMsg = "You are a true Quiz Master!";
@@ -71,41 +55,33 @@ export default defineComponent({
         this.endMsg = "Next time will be better!";
       }
     },
-    convertMsToTime(milliseconds: number) {
-      let seconds = Math.floor(milliseconds / 1000);
-      let minutes = Math.floor(seconds / 60);
-      let hours = Math.floor(minutes / 60);
-
-      seconds = seconds % 60;
-      minutes = minutes % 60;
-
-      hours = hours % 24;
-
-      return `${this.padTo2Digits(hours)}:${this.padTo2Digits(
-        minutes
-      )}:${this.padTo2Digits(seconds)}`;
-    },
-    padTo2Digits(num: number) {
-      return num.toString().padStart(2, "0");
-    },
     showCard(id: number) {
-      this.quiz.results[id].playerAnswer =
-        this.answers[this.quiz.results[id].question];
+      this.quiz[id].playerAnswer = this.answers[this.quiz[id].question];
 
       this.show = true;
-      this.activeCard = this.quiz.results[id];
+      this.activeCard = this.quiz[id];
     },
     hideCard() {
       this.show = false;
     },
   },
   beforeMount() {
-    if (!this.quiz) window.location.href = "/";
-    if (!this.answers) window.location.href = "/";
     this.check_answers();
-    localStorage.removeItem("answers");
-    localStorage.removeItem("time");
-    localStorage.removeItem("quiz");
+  },
+  setup() {
+    const store = useStore();
+    const quiz: Quiz[] = store.getters.quiz.results;
+    const answers: Answers = store.getters.answers;
+    const time: string = store.getters.time;
+
+    if (quiz.length === 0)
+      window.location.href = "/";
+
+    return {
+      quiz,
+      answers,
+      time,
+    };
   },
 });
 </script>
@@ -114,14 +90,14 @@ export default defineComponent({
   <div class="answers">
     <div class="answers-head">
       <Icon icon="fluent:trophy-48-filled" height="100" class="trophy" />
-      <p>{{endMsg}}</p>
+      <p>{{ endMsg }}</p>
       <br />
       <p>Your score is: {{ percents }}%</p>
-      <p>Your time: {{ convertMsToTime(time) }}</p>
+      <p>Your time: {{ time }}</p>
     </div>
     <section class="answers__questions">
       <div
-        v-for="question in quiz.results"
+        v-for="question in quiz"
         :key="question.question"
         class="answers__card"
         v-bind:class="{
@@ -129,9 +105,9 @@ export default defineComponent({
           incorrect: !check_answer(question.question),
         }"
       >
-        <p>#{{ quiz.results.indexOf(question) + 1 }}</p>
+        <p>#{{ quiz.indexOf(question) + 1 }}</p>
         <div
-          @click="showCard(quiz.results.indexOf(question))"
+          @click="showCard(quiz.indexOf(question))"
           v-bind:class="{
             answers__card__correct: check_answer(question.question),
             answers__card__incorrect: !check_answer(question.question),
@@ -166,9 +142,10 @@ export default defineComponent({
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  gap: 3rem;
+  gap: 1.5rem;
   position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
   top: 20vh;
 }
 
@@ -186,6 +163,7 @@ export default defineComponent({
   display: flex;
   flex-direction: column;
   align-items: center;
+  font-size: 1rem;
   svg path {
     color: v-bind(trophyColor);
   }
@@ -193,6 +171,7 @@ export default defineComponent({
 
 .answers__card {
   display: flex;
+  font-size: 1rem;
   gap: 1rem;
   flex-direction: column;
   justify-content: center;
@@ -249,8 +228,7 @@ export default defineComponent({
 
 @media screen and (min-width: 1024px) {
   .answers {
-    width: 100%;
-    margin: 0 auto;
+    width: 70%;
   }
   .answer-icon {
     height: 5vh;
@@ -261,7 +239,7 @@ export default defineComponent({
   }
   .answers-head {
     svg {
-      height: 9rem;
+      height: 5rem;
     }
   }
 }
@@ -269,18 +247,17 @@ export default defineComponent({
 @media screen and (max-width: 1023px) and (min-width: 768px) {
   .answers {
     width: 100%;
-    margin: 0 auto;
   }
   .answer-icon {
-    height: 2.5rem;
-    width: 15vw;
+    height: 2rem;
+    width: 8vw;
   }
   .answers__questions {
-    max-width: 80%;
+    max-width: 60%;
   }
   .answers-head {
     svg {
-      height: 7rem;
+      height: 5rem;
     }
   }
 }
@@ -288,7 +265,6 @@ export default defineComponent({
 @media screen and (max-width: 767px) {
   .answers {
     width: 100%;
-    margin: 0 auto;
   }
   .answer-icon {
     height: 2rem;
@@ -298,8 +274,9 @@ export default defineComponent({
     max-width: 90%;
   }
   .answers-head {
+    
     svg {
-      height: 6rem;
+      height: 5rem;
     }
   }
 }
