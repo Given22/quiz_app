@@ -160,7 +160,7 @@ export default defineComponent({
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  top: 20vh;
+  padding-top: 20vh;
 }
 
 .answers__questions {
