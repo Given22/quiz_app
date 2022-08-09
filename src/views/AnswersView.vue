@@ -177,7 +177,7 @@ export default defineComponent({
   display: flex;
   flex-direction: column;
   align-items: center;
-  font-size: 1rem;
+  font-size: 1.2rem;
   svg path {
     color: v-bind(trophyColor);
   }
@@ -247,13 +247,14 @@ export default defineComponent({
     width: 70%;
   }
   .answer-icon {
-    height: 5vh;
+    height: 2rem;
     width: 5vw;
   }
   .answers__questions {
     max-width: 90%;
   }
   .answers-head {
+    font-size: 1.2rem;
     svg {
       height: 5rem;
     }
@@ -272,6 +273,7 @@ export default defineComponent({
     max-width: 60%;
   }
   .answers-head {
+    font-size: 1.2rem;
     svg {
       height: 5rem;
     }
@@ -290,7 +292,7 @@ export default defineComponent({
     max-width: 90%;
   }
   .answers-head {
-    
+    font-size: 1.2rem;
     svg {
       height: 5rem;
     }
