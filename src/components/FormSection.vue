@@ -1,7 +1,6 @@
 <script lang="ts">
 import { store } from "@/stores/quiz";
-import { useStore } from "vuex";
-import { defineComponent, ref } from "vue";
+import { defineComponent } from "vue";
 import arrayShuffle from "array-shuffle";
 import { Icon } from "@iconify/vue";
 
@@ -20,33 +19,30 @@ export default defineComponent({
     Alert,
     Icon,
   },
-  setup() {
-    const store = useStore();
-    const count = ref(store.state);
-    const inc = () => {
-      store.commit("increment");
-    };
-    return {
-      count,
-      inc,
-    };
-  },
   methods: {
     getQuestions() {
       const URL = "https://opentdb.com/api.php?";
       const amount = this.amount ? `amount=${this.amount}` : "";
+
       const category =
         this.category && this.category !== "any"
           ? `category=${this.category}`
           : "";
+
       const difficulty =
         this.difficulty && this.difficulty !== "any"
           ? `difficulty=${this.difficulty}`
           : "";
-      const type = this.type && this.type !== "any" ? `type=${this.type}` : "";
+          
+      const type = 
+        this.type && this.type !== "any" 
+          ? `type=${this.type}` 
+          : "";
+          
       const options = [amount, category, difficulty, type]
         .filter(Boolean)
         .join("&");
+        
       fetch(`${URL}${options}`)
         .then((response) => response.json())
         .then((data) => {
@@ -57,9 +53,8 @@ export default defineComponent({
           store.commit("setQuiz", {
             data: data,
           });
-          this.$store.commit("saveQuiz");
         })
-        .then(() => (window.location.href = "/quiz"))
+        .then(() => this.$router.push("/quiz"))
         .catch((err) => {
           this.notfound = true;
           this.searching = false;
@@ -180,7 +175,6 @@ export default defineComponent({
 
 .form-title {
   color: var(--color-yellow);
-  font-size: 1.5rem;
 }
 
 .form-input {
@@ -206,18 +200,20 @@ export default defineComponent({
   font-size: 1rem;
   font-family: "Righteous";
   border-radius: 10px;
-  padding: 0.5rem;
   margin-bottom: 2rem;
 }
 
 .form-submit {
   cursor: pointer;
   z-index: 3;
-  height: 3.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border: 0px solid;
   color: var(--color-green-dark);
   background-color: var(--color-yellow);
-  font-size: 2rem;
+  font-size: 1.5rem;
   font-family: "Righteous";
   margin-bottom: 2rem;
   border-radius: 10px;
@@ -238,7 +234,7 @@ export default defineComponent({
   cursor: pointer;
   background-color: transparent;
   border: 0px solid;
-  font-size: 1.5rem;
+  font-size: 1rem;
   font-family: "Righteous";
   padding: 0.5rem 2rem;
   &:hover {
@@ -312,13 +308,23 @@ input[type="range"]::-webkit-slider-thumb {
   .form-input,
   .form-input-range {
     width: 25%;
+    font-size: 1rem;
+    height: 2.5rem;
+  }
+  .form-title{
+    font-size: 1.1rem;
   }
 }
 
 @media screen and (max-width: 1023px) and (min-width: 768px) {
   .form-input,
   .form-input-range {
-    width: 50%;
+    width: 40%;
+    font-size: 1rem;
+    height: 2.5rem;
+  }
+  .form-title{
+    font-size: 1.1rem;
   }
 }
 
@@ -326,6 +332,12 @@ input[type="range"]::-webkit-slider-thumb {
   .form-input,
   .form-input-range {
     width: 80%;
+    font-size: 1rem;
+    height: 2.5rem;
+  }
+  
+  .form-title{
+    font-size: 1.2rem;
   }
 }
 </style>
