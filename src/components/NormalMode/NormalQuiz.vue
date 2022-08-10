@@ -82,14 +82,14 @@ export default defineComponent({
     prev() {
       // @ts-ignore
       const swiper = document.querySelector(".swiper")?.swiper;
-      swiper.slidePrev();
+      if(swiper) swiper.slidePrev();
     },
 
     // next slide
     next() {
       // @ts-ignore
       const swiper = document.querySelector(".swiper")?.swiper;
-      swiper.slideNext();
+      if(swiper) swiper.slideNext();
     },
 
     // update active slide index
@@ -102,7 +102,7 @@ export default defineComponent({
       this.startTimer();
       // @ts-ignore
       const swiper = document.querySelector(".swiper")?.swiper;
-      this.activeSlide = swiper.activeIndex;
+      if(swiper) this.activeSlide = swiper.activeIndex;
     },
   },
   components: {
