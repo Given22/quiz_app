@@ -17,7 +17,7 @@ export default defineComponent({
     timer_start: 0,
     activeQuestion_time: 0,
     activeQuestion_start_time: 0,
-    timer_id: 0,
+    timer_id: 0 as any,
     time: "00:00:00",
     activeSlide: 0,
     TIMERMODE_QUESTION_LENGTH: 30000,
