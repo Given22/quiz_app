@@ -9,7 +9,7 @@ import TimerFooter from "@/components/TimerMode/TimerFooter.vue";
 
 import "swiper/css";
 
-import type { Quiz, Answers, Times } from "@/types/types";
+import type { Quiz, Answers } from "@/types/types";
 
 export default defineComponent({
   data: () => ({
