@@ -15,7 +15,7 @@ export default defineComponent({
   data: () => ({
     answers: {} as Answers,
     timer_start: 0,
-    timer_id: 0,
+    timer_id: 0 as any,
     time: "00:00:00",
     swiperOptions: {
       spaceBetween: 50,
