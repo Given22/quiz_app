@@ -1,0 +1,1 @@
+export const TIMERMODE_QUESTION_LENGTH = 30;

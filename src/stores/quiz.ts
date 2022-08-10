@@ -1,7 +1,7 @@
 import { createStore } from "vuex";
 import arrayShuffle from "array-shuffle";
 
-import type { Quiz, Answers } from "@/types/types";
+import type { Quiz, Answers, Times } from "@/types/types";
 
 // Create a new store instance.
 export const store = createStore({
@@ -30,6 +30,15 @@ export const store = createStore({
     setTime(state, prop) {
       state.time = prop.time;
     },
+    
+    // Set the time of questions
+    setQuestionTime(state, prop) {
+      if(state.quiz.results[prop.questionNumber].playerTime){
+        state.quiz.results[prop.questionNumber].playerTime += prop.time;
+      } else {
+        state.quiz.results[prop.questionNumber].playerTime = prop.time;
+      }
+    }
   },
   getters: {
     quiz: (state) => state.quiz,

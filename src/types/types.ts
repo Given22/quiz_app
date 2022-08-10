@@ -7,8 +7,13 @@ export interface Quiz {
   question: string;
   type: string;
   playerAnswer?: string;
+  playerTime?: string;
 }
 
 export interface Answers {
+  [key: string]: string;
+}
+
+export interface Times {
   [key: string]: string;
 }

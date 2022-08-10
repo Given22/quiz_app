@@ -7,7 +7,7 @@ import { decode } from "html-entities";
 import { Icon } from "@iconify/vue";
 import Card from "@/components/Card.vue";
 
-import type { Quiz, Answers } from "@/types/types";
+import type { Quiz, Answers, Times } from "@/types/types";
 
 export default defineComponent({
   data: () => ({
@@ -28,6 +28,8 @@ export default defineComponent({
     decode(str: string) {
       return decode(str);
     },
+    
+    
     
     // check if answer is correct
     check_answer(question: string) {
