@@ -13,7 +13,7 @@ export default {
         // @ts-ignore
         "--width": (this.answers / this.questions) * 100 + "%",
         // @ts-ignore
-        "--width-timer": ((this.question_time + 1000) / this.quiz_lenght) * 100 + "%",
+        "--width-timer": (this.question_time / this.quiz_lenght) * 100 + "%",
       };
     },
   },
@@ -44,7 +44,7 @@ export default {
     width: var(--width-timer);
     display: flex;
     z-index: -1;
-    transition: all 1s linear;
+    transition: all 0.1s linear;
     background-color: var(--color-green-light);
   }
   .progress-bar {

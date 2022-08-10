@@ -82,7 +82,7 @@ export default defineComponent({
         this.activeQuestion_time =
           new Date().getTime() - this.activeQuestion_start_time;
         if(this.TIMERMODE_QUESTION_LENGTH){
-          if (this.activeQuestion_time > this.TIMERMODE_QUESTION_LENGTH)
+          if (this.activeQuestion_time >= this.TIMERMODE_QUESTION_LENGTH)
           this.next();
         }
       }, 100);
