@@ -10,6 +10,16 @@ export default defineComponent({
     decode(str: string) {
       return decode(str);
     },
+    
+    // convert milliseconds to good looking time format
+    convertMsToTime(milliseconds: number) {
+      let seconds = Math.floor(milliseconds / 1000);
+
+      return `${this.padTo2Digits(seconds % 60)}.${(milliseconds % 1000).toString().slice(0, 1)}`;
+    },
+    padTo2Digits(num: number) {
+      return num.toString().padStart(2, "0");
+    },
   },
   props: {
     question: Object,
@@ -33,6 +43,9 @@ export default defineComponent({
           {{ decode(answer) }}
         </p>
       </div>
+      <p v-if="question?.playerTime" class="card_time">
+        Your time on this question: {{ convertMsToTime(question.playerTime)}} s
+      </p>
     </div>
   </div>
 </template>
@@ -45,7 +58,7 @@ export default defineComponent({
   top: 0;
   left: 0;
   width: 100%;
-  height: 100vh;
+  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -77,6 +90,10 @@ export default defineComponent({
   font-size: 1.5rem;
 }
 
+.card_time{
+  margin-top: 0.5rem;
+}
+
 .correct {
   color: var(--color-green-light);
   &.playerAnswer {
@@ -92,14 +109,14 @@ export default defineComponent({
   .card {
     padding: 3rem;
     border-radius: 10px;
+    font-size: 1rem;
     max-width: 80%;
   }
 
   .card-body {
     border-radius: 6px;
     padding: 1rem;
-    margin-top: 1rem;
-    font-size: 1.5rem;
+    font-size: 1rem;
     width: 100%;
   }
 }
@@ -109,15 +126,14 @@ export default defineComponent({
     border-radius: 10px;
     max-width: 90%;
     max-height: 80%;
-    font-size: 1.2rem;
+    font-size: 1rem;
     padding: 2rem;
   }
 
   .card-body {
     border-radius: 6px;
     padding: 1rem;
-    margin-top: 1rem;
-    font-size: 1.3rem;
+    font-size: 1rem;
     width: 100%;
   }
 }
@@ -134,7 +150,6 @@ export default defineComponent({
     border-radius: 6px;
     font-size: 1rem;
     padding: 1rem;
-    margin-top: 1rem;
     width: 100%;
   }
 }
