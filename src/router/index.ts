@@ -6,27 +6,25 @@ const routes = [
   {
     path: "/",
     name: "home",
-    component: () => Promise.resolve(defineAsyncComponent(() => import("../views/HomeView.vue"))),
+    component: () => import("@/views/HomeView.vue"),
   },
   // If path not exist it shows home page
   {
     path: "/:pathMatch(.*)*",
     name: "different",
-    component: () => Promise.resolve(defineAsyncComponent(() => import("../views/HomeView.vue"))),
+    component: () => import("@/views/HomeView.vue"),
   },
-  // Page with quiz 
+  // Page with quiz
   {
     path: "/quiz",
     name: "quiz",
-    component: () => Promise.resolve(defineAsyncComponent(() =>
-      import(/* webpackChunkName: "quizview" */ "@/views/QuizView.vue"))),
+    component: () => import("@/views/QuizView.vue"),
   },
   // Page with final stats and answers
   {
     path: "/answers",
     name: "answers",
-    component: () => Promise.resolve(defineAsyncComponent(() =>
-      import(/* webpackChunkName: "answersview" */ "@/views/AnswersView.vue"))),
+    component: () => import("@/views/AnswersView.vue"),
   },
 ];
 
