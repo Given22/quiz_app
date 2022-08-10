@@ -42,12 +42,10 @@ export default defineComponent({
     setAnswers() {
       this.$store.commit("setAnswers", { answers: this.answers });
     },
-
-    // set player times to store
-    setTimes() {},
     // finish quiz and redirect to results
     finish() {
       this.setAnswers();
+      clearInterval(this.timer_id);
       this.$router.push("/answers");
     },
     // convert milliseconds to good looking time format
@@ -70,7 +68,7 @@ export default defineComponent({
     next() {
       // @ts-ignore
       const swiper = document.querySelector(".swiper")?.swiper;
-      swiper.slideNext();
+      if(swiper) swiper.slideNext();
     },
 
     startTimer() {
@@ -98,6 +96,7 @@ export default defineComponent({
       // @ts-ignore
       const swiper = document.querySelector(".swiper")?.swiper;
       this.activeSlide = swiper.activeIndex;
+      if(this.activeSlide === this.quiz.length) this.finish();
     },
   },
   components: {
