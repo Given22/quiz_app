@@ -20,8 +20,10 @@ export default defineComponent({
     timer_id: 0 as any,
     time: "00:00:00",
     activeSlide: 0,
-    TIMERMODE_QUESTION_LENGTH: 30000,
   }),
+  props: {
+    TIMERMODE_QUESTION_LENGTH: Number,
+  },
   methods: {
     // decode html entities
     decode(str: string) {
@@ -79,9 +81,10 @@ export default defineComponent({
       this.timer_id = setInterval(() => {
         this.activeQuestion_time =
           new Date().getTime() - this.activeQuestion_start_time;
-
-        if (this.activeQuestion_time > this.TIMERMODE_QUESTION_LENGTH)
+        if(this.TIMERMODE_QUESTION_LENGTH){
+          if (this.activeQuestion_time > this.TIMERMODE_QUESTION_LENGTH)
           this.next();
+        }
       }, 100);
     },
 
