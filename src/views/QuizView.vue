@@ -15,7 +15,7 @@ export default defineComponent({
     timer_mode: false,
     timer_info: false,
     normal_mode: false,
-    TIMERMODE_QUESTION_LENGTH: 15000,
+    TIMERMODE_QUESTION_LENGTH: 10000,
   }),
   methods: {
     // start quiz and timer
@@ -61,30 +61,34 @@ export default defineComponent({
             Timer mode settings
           </p>
           <div class="timer_info" v-if="timer_info">
-            <button
-              class="timer_button"
-              @click="(TIMERMODE_QUESTION_LENGTH = 5000), startTimerMode()"
-            >
-              5s
-            </button>
-            <button
-              class="timer_button"
-              @click="(TIMERMODE_QUESTION_LENGTH = 10000), startTimerMode()"
-            >
-              10s
-            </button>
-            <button
-              class="timer_button"
-              @click="(TIMERMODE_QUESTION_LENGTH = 20000), startTimerMode()"
-            >
-              20s
-            </button>
-            <button
-              class="timer_button"
-              @click="(TIMERMODE_QUESTION_LENGTH = 30000), startTimerMode()"
-            >
-              30s
-            </button>
+            <input
+              type="radio"
+              id="5"
+              value="5000"
+              v-model="TIMERMODE_QUESTION_LENGTH"
+            />
+            <label class="timer_set_label" for="5">5s</label>
+            <input
+              type="radio"
+              id="10"
+              value="10000"
+              v-model="TIMERMODE_QUESTION_LENGTH"
+            />
+            <label class="timer_set_label" for="10">10s</label>
+            <input
+              type="radio"
+              id="20"
+              value="20000"
+              v-model="TIMERMODE_QUESTION_LENGTH"
+            />
+            <label class="timer_set_label" for="20">20s</label>
+            <input
+              type="radio"
+              id="30"
+              value="30000"
+              v-model="TIMERMODE_QUESTION_LENGTH"
+            />
+            <label class="timer_set_label" for="30">30s</label>
           </div>
         </div>
         <NormalQuiz v-if="normal_mode" />
@@ -107,12 +111,12 @@ export default defineComponent({
   justify-content: center;
 }
 
-.setting_button{
+.setting_button {
   font-size: 1rem;
   color: var(--color-green-light);
   cursor: pointer;
   transition: all 0.3s ease-in-out;
-  &:hover{
+  &:hover {
     transform: scale(0.9);
   }
 }
@@ -122,7 +126,7 @@ export default defineComponent({
   justify-content: center;
   flex-wrap: wrap;
   gap: 1rem;
-  .timer_button {
+  .timer_set_label {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -163,10 +167,28 @@ export default defineComponent({
   transform: translate(-50%, -50%);
 }
 
+input[type="radio"]:checked + .timer_set_label {
+  opacity: 1;
+}
+
+input[type="radio"]:not(:checked) + .timer_set_label {
+  opacity: 0.5;
+  transform: translateY(5px);
+  box-shadow: 0px 0px 0px rgba(233, 196, 106, 0.25),
+    0px 0px 0px rgba(0, 0, 0, 0.25);
+  &:hover {
+    opacity: 1;
+  }
+}
+
+input[type="radio"] {
+  display: none;
+}
+
 @media screen and (min-width: 1024px) {
-  .timer_info{
+  .timer_info {
     width: 40%;
-    .timer_button{
+    .timer_set_label {
       min-width: 15%;
     }
   }
@@ -182,9 +204,9 @@ export default defineComponent({
 }
 
 @media screen and (max-width: 1023px) and (min-width: 768px) {
-  .timer_info{
+  .timer_info {
     width: 40%;
-    .timer_button{
+    .timer_set_label {
       min-width: 40%;
     }
   }
@@ -200,9 +222,9 @@ export default defineComponent({
 }
 
 @media screen and (max-width: 767px) {
-  .timer_info{
+  .timer_info {
     width: 70%;
-    .timer_button{
+    .timer_set_label {
       min-width: 45%;
     }
   }
