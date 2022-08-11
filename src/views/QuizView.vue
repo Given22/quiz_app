@@ -142,11 +142,6 @@ export default defineComponent({
     box-shadow: 0px 5px 0px rgba(233, 196, 106, 0.3),
       3px 10px 5px rgba(0, 0, 0, 0.25);
     transition: all 0.3s ease-in-out;
-    &:hover {
-      transform: translateY(5px);
-      box-shadow: 0px 0px 0px rgba(233, 196, 106, 0.25),
-        0px 0px 0px rgba(0, 0, 0, 0.25);
-    }
   }
 }
 
