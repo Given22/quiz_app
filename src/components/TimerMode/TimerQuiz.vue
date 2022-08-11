@@ -167,7 +167,6 @@ export default defineComponent({
     </swiper-slide>
     <swiper-slide>
       <div class="final-slide">
-        <button class="quiz_button" @click="finish">Finish</button>
       </div>
     </swiper-slide>
   </Swiper>

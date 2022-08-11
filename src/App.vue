@@ -6,9 +6,6 @@ export default defineComponent({
   components: {
     Loading,
   },
-  setup() {
-    return {};
-  },
 });
 </script>
 
