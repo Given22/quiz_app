@@ -146,7 +146,6 @@ export default defineComponent({
       transform: translateY(5px);
       box-shadow: 0px 0px 0px rgba(233, 196, 106, 0.25),
         0px 0px 0px rgba(0, 0, 0, 0.25);
-      color: var(--color-green-light);
     }
   }
 }
@@ -169,6 +168,9 @@ export default defineComponent({
 
 input[type="radio"]:checked + .timer_set_label {
   opacity: 1;
+  &:hover {
+  color: var(--color-green-light);
+  }
 }
 
 input[type="radio"]:not(:checked) + .timer_set_label {
