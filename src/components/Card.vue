@@ -79,6 +79,8 @@ export default defineComponent({
   justify-content: center;
   flex-direction: column;
   align-items: center;
+  padding: 1.5rem;
+  padding-bottom: 0.5rem;
 }
 
 .card-body {
@@ -107,8 +109,6 @@ export default defineComponent({
 
 @media screen and (min-width: 1024px) {
   .card {
-    padding: 3rem;
-    border-radius: 10px;
     font-size: 1rem;
     max-width: 80%;
   }
@@ -123,11 +123,9 @@ export default defineComponent({
 
 @media screen and (max-width: 1023px) and (min-width: 768px) {
   .card {
-    border-radius: 10px;
     max-width: 90%;
     max-height: 80%;
     font-size: 1rem;
-    padding: 2rem;
   }
 
   .card-body {
@@ -140,9 +138,7 @@ export default defineComponent({
 
 @media screen and (max-width: 767px) {
   .card {
-    padding: 2rem;
     font-size: 1rem;
-    border-radius: 10px;
     width: 85%;
   }
 
