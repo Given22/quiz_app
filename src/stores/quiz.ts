@@ -33,7 +33,8 @@ export const store = createStore({
     
     // Set the time of questions
     setQuestionTime(state, prop) {
-      if(state.quiz.results[prop.questionNumber].playerTime){
+      if(!state.quiz.results[prop.questionNumber]) return;
+      if(state.quiz.results[prop.questionNumber]?.playerTime){
         state.quiz.results[prop.questionNumber].playerTime += prop.time;
       } else {
         state.quiz.results[prop.questionNumber].playerTime = prop.time;
