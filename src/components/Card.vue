@@ -15,10 +15,7 @@ export default defineComponent({
     convertMsToTime(milliseconds: number) {
       let seconds = Math.floor(milliseconds / 1000);
 
-      return `${this.padTo2Digits(seconds % 60)}.${(milliseconds % 1000).toString().slice(0, 1)}`;
-    },
-    padTo2Digits(num: number) {
-      return num.toString().padStart(2, "0");
+      return `${(seconds % 60)}.${(milliseconds % 1000).toString().slice(0, 1)}`;
     },
   },
   props: {
