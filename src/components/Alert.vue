@@ -2,7 +2,6 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { decode } from "html-entities";
 
 export default defineComponent({
   props: ['msg'],
