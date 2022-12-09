@@ -19,14 +19,14 @@ const routes = [
     path: "/quiz",
     name: "quiz",
     component: () => Promise.resolve(defineAsyncComponent(() =>
-      import(/* webpackChunkName: "quizview" */ "@/views/QuizView.vue"))),
+      import("@/views/QuizView.vue"))),
   },
   // Page with final stats and answers
   {
     path: "/answers",
     name: "answers",
     component: () => Promise.resolve(defineAsyncComponent(() =>
-      import(/* webpackChunkName: "answersview" */ "@/views/AnswersView.vue"))),
+      import("@/views/AnswersView.vue"))),
   },
 ];
 
