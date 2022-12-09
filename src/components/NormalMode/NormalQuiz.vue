@@ -15,7 +15,7 @@ export default defineComponent({
   data: () => ({
     answers: {} as Answers,
     timer_start: 0,
-    timer_id: 0 as any,
+    timer_id: 0,
     time: "00:00:00",
     swiperOptions: {
       spaceBetween: 50,
@@ -38,7 +38,7 @@ export default defineComponent({
       this.timer_start = new Date().getTime();
 
       setInterval(() => {
-        let time = new Date().getTime() - this.timer_start;
+        const time = new Date().getTime() - this.timer_start;
         this.time = this.convertMsToTime(time);
         this.$store.commit("setTime", { time: this.time });
       }, 1000);
@@ -59,15 +59,16 @@ export default defineComponent({
       clearInterval(this.timer_id);
       if (this.activeSlide === this.quiz.length - 1) return;
       this.timer_id = setInterval(() => {
-        this.activeQuestion_time = new Date().getTime() - this.activeQuestion_start_time;
+        this.activeQuestion_time =
+          new Date().getTime() - this.activeQuestion_start_time;
       }, 100);
     },
 
     // convert milliseconds to good looking time format
     convertMsToTime(milliseconds: number) {
-      let seconds = Math.floor(milliseconds / 1000);
-      let minutes = Math.floor(seconds / 60);
-      let hours = Math.floor(minutes / 60);
+      const seconds = Math.floor(milliseconds / 1000);
+      const minutes = Math.floor(seconds / 60);
+      const hours = Math.floor(minutes / 60);
 
       return `${this.padTo2Digits(hours % 24)}:${this.padTo2Digits(
         minutes % 60
@@ -82,14 +83,14 @@ export default defineComponent({
     prev() {
       // @ts-ignore
       const swiper = document.querySelector(".swiper")?.swiper;
-      if(swiper) swiper.slidePrev();
+      if (swiper) swiper.slidePrev();
     },
 
     // next slide
     next() {
       // @ts-ignore
       const swiper = document.querySelector(".swiper")?.swiper;
-      if(swiper) swiper.slideNext();
+      if (swiper) swiper.slideNext();
     },
 
     // update active slide index
@@ -102,7 +103,7 @@ export default defineComponent({
       this.startTimer();
       // @ts-ignore
       const swiper = document.querySelector(".swiper")?.swiper;
-      if(swiper) this.activeSlide = swiper.activeIndex;
+      if (swiper) this.activeSlide = swiper.activeIndex;
     },
   },
   components: {
@@ -168,7 +169,7 @@ export default defineComponent({
     </swiper-slide>
     <swiper-slide>
       <div class="final-slide">
-        <button class="quiz_button" @click="finish">Finish</button>
+        <button class="quiz-button" @click="finish">Finish</button>
       </div>
     </swiper-slide>
   </Swiper>
@@ -338,7 +339,7 @@ export default defineComponent({
 
 // One question
 
-.quiz_button {
+.quiz-button {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -461,7 +462,7 @@ input[type="radio"] {
     font-size: 1.1rem;
   }
 
-  .timer_mode {
+  .timer-mode {
     height: 2rem;
     width: 70%;
   }
@@ -480,7 +481,7 @@ input[type="radio"] {
   .swiper-button {
     font-size: 1.7rem;
   }
-  .quiz_button {
+  .quiz-button {
     height: 3rem;
     font-size: 1.5rem;
     width: 30%;
@@ -500,7 +501,7 @@ input[type="radio"] {
       letter-spacing: 0.1em;
     }
   }
-  .timer_mode {
+  .timer-mode {
     height: 2rem;
     width: 30%;
   }
@@ -510,11 +511,11 @@ input[type="radio"] {
   .swiper-button {
     font-size: 1.5rem;
   }
-  .quiz_button {
+  .quiz-button {
     height: 3rem;
     font-size: 1.5rem;
     width: 40%;
-    &.timer_mode {
+    &.timer-mode {
       height: 2rem;
       width: 25%;
     }
@@ -541,7 +542,7 @@ input[type="radio"] {
     font-size: 1.3rem;
   }
 
-  .quiz_button {
+  .quiz-button {
     height: 3rem;
     font-size: 1.5rem;
     width: 40%;

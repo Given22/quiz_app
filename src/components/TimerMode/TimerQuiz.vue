@@ -17,7 +17,7 @@ export default defineComponent({
     timer_start: 0,
     activeQuestion_time: 0,
     activeQuestion_start_time: 0,
-    timer_id: 0 as any,
+    timer_id: 0,
     time: "00:00:00",
     activeSlide: 0,
   }),
@@ -317,7 +317,7 @@ export default defineComponent({
 
 // One question
 
-.quiz_button {
+.quiz-button {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -440,7 +440,7 @@ input[type="radio"] {
     font-size: 1.1rem;
   }
 
-  .timer_mode {
+  .timer-mode {
     height: 2rem;
     width: 70%;
   }
@@ -459,7 +459,7 @@ input[type="radio"] {
   .swiper-button {
     font-size: 1.7rem;
   }
-  .quiz_button {
+  .quiz-button {
     height: 3rem;
     font-size: 1.5rem;
     width: 30%;
@@ -479,7 +479,7 @@ input[type="radio"] {
       letter-spacing: 0.1em;
     }
   }
-  .timer_mode {
+  .timer-mode {
     height: 2rem;
     width: 30%;
   }
@@ -489,11 +489,11 @@ input[type="radio"] {
   .swiper-button {
     font-size: 1.5rem;
   }
-  .quiz_button {
+  .quiz-button {
     height: 3rem;
     font-size: 1.5rem;
     width: 40%;
-    &.timer_mode {
+    &.timer-mode {
       height: 2rem;
       width: 25%;
     }
@@ -520,7 +520,7 @@ input[type="radio"] {
     font-size: 1.3rem;
   }
 
-  .quiz_button {
+  .quiz-button {
     height: 3rem;
     font-size: 1.5rem;
     width: 40%;

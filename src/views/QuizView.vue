@@ -50,45 +50,45 @@ export default defineComponent({
   <Suspense>
     <template #default>
       <div class="quiz">
-        <div class="start_page" v-if="!started">
-          <button class="quiz_button" @click="startNormalMode">
+        <div class="start-page" v-if="!started">
+          <button class="quiz-button" @click="startNormalMode">
             Normal Mode
           </button>
-          <button class="quiz_button timer_mode" @click="startTimerMode()">
+          <button class="quiz-button timer-mode" @click="startTimerMode()">
             Timer mode
           </button>
-          <p class="setting_button" @click="timer_info = !timer_info">
+          <p class="setting-button" @click="timer_info = !timer_info">
             Timer mode settings
           </p>
-          <div class="timer_info" v-if="timer_info">
+          <div class="timer-info" v-if="timer_info">
             <input
               type="radio"
               id="5"
               value="5000"
               v-model="TIMERMODE_QUESTION_LENGTH"
             />
-            <label class="timer_set_label" for="5">5s</label>
+            <label class="timer-setlabel" for="5">5s</label>
             <input
               type="radio"
               id="10"
               value="10000"
               v-model="TIMERMODE_QUESTION_LENGTH"
             />
-            <label class="timer_set_label" for="10">10s</label>
+            <label class="timer-setlabel" for="10">10s</label>
             <input
               type="radio"
               id="20"
               value="20000"
               v-model="TIMERMODE_QUESTION_LENGTH"
             />
-            <label class="timer_set_label" for="20">20s</label>
+            <label class="timer-setlabel" for="20">20s</label>
             <input
               type="radio"
               id="30"
               value="30000"
               v-model="TIMERMODE_QUESTION_LENGTH"
             />
-            <label class="timer_set_label" for="30">30s</label>
+            <label class="timer-setlabel" for="30">30s</label>
           </div>
         </div>
         <NormalQuiz v-if="normal_mode" />
@@ -111,7 +111,7 @@ export default defineComponent({
   justify-content: center;
 }
 
-.setting_button {
+.setting-button {
   font-size: 1rem;
   color: var(--color-green-light);
   cursor: pointer;
@@ -121,12 +121,12 @@ export default defineComponent({
   }
 }
 
-.timer_info {
+.timer-info {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
   gap: 1rem;
-  .timer_set_label {
+  .timer-setlabel {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -147,7 +147,7 @@ export default defineComponent({
 
 // start page
 
-.start_page {
+.start-page {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -161,14 +161,14 @@ export default defineComponent({
   transform: translate(-50%, -50%);
 }
 
-input[type="radio"]:checked + .timer_set_label {
+input[type="radio"]:checked + .timer-setlabel {
   opacity: 1;
   &:hover {
   color: var(--color-green-light);
   }
 }
 
-input[type="radio"]:not(:checked) + .timer_set_label {
+input[type="radio"]:not(:checked) + .timer-setlabel {
   opacity: 0.5;
   transform: translateY(5px);
   box-shadow: 0px 0px 0px rgba(233, 196, 106, 0.25),
@@ -183,17 +183,17 @@ input[type="radio"] {
 }
 
 @media screen and (min-width: 1024px) {
-  .timer_info {
+  .timer-info {
     width: 40%;
-    .timer_set_label {
+    .timer-setlabel {
       min-width: 15%;
     }
   }
-  .quiz_button {
+  .quiz-button {
     height: 3rem;
     font-size: 1.5rem;
     width: 30%;
-    &.timer_mode {
+    &.timer-mode {
       min-height: 2rem;
       width: 20%;
     }
@@ -201,17 +201,17 @@ input[type="radio"] {
 }
 
 @media screen and (max-width: 1023px) and (min-width: 768px) {
-  .timer_info {
+  .timer-info {
     width: 40%;
-    .timer_set_label {
+    .timer-setlabel {
       min-width: 40%;
     }
   }
-  .quiz_button {
+  .quiz-button {
     height: 3rem;
     font-size: 1.5rem;
     width: 40%;
-    &.timer_mode {
+    &.timer-mode {
       min-height: 2rem;
       width: 25%;
     }
@@ -219,17 +219,17 @@ input[type="radio"] {
 }
 
 @media screen and (max-width: 767px) {
-  .timer_info {
+  .timer-info {
     width: 70%;
-    .timer_set_label {
+    .timer-setlabel {
       min-width: 45%;
     }
   }
-  .quiz_button {
+  .quiz-button {
     height: 3rem;
     font-size: 1.5rem;
     min-width: 70%;
-    &.timer_mode {
+    &.timer-mode {
       min-height: 2rem;
     }
   }

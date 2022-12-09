@@ -13,7 +13,7 @@ export default defineComponent({
   <nav id="navbar">
     <h3 class="navbar-header">Quiz App</h3>
     <div class="navbar-button">
-      <a class="navbar-button__link" href="/">Next Quiz</a>
+      <a class="navbar-button-link" href="/">Next Quiz</a>
     </div>
   </nav>
 
@@ -63,7 +63,7 @@ export default defineComponent({
     box-shadow: 0px 0px 0px rgba(233, 196, 106, 0.25),
       0px 0px 0px rgba(0, 0, 0, 0.25);
   }
-  .navbar-button__link {
+  .navbar-button-link {
     color: var(--color-green-dark);
     font-size: 1.3rem;
     font-weight: bold;
@@ -94,7 +94,7 @@ export default defineComponent({
     font-size: 1.4rem;
   }
   .navbar-button {
-    .navbar-button__link {
+    .navbar-button-link {
       text-decoration: none;
       padding: 5px 30px;
       font-weight: 400;
@@ -115,7 +115,7 @@ export default defineComponent({
     font-size: 1.3rem;
   }
   .navbar-button {
-    .navbar-button__link {
+    .navbar-button-link {
       text-decoration: none;
       padding: 5px 30px;
       font-weight: 400;
@@ -130,7 +130,7 @@ export default defineComponent({
     font-size: 1.7rem;
   }
   .navbar-button {
-    .navbar-button__link {
+    .navbar-button-link {
       text-decoration: none;
       padding: 5px 30px;
       font-weight: 400;
