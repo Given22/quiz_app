@@ -111,11 +111,11 @@ export default defineComponent({
       <p>Your score is: {{ percents }}%</p>
       <p>Your time: {{ time }}</p>
     </div>
-    <section class="answers__questions">
+    <section class="answers-questions">
       <div
         v-for="question in quiz"
         :key="question.question"
-        class="answers__card"
+        class="answers-card"
         v-bind:class="{
           correct: check_answer(question.question),
           incorrect: !check_answer(question.question),
@@ -125,8 +125,8 @@ export default defineComponent({
         <div
           @click="showCard(quiz.indexOf(question))"
           v-bind:class="{
-            answers__card__correct: check_answer(question.question),
-            answers__card__incorrect: !check_answer(question.question),
+            answers_card_correct: check_answer(question.question),
+            answers_card_incorrect: !check_answer(question.question),
           }"
         >
           <Icon
@@ -165,7 +165,7 @@ export default defineComponent({
   padding-top: 20vh;
 }
 
-.answers__questions {
+.answers-questions {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -185,7 +185,7 @@ export default defineComponent({
   }
 }
 
-.answers__card {
+.answers-card {
   display: flex;
   font-size: 1rem;
   gap: 1rem;
@@ -201,7 +201,7 @@ export default defineComponent({
     color: var(--color-green-darker);
   }
 
-  .answers__card__incorrect {
+  .answers-card-incorrect {
     background-color: var(--color-orange);
     box-shadow: 0px 5px 0px rgba(233, 196, 106, 0.25),
       4px 10px 3px rgba(0, 0, 0, 0.25);
@@ -212,7 +212,7 @@ export default defineComponent({
       transform: translateY(5px);
     }
   }
-  .answers__card__correct {
+  .answers-card-correct {
     background-color: var(--color-green-light);
     box-shadow: 0px 5px 0px rgba(83, 182, 132, 0.25),
       4px 10px 3px rgba(0, 0, 0, 0.25);
@@ -224,8 +224,8 @@ export default defineComponent({
     }
   }
 
-  .answers__card__incorrect,
-  .answers__card__correct {
+  .answers-card-incorrect,
+  .answers-card-correct {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -252,7 +252,7 @@ export default defineComponent({
     height: 2rem;
     width: 5vw;
   }
-  .answers__questions {
+  .answers-questions {
     max-width: 90%;
   }
   .answers-head {
@@ -271,7 +271,7 @@ export default defineComponent({
     height: 2rem;
     width: 8vw;
   }
-  .answers__questions {
+  .answers-questions {
     max-width: 60%;
   }
   .answers-head {
@@ -290,7 +290,7 @@ export default defineComponent({
     height: 2rem;
     width: 17vw;
   }
-  .answers__questions {
+  .answers-questions {
     max-width: 90%;
   }
   .answers-head {

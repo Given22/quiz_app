@@ -34,13 +34,13 @@ export default defineComponent({
           v-for="answer in question?.answers"
           v-bind:class="{
             correct: answer === question?.correct_answer,
-            playerAnswer: answer === question?.playerAnswer,
+            player_answer: answer === question?.player_answer,
           }"
         >
           {{ decode(answer) }}
         </p>
       </div>
-      <p v-if="question?.playerTime" class="card_time">
+      <p v-if="question?.playerTime" class="card-time">
         Your time on this question: {{ convertMsToTime(question.playerTime)}} s
       </p>
     </div>
@@ -89,18 +89,18 @@ export default defineComponent({
   font-size: 1.5rem;
 }
 
-.card_time{
+.card-time{
   margin-top: 0.5rem;
 }
 
 .correct {
   color: var(--color-green-light);
-  &.playerAnswer {
+  &.player-answer {
     color: var(--color-yellow);
   }
 }
 
-.playerAnswer {
+.player-answer {
   color: var(--color-orange);
 }
 
