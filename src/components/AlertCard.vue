@@ -9,9 +9,9 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="alert">
-      <div class="alert-card-back">
-        <div class="alert-card">
+  <div class="Alert">
+      <div class="AlertCardBack">
+        <div class="AlertCard">
           <h2>{{msg}}</h2>
         </div>
       </div>
@@ -19,7 +19,7 @@ export default defineComponent({
 </template>
 
 <style lang="scss">
-.alert-card-back {
+.AlertCardBack {
   position: fixed;
   background-color: #2646537c;
   backdrop-filter: blur(10px);
@@ -34,7 +34,7 @@ export default defineComponent({
   z-index: 5;
 }
 
-.alert-card {
+.AlertCard {
   position: absolute;
   left: 50%;
   top: 50%;
@@ -48,7 +48,7 @@ export default defineComponent({
 }
 
 @media screen and (min-width: 1024px) {
-  .alert-card {
+  .AlertCard {
     padding: 3rem;
     border-radius: 10px;
     max-width: 60%;
@@ -56,7 +56,7 @@ export default defineComponent({
 }
 
 @media screen and (max-width: 1023px) and (min-width: 768px) {
-  .alert-card {
+  .AlertCard {
     padding: 3rem;
     border-radius: 10px;
     max-width: 75%;
@@ -64,7 +64,7 @@ export default defineComponent({
 }
 
 @media screen and (max-width: 767px) {
-  .alert-card {
+  .AlertCard {
     padding: 3rem;
     border-radius: 10px;
     width: 85%;

@@ -1,7 +1,7 @@
 <!-- Loading screen when data is loaded -->
 
 <template>
-  <div class="loading-screen">
+  <div class="LoadingScreen">
     <Icon icon="eos-icons:loading" color="var(--color-yellow)" height="8vh" />
   </div>
 </template>
@@ -18,7 +18,7 @@
 </script>
 
 <style lang="scss">
-  .loading-screen{
+  .LoadingScreen{
     display: flex;
     align-items: center;
     justify-content: center;

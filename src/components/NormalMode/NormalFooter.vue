@@ -1,4 +1,4 @@
-<!-- Footer component for showing time and progress information -->
+<!-- Footer component for showing time and Progress information -->
 
 <script lang="ts">
 interface cssVars {
@@ -19,23 +19,23 @@ export default {
 </script>
 
 <template>
-  <div class="footer">
-    <span class="progress-bar" :style="cssVars"></span>
-    <div class="footer-body">
-      <p class="time">{{ time }}</p>
+  <div class="Footer">
+    <span class="ProgressBar" :style="cssVars"></span>
+    <div class="FooterBody">
+      <p class="Time">{{ time }}</p>
     </div>
   </div>
 </template>
 
 <style lang="scss">
-.footer {
+.Footer {
   position: fixed;
   bottom: 0;
   width: 100%;
   background-color: var(--color-green-light);
 
   height: 2.5rem;
-  .progress-bar {
+  .ProgressBar {
     position: absolute;
     top: -0.3rem;
     left: 0;
@@ -44,14 +44,14 @@ export default {
     height: 0.3rem;
     background-color: var(--color-yellow);
   }
-  .footer-body {
+  .FooterBody {
     display: flex;
     width: 100%;
     height: 100%;
     justify-content: center;
     align-items: center;
     padding: 0 1rem;
-    .time {
+    .Time {
       font-size: 1.1rem;
       font-weight: bold;
       color: var(--color-green-dark);

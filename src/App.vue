@@ -11,9 +11,9 @@ export default defineComponent({
 
 <template>
   <nav id="navbar">
-    <h3 class="navbar-header">Quiz App</h3>
-    <div class="navbar-button">
-      <a class="navbar-button-link" href="/">Next Quiz</a>
+    <h3 class="NavbarHeader">Quiz App</h3>
+    <div class="NavbarButton">
+      <a class="NavbarButtonLink" href="/">Next Quiz</a>
     </div>
   </nav>
 
@@ -44,12 +44,12 @@ export default defineComponent({
   top: 0;
   z-index: 5;
 }
-.navbar-header {
+.NavbarHeader {
   font-size: 1.5rem;
   font-weight: bold;
   color: var(--color-yellow);
 }
-.navbar-button {
+.NavbarButton {
   display: flex;
   align-items: center;
   background-color: var(--color-yellow);
@@ -63,7 +63,7 @@ export default defineComponent({
     box-shadow: 0px 0px 0px rgba(233, 196, 106, 0.25),
       0px 0px 0px rgba(0, 0, 0, 0.25);
   }
-  .navbar-button-link {
+  .NavbarButtonLink {
     color: var(--color-green-dark);
     font-size: 1.3rem;
     font-weight: bold;
@@ -90,11 +90,11 @@ export default defineComponent({
     left: 50%;
     transform: translateX(-50%);
   }
-  .navbar-header {
+  .NavbarHeader {
     font-size: 1.4rem;
   }
-  .navbar-button {
-    .navbar-button-link {
+  .NavbarButton {
+    .NavbarButtonLink {
       text-decoration: none;
       padding: 5px 30px;
       font-weight: 400;
@@ -111,11 +111,11 @@ export default defineComponent({
     transform: translateX(-50%);
     padding: 1rem;
   }
-  .navbar-header {
+  .NavbarHeader {
     font-size: 1.3rem;
   }
-  .navbar-button {
-    .navbar-button-link {
+  .NavbarButton {
+    .NavbarButtonLink {
       text-decoration: none;
       padding: 5px 30px;
       font-weight: 400;
@@ -126,11 +126,11 @@ export default defineComponent({
 }
 
 @media screen and (max-width: 767px) {
-  .navbar-header {
+  .NavbarHeader {
     font-size: 1.7rem;
   }
-  .navbar-button {
-    .navbar-button-link {
+  .NavbarButton {
+    .NavbarButtonLink {
       text-decoration: none;
       padding: 5px 30px;
       font-weight: 400;
