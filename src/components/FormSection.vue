@@ -34,25 +34,22 @@ export default defineComponent({
         this.category && this.category !== "any"
           ? `category=${this.category}`
           : "";
-          
+
       // Difficulty parameter
       const difficulty =
         this.difficulty && this.difficulty !== "any"
           ? `difficulty=${this.difficulty}`
           : "";
-          
+
       // Type parameter
-      const type = 
-        this.type && this.type !== "any" 
-          ? `type=${this.type}` 
-          : "";
-          
+      const type = this.type && this.type !== "any" ? `type=${this.type}` : "";
+
       // Combine all parameters into one string and filter out empty values
       const options = [amount, category, difficulty, type]
         .filter(Boolean)
         .join("&");
-        
-      // Combine URL and options and send request to Trivia API        
+
+      // Combine URL and options and send request to Trivia API
       fetch(`${URL}${options}`)
         .then((response) => response.json())
         // check if response is successful
@@ -67,9 +64,10 @@ export default defineComponent({
         .catch((err) => {
           this.notfound = true;
           this.searching = false;
+          console.error("error: ", err);
         });
     },
-    
+
     // Randomize form questions
     randomQuiz() {
       // Random numer of questions
@@ -174,7 +172,6 @@ export default defineComponent({
 </template>
 
 <style lang="scss">
-
 // Style form
 .form {
   position: absolute;
@@ -306,7 +303,7 @@ input[type="range"]::-webkit-slider-thumb {
     font-size: 1rem;
     height: 2.5rem;
   }
-  .form-title{
+  .form-title {
     font-size: 1.1rem;
   }
 }
@@ -318,7 +315,7 @@ input[type="range"]::-webkit-slider-thumb {
     font-size: 1rem;
     height: 2.5rem;
   }
-  .form-title{
+  .form-title {
     font-size: 1.1rem;
   }
 }
@@ -330,8 +327,8 @@ input[type="range"]::-webkit-slider-thumb {
     font-size: 1rem;
     height: 2.5rem;
   }
-  
-  .form-title{
+
+  .form-title {
     font-size: 1.2rem;
   }
 }
