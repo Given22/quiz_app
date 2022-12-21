@@ -15,7 +15,7 @@ export default defineComponent({
   data: () => ({
     answers: {} as Answers,
     timer_start: 0,
-    timer_id: 0,
+    timer: setInterval(() => {console.log("timer work")}, 1000),
     time: "00:00:00",
     swiperOptions: {
       spaceBetween: 50,
@@ -56,9 +56,9 @@ export default defineComponent({
     startTimer() {
       this.activeQuestion_start_time = new Date().getTime();
 
-      clearInterval(this.timer_id);
+      clearInterval(this.timer);
       if (this.activeSlide === this.quiz.length - 1) return;
-      this.timer_id = setInterval(() => {
+      this.timer = setInterval(() => {
         this.activeQuestion_time =
           new Date().getTime() - this.activeQuestion_start_time;
       }, 100);
