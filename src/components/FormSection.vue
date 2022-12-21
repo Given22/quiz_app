@@ -77,7 +77,7 @@ export default defineComponent({
 
       // Create array of posible categories
       const arr: string[] = ["any"];
-      for (var i = 9; i <= 32; i++) {
+      for (let i = 9; i <= 32; i++) {
         arr.push(i.toString());
       }
 

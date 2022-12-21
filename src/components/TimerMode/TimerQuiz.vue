@@ -35,7 +35,7 @@ export default defineComponent({
       this.timer_start = new Date().getTime();
 
       setInterval(() => {
-        let time = new Date().getTime() - this.timer_start;
+        const time = new Date().getTime() - this.timer_start;
         this.time = this.convertMsToTime(time);
         this.$store.commit("setTime", { time: this.time });
       }, 1000);
@@ -52,9 +52,9 @@ export default defineComponent({
     },
     // convert milliseconds to good looking time format
     convertMsToTime(milliseconds: number) {
-      let seconds = Math.floor(milliseconds / 1000);
-      let minutes = Math.floor(seconds / 60);
-      let hours = Math.floor(minutes / 60);
+      const seconds = Math.floor(milliseconds / 1000);
+      const minutes = Math.floor(seconds / 60);
+      const hours = Math.floor(minutes / 60);
 
       return `${this.padTo2Digits(hours % 24)}:${this.padTo2Digits(
         minutes % 60

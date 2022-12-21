@@ -13,7 +13,7 @@ export default defineComponent({
     
     // convert milliseconds to good looking time format
     convertMsToTime(milliseconds: number) {
-      let seconds = Math.floor(milliseconds / 1000);
+      const seconds = Math.floor(milliseconds / 1000);
 
       return `${(seconds % 60)}.${(milliseconds % 1000).toString().slice(0, 1)}`;
     },
