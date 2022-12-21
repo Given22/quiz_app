@@ -15,7 +15,7 @@ export default defineComponent({
     category: "any",
     difficulty: "any",
     type: "any",
-    notfound: false,
+    notFound: false,
     searching: false,
   }),
   components: {
@@ -24,7 +24,7 @@ export default defineComponent({
   },
   methods: {
     // Create request to Trivia API
-    getQuestions() {
+    get_questions() {
       const URL = "https://opentdb.com/api.php?";
       //Amount of questions
       const amount = this.amount ? `amount=${this.amount}` : "";
@@ -62,14 +62,14 @@ export default defineComponent({
         })
         .then(() => this.$router.push("/quiz"))
         .catch((err) => {
-          this.notfound = true;
+          this.notFound = true;
           this.searching = false;
           console.error("error: ", err);
         });
     },
 
-    // Randomize form questions
-    randomQuiz() {
+    // Randomize Form questions
+    random_quiz() {
       // Random numer of questions
       this.amount = Math.floor(Math.random() * (25 - 1 + 1)) + 1;
 
@@ -87,12 +87,12 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="form">
-    <label for="amount" class="form-title"
+  <div class="Form">
+    <label for="amount" class="FormTitle"
       >Number of Questions: {{ amount }}</label
     >
     <input
-      class="form-input-range"
+      class="FormInputRange"
       type="range"
       id="amount"
       v-model="amount"
@@ -101,8 +101,8 @@ export default defineComponent({
       step="1"
     />
 
-    <label for="category" class="form-title">Select Category:</label>
-    <select id="category" class="form-input" v-model="category">
+    <label for="category" class="FormTitle">Select Category:</label>
+    <select id="category" class="FormInput" v-model="category">
       <option value="any">Any Category</option>
       <option value="9">General Knowledge</option>
       <option value="10">Entertainment: Books</option>
@@ -130,10 +130,10 @@ export default defineComponent({
       <option value="32">Entertainment: Cartoon &amp; Animations</option>
     </select>
 
-    <label for="difficulty" class="form-title">Select Difficulty:</label>
+    <label for="difficulty" class="FormTitle">Select Difficulty:</label>
     <select
       id="difficulty"
-      class="form-input"
+      class="FormInput"
       name="difficulty"
       v-model="difficulty"
     >
@@ -143,13 +143,13 @@ export default defineComponent({
       <option value="hard">Hard</option>
     </select>
 
-    <label for="type" class="form-title">Select Type:</label>
-    <select id="type" class="form-input" v-model="type">
+    <label for="type" class="FormTitle">Select Type:</label>
+    <select id="type" class="FormInput" v-model="type">
       <option value="any">Any Type</option>
       <option value="multiple">Multiple Choice</option>
       <option value="boolean">True / False</option>
     </select>
-    <button class="form-random" @click="randomQuiz">Random</button>
+    <button class="FormRandom" @click="random_quiz">Random</button>
     <Icon
       v-if="searching"
       icon="eos-icons:loading"
@@ -158,22 +158,22 @@ export default defineComponent({
     />
     <button
       v-if="!searching"
-      class="form-submit"
-      @click="getQuestions(), (searching = true)"
+      class="FormSubmit"
+      @click="get_questions(), (searching = true)"
     >
       Search Quiz
     </button>
     <Alert
-      v-if="notfound"
-      @click="notfound = false"
+      v-if="notFound"
+      @click="notFound = false"
       msg="Quiz not found. Please try other options."
     />
   </div>
 </template>
 
 <style lang="scss">
-// Style form
-.form {
+// Style Form
+.Form {
   position: absolute;
   width: 100%;
   min-height: 100vh;
@@ -186,11 +186,11 @@ export default defineComponent({
   flex-wrap: wrap;
 }
 
-.form-title {
+.FormTitle {
   color: var(--color-yellow);
 }
 
-.form-input {
+.FormInput {
   cursor: pointer;
   height: 2.5rem;
   border: 0px solid;
@@ -204,7 +204,7 @@ export default defineComponent({
   box-shadow: 0px 5px 0px rgba(0, 0, 0, 0.25);
 }
 
-.form-input-range {
+.FormInputRange {
   cursor: pointer;
   height: 2.5rem;
   border: 0px solid;
@@ -216,7 +216,7 @@ export default defineComponent({
   margin-bottom: 2rem;
 }
 
-.form-submit {
+.FormSubmit {
   cursor: pointer;
   z-index: 3;
   height: 2.5rem;
@@ -242,7 +242,7 @@ export default defineComponent({
   }
 }
 
-.form-random {
+.FormRandom {
   color: var(--color-green-light);
   cursor: pointer;
   background-color: transparent;
@@ -297,38 +297,38 @@ input[type="range"]::-webkit-slider-thumb {
 // responsive design
 
 @media screen and (min-width: 1024px) {
-  .form-input,
-  .form-input-range {
+  .FormInput,
+  .FormInputRange {
     width: 25%;
     font-size: 1rem;
     height: 2.5rem;
   }
-  .form-title {
+  .FormTitle {
     font-size: 1.1rem;
   }
 }
 
 @media screen and (max-width: 1023px) and (min-width: 768px) {
-  .form-input,
-  .form-input-range {
+  .FormInput,
+  .FormInputRange {
     width: 40%;
     font-size: 1rem;
     height: 2.5rem;
   }
-  .form-title {
+  .FormTitle {
     font-size: 1.1rem;
   }
 }
 
 @media screen and (max-width: 767px) {
-  .form-input,
-  .form-input-range {
+  .FormInput,
+  .FormInputRange {
     width: 80%;
     font-size: 1rem;
     height: 2.5rem;
   }
 
-  .form-title {
+  .FormTitle {
     font-size: 1.2rem;
   }
 }

@@ -12,7 +12,7 @@ export default defineComponent({
     },
 
     // convert milliseconds to good looking time format
-    convertMsToTime(milliseconds: number) {
+    convert_ms_to_time(milliseconds: number) {
       const seconds = Math.floor(milliseconds / 1000);
 
       return `${seconds % 60}.${(milliseconds % 1000).toString().slice(0, 1)}`;
@@ -25,31 +25,31 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="card-back">
-    <div class="card">
+  <div class="CardBack">
+    <div class="Card">
       <p>{{ decode(question?.question) }}</p>
-      <div class="card-body">
+      <div class="CardBody">
         <p
-          class="card-text"
+          class="CardText"
           v-for="answer in question?.answers"
           v-bind:class="{
-            correct: answer === question?.correct_answer,
-            player_answer: answer === question?.player_answer,
+            Correct: answer === question?.correctAnswer,
+            PlayerAnswer: answer === question?.playerAnswer,
           }"
           v-bind:key="answer"
         >
           {{ decode(answer) }}
         </p>
       </div>
-      <p v-if="question?.playerTime" class="card-time">
-        Your time on this question: {{ convertMsToTime(question.playerTime) }} s
+      <p v-if="question?.playerTime" class="CardTime">
+        Your time on this question: {{ convert_ms_to_time(question.playerTime) }} s
       </p>
     </div>
   </div>
 </template>
 
 <style lang="scss">
-.card-back {
+.CardBack {
   position: fixed;
   background-color: #2646537c;
   backdrop-filter: blur(10px);
@@ -64,7 +64,7 @@ export default defineComponent({
   z-index: 5;
 }
 
-.card {
+.Card {
   position: absolute;
   left: 50%;
   top: 50%;
@@ -81,7 +81,7 @@ export default defineComponent({
   padding-bottom: 0.5rem;
 }
 
-.card-body {
+.CardBody {
   background-color: var(--color-green-dark);
   color: rgb(180, 180, 180);
   border-radius: 6px;
@@ -90,28 +90,28 @@ export default defineComponent({
   font-size: 1.5rem;
 }
 
-.card-time {
+.CardTime {
   margin-top: 0.5rem;
 }
 
-.correct {
+.Correct {
   color: var(--color-green-light);
-  &.player-answer {
+  &.PlayerAnswer {
     color: var(--color-yellow);
   }
 }
 
-.player-answer {
+.PlayerAnswer {
   color: var(--color-orange);
 }
 
 @media screen and (min-width: 1024px) {
-  .card {
+  .Card {
     font-size: 1rem;
     max-width: 80%;
   }
 
-  .card-body {
+  .CardBody {
     border-radius: 6px;
     padding: 1rem;
     font-size: 1rem;
@@ -120,13 +120,13 @@ export default defineComponent({
 }
 
 @media screen and (max-width: 1023px) and (min-width: 768px) {
-  .card {
+  .Card {
     max-width: 90%;
     max-height: 80%;
     font-size: 1rem;
   }
 
-  .card-body {
+  .CardBody {
     border-radius: 6px;
     padding: 1rem;
     font-size: 1rem;
@@ -135,12 +135,12 @@ export default defineComponent({
 }
 
 @media screen and (max-width: 767px) {
-  .card {
+  .Card {
     font-size: 1rem;
     width: 85%;
   }
 
-  .card-body {
+  .CardBody {
     border-radius: 6px;
     font-size: 1rem;
     padding: 1rem;

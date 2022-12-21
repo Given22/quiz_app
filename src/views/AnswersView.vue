@@ -11,7 +11,7 @@ import type { Quiz, Answers } from "@/types/types";
 
 export default defineComponent({
   data: () => ({
-    correct_answers: 0,
+    correctAnswers: 0,
     show: false,
     activeCard: {} as Quiz,
     activeAnswer: "",
@@ -29,13 +29,11 @@ export default defineComponent({
       return decode(str);
     },
     
-    
-    
     // check if answer is correct
     check_answer(question: string) {
       const que = this.quiz.find((q) => q.question === question);
       if(!this.answers[question]) return;
-      if (que && que.correct_answer === this.answers[question]) return true; 
+      if (que && que.correctAnswer === this.answers[question]) return true; 
       return false;
     },
     
@@ -43,13 +41,13 @@ export default defineComponent({
     check_answers() {
       this.quiz.forEach((question: Quiz) => {
         if (this.check_answer(question.question)) {
-          this.correct_answers++;
+          this.correctAnswers++;
         }
       });
       
       // calculate percentage of correct answers
       this.percents = Math.floor(
-        (this.correct_answers / this.quiz.length) * 100
+        (this.correctAnswers / this.quiz.length) * 100
       );
       
       // set trophy Color and message
@@ -66,7 +64,7 @@ export default defineComponent({
     },
     
     // show card with question and answers
-    showCard(id: number) {
+    show_card(id: number) {
       this.quiz[id].playerAnswer = this.answers[this.quiz[id].question];
 
       this.show = true;
@@ -74,7 +72,7 @@ export default defineComponent({
     },
     
     // hide card with question and answers
-    hideCard() {
+    hide_card() {
       this.show = false;
     },
   },
@@ -103,30 +101,30 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="answers">
-    <div class="answers-head">
-      <Icon icon="fluent:trophy-48-filled" height="100" class="trophy" />
+  <div class="Answers">
+    <div class="AnswersHead">
+      <Icon icon="fluent:trophy-48-filled" height="100" class="Trophy" />
       <p>{{ endMsg }}</p>
       <br />
       <p>Your score is: {{ percents }}%</p>
       <p>Your time: {{ time }}</p>
     </div>
-    <section class="answers-questions">
+    <section class="AnswersQuestions">
       <div
         v-for="question in quiz"
         :key="question.question"
-        class="answers-card"
+        class="AnswersCard"
         v-bind:class="{
-          correct: check_answer(question.question),
-          incorrect: !check_answer(question.question),
+          Correct: check_answer(question.question),
+          Incorrect: !check_answer(question.question),
         }"
       >
         <p>#{{ quiz.indexOf(question) + 1 }}</p>
         <div
-          @click="showCard(quiz.indexOf(question))"
+          @click="show_card(quiz.indexOf(question))"
           v-bind:class="{
-            answers_card_correct: check_answer(question.question),
-            answers_card_incorrect: !check_answer(question.question),
+            AnswersCardCorrect: check_answer(question.question),
+            AnswersCardIncorrect: !check_answer(question.question),
           }"
         >
           <Icon
@@ -134,24 +132,24 @@ export default defineComponent({
             icon="bi:check"
             color="white"
             height="100"
-            class="answer-icon"
+            class="AnswerIcon"
           />
           <Icon
             v-if="!check_answer(question.question)"
             icon="bi:x"
             color="black"
             height="100"
-            class="answer-icon"
+            class="AnswerIcon"
           />
         </div>
       </div>
     </section>
-    <Card v-if="show" :question="activeCard" @click="hideCard" />
+    <Card v-if="show" :question="activeCard" @click="hide_card" />
   </div>
 </template>
 
 <style lang="scss">
-.answers {
+.Answers {
   min-height: 50vh;
   color: rgb(207, 207, 207);
   font-size: 1.5rem;
@@ -165,7 +163,7 @@ export default defineComponent({
   padding-top: 20vh;
 }
 
-.answers-questions {
+.AnswersQuestions {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -175,7 +173,7 @@ export default defineComponent({
   margin-bottom: 10vh;
 }
 
-.answers-head {
+.AnswersHead {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -185,7 +183,7 @@ export default defineComponent({
   }
 }
 
-.answers-card {
+.AnswersCard {
   display: flex;
   font-size: 1rem;
   gap: 1rem;
@@ -193,16 +191,16 @@ export default defineComponent({
   justify-content: center;
   align-items: center;
 
-  &.correct {
+  &.Correct {
     color: rgb(207, 207, 207);
   }
 
-  &.incorrect {
+  &.Incorrect {
     color: var(--color-green-darker);
     // color: #fff;
   }
 
-  .answers-card-incorrect {
+  .AnswersCardIncorrect {
     background-color: var(--color-orange);
     box-shadow: 0px 5px 0px rgba(233, 196, 106, 0.25),
       4px 10px 3px rgba(0, 0, 0, 0.25);
@@ -213,7 +211,7 @@ export default defineComponent({
       transform: translateY(5px);
     }
   }
-  .answers-card-correct {
+  .AnswersCardCorrect {
     background-color: var(--color-green-light);
     box-shadow: 0px 5px 0px rgba(83, 182, 132, 0.25),
       4px 10px 3px rgba(0, 0, 0, 0.25);
@@ -225,8 +223,8 @@ export default defineComponent({
     }
   }
 
-  .answers-card-incorrect,
-  .answers-card-correct {
+  .AnswersCardIncorrect,
+  .AnswersCardCorrect {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -238,7 +236,7 @@ export default defineComponent({
   }
 }
 
-.answer-icon {
+.AnswerIcon {
   height: 4rem;
   width: 6rem;
 }
@@ -246,17 +244,17 @@ export default defineComponent({
 // responsive design
 
 @media screen and (min-width: 1024px) {
-  .answers {
+  .Answers {
     width: 70%;
   }
-  .answer-icon {
+  .AnswerIcon {
     height: 2rem;
     width: 5vw;
   }
-  .answers-questions {
+  .AnswersQuestions {
     max-width: 90%;
   }
-  .answers-head {
+  .AnswersHead {
     font-size: 1.2rem;
     svg {
       height: 5rem;
@@ -265,17 +263,17 @@ export default defineComponent({
 }
 
 @media screen and (max-width: 1023px) and (min-width: 768px) {
-  .answers {
+  .Answers {
     width: 100%;
   }
-  .answer-icon {
+  .AnswerIcon {
     height: 2rem;
     width: 8vw;
   }
-  .answers-questions {
+  .AnswersQuestions {
     max-width: 60%;
   }
-  .answers-head {
+  .AnswersHead {
     font-size: 1.2rem;
     svg {
       height: 5rem;
@@ -284,17 +282,17 @@ export default defineComponent({
 }
 
 @media screen and (max-width: 767px) {
-  .answers {
+  .Answers {
     width: 100%;
   }
-  .answer-icon {
+  .AnswerIcon {
     height: 2rem;
     width: 17vw;
   }
-  .answers-questions {
+  .AnswersQuestions {
     max-width: 90%;
   }
-  .answers-head {
+  .AnswersHead {
     font-size: 1.2rem;
     svg {
       height: 5rem;

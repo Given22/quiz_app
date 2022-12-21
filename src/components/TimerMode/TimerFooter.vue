@@ -21,16 +21,16 @@ export default {
 </script>
 
 <template>
-  <div class="footer" :style="cssVars">
-    <span class="progress-bar" :style="cssVars"></span>
-    <div class="footer-body">
-      <p class="time">{{ time }}</p>
+  <div class="Footer" :style="cssVars">
+    <span class="ProgressBar" :style="cssVars"></span>
+    <div class="FooterBody">
+      <p class="Time">{{ time }}</p>
     </div>
   </div>
 </template>
 
 <style lang="scss">
-.footer {
+.Footer {
   position: fixed;
   bottom: 0;
   width: 100%;
@@ -47,7 +47,7 @@ export default {
     transition: all 0.1s linear;
     background-color: var(--color-green-light);
   }
-  .progress-bar {
+  .ProgressBar {
     position: absolute;
     top: -0.3rem;
     left: 0;
@@ -56,7 +56,7 @@ export default {
     height: 0.3rem;
     background-color: var(--color-yellow);
   }
-  .footer-body {
+  .FooterBody {
     display: flex;
     width: 100%;
     height: 100%;
@@ -64,7 +64,7 @@ export default {
     align-items: center;
     padding: 0 1rem;
     z-index: 3;
-    .time {
+    .Time {
       font-size: 1.1rem;
       font-weight: bold;
       color: var(--color-green-dark);

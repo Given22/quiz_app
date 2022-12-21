@@ -12,19 +12,19 @@ import type { Quiz } from "@/types/types";
 export default defineComponent({
   data: () => ({
     started: false,
-    timer_mode: false,
-    timer_info: false,
-    normal_mode: false,
+    timerMode: false,
+    timerInfo: false,
+    normalMode: false,
     TIMERMODE_QUESTION_LENGTH: 10000,
   }),
   methods: {
     // start quiz and timer
-    startNormalMode() {
-      this.normal_mode = true;
+    start_normal_mode() {
+      this.normalMode = true;
       this.started = true;
     },
-    startTimerMode() {
-      this.timer_mode = true;
+    start_timer_mode() {
+      this.timerMode = true;
       this.started = true;
     },
   },
@@ -48,61 +48,57 @@ export default defineComponent({
 
 <template>
   <Suspense>
-    <template #default>
-      <div class="quiz">
-        <div class="start-page" v-if="!started">
-          <button class="quiz-button" @click="startNormalMode">
-            Normal Mode
-          </button>
-          <button class="quiz-button timer-mode" @click="startTimerMode()">
-            Timer mode
-          </button>
-          <p class="setting-button" @click="timer_info = !timer_info">
-            Timer mode settings
-          </p>
-          <div class="timer-info" v-if="timer_info">
-            <input
-              type="radio"
-              id="5"
-              value="5000"
-              v-model="TIMERMODE_QUESTION_LENGTH"
-            />
-            <label class="timer-setlabel" for="5">5s</label>
-            <input
-              type="radio"
-              id="10"
-              value="10000"
-              v-model="TIMERMODE_QUESTION_LENGTH"
-            />
-            <label class="timer-setlabel" for="10">10s</label>
-            <input
-              type="radio"
-              id="20"
-              value="20000"
-              v-model="TIMERMODE_QUESTION_LENGTH"
-            />
-            <label class="timer-setlabel" for="20">20s</label>
-            <input
-              type="radio"
-              id="30"
-              value="30000"
-              v-model="TIMERMODE_QUESTION_LENGTH"
-            />
-            <label class="timer-setlabel" for="30">30s</label>
-          </div>
+    <div class="Quiz">
+      <div class="StartPage" v-if="!started">
+        <button class="QuizButton" @click="start_normal_mode">Normal Mode</button>
+        <button class="QuizButton TimerMode" @click="start_timer_mode()">
+          Timer mode
+        </button>
+        <p class="SettingButton" @click="timerInfo = !timerInfo">
+          Timer mode settings
+        </p>
+        <div class="TimerInfo" v-if="timerInfo">
+          <input
+            type="radio"
+            id="5"
+            value="5000"
+            v-model="TIMERMODE_QUESTION_LENGTH"
+          />
+          <label class="TimerSetlabel" for="5">5s</label>
+          <input
+            type="radio"
+            id="10"
+            value="10000"
+            v-model="TIMERMODE_QUESTION_LENGTH"
+          />
+          <label class="TimerSetlabel" for="10">10s</label>
+          <input
+            type="radio"
+            id="20"
+            value="20000"
+            v-model="TIMERMODE_QUESTION_LENGTH"
+          />
+          <label class="TimerSetlabel" for="20">20s</label>
+          <input
+            type="radio"
+            id="30"
+            value="30000"
+            v-model="TIMERMODE_QUESTION_LENGTH"
+          />
+          <label class="TimerSetlabel" for="30">30s</label>
         </div>
-        <NormalQuiz v-if="normal_mode" />
-        <TimerQuiz
-          v-if="timer_mode"
-          :TIMERMODE_QUESTION_LENGTH="TIMERMODE_QUESTION_LENGTH"
-        />
       </div>
-    </template>
+      <NormalQuiz v-if="normalMode" />
+      <TimerQuiz
+        v-if="timerMode"
+        :TIMERMODE_QUESTION_LENGTH="TIMERMODE_QUESTION_LENGTH"
+      />
+    </div>
   </Suspense>
 </template>
 
 <style lang="scss" scoped>
-.quiz {
+.Quiz {
   display: flex;
   width: 100vw;
   height: 100vh;
@@ -111,7 +107,7 @@ export default defineComponent({
   justify-content: center;
 }
 
-.setting-button {
+.SettingButton {
   font-size: 1rem;
   color: var(--color-green-light);
   cursor: pointer;
@@ -121,12 +117,12 @@ export default defineComponent({
   }
 }
 
-.timer-info {
+.TimerInfo {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
   gap: 1rem;
-  .timer-setlabel {
+  .TimerSetlabel {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -147,7 +143,7 @@ export default defineComponent({
 
 // start page
 
-.start-page {
+.StartPage {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -164,7 +160,7 @@ export default defineComponent({
 input[type="radio"]:checked + .timer-setlabel {
   opacity: 1;
   &:hover {
-  color: var(--color-green-light);
+    color: var(--color-green-light);
   }
 }
 
@@ -183,17 +179,17 @@ input[type="radio"] {
 }
 
 @media screen and (min-width: 1024px) {
-  .timer-info {
+  .TimerInfo {
     width: 40%;
-    .timer-setlabel {
+    .TimerSetlabel {
       min-width: 15%;
     }
   }
-  .quiz-button {
+  .QuizButton {
     height: 3rem;
     font-size: 1.5rem;
     width: 30%;
-    &.timer-mode {
+    &.TimerMode {
       min-height: 2rem;
       width: 20%;
     }
@@ -201,17 +197,17 @@ input[type="radio"] {
 }
 
 @media screen and (max-width: 1023px) and (min-width: 768px) {
-  .timer-info {
+  .TimerInfo {
     width: 40%;
-    .timer-setlabel {
+    .TimerSetlabel {
       min-width: 40%;
     }
   }
-  .quiz-button {
+  .QuizButton {
     height: 3rem;
     font-size: 1.5rem;
     width: 40%;
-    &.timer-mode {
+    &.TimerMode {
       min-height: 2rem;
       width: 25%;
     }
@@ -219,17 +215,17 @@ input[type="radio"] {
 }
 
 @media screen and (max-width: 767px) {
-  .timer-info {
+  .TimerInfo {
     width: 70%;
-    .timer-setlabel {
+    .TimerSetlabel {
       min-width: 45%;
     }
   }
-  .quiz-button {
+  .QuizButton {
     height: 3rem;
     font-size: 1.5rem;
     min-width: 70%;
-    &.timer-mode {
+    &.TimerMode {
       min-height: 2rem;
     }
   }

@@ -14,10 +14,10 @@ import type { Quiz, Answers } from "@/types/types";
 export default defineComponent({
   data: () => ({
     answers: {} as Answers,
-    timer_start: 0,
-    activeQuestion_time: 0,
-    activeQuestion_start_time: 0,
-    timer_id: setInterval(() => {console.log("timer work")}, 1000),
+    timerStart: 0,
+    activeQuestionTime: 0,
+    activeQuestionStartTime: 0,
+    timerId: setInterval(() => {console.log("timer work")}, 1000),
     time: "00:00:00",
     activeSlide: 0,
   }),
@@ -31,36 +31,36 @@ export default defineComponent({
     },
     // start quiz and timer
     start() {
-      this.startTimer();
-      this.timer_start = new Date().getTime();
+      this.start_timer();
+      this.timerStart = new Date().getTime();
 
       setInterval(() => {
-        const time = new Date().getTime() - this.timer_start;
-        this.time = this.convertMsToTime(time);
+        const time = new Date().getTime() - this.timerStart;
+        this.time = this.convert_ms_to_time(time);
         this.$store.commit("setTime", { time: this.time });
       }, 1000);
     },
     // set answers to store
-    setAnswers() {
+    set_answers() {
       this.$store.commit("setAnswers", { answers: this.answers });
     },
     // finish quiz and redirect to results
     finish() {
-      this.setAnswers();
-      clearInterval(this.timer_id);
+      this.set_answers();
+      clearInterval(this.timerId);
       this.$router.push("/answers");
     },
     // convert milliseconds to good looking time format
-    convertMsToTime(milliseconds: number) {
+    convert_ms_to_time(milliseconds: number) {
       const seconds = Math.floor(milliseconds / 1000);
       const minutes = Math.floor(seconds / 60);
       const hours = Math.floor(minutes / 60);
 
-      return `${this.padTo2Digits(hours % 24)}:${this.padTo2Digits(
+      return `${this.pad_to_2_digits(hours % 24)}:${this.pad_to_2_digits(
         minutes % 60
-      )}:${this.padTo2Digits(seconds % 60)}`;
+      )}:${this.pad_to_2_digits(seconds % 60)}`;
     },
-    padTo2Digits(num: number) {
+    pad_to_2_digits(num: number) {
       return num.toString().padStart(2, "0");
     },
 
@@ -73,29 +73,29 @@ export default defineComponent({
       if (swiper) swiper.slideNext();
     },
 
-    startTimer() {
-      this.activeQuestion_start_time = new Date().getTime();
+    start_timer() {
+      this.activeQuestionStartTime = new Date().getTime();
 
-      clearInterval(this.timer_id);
+      clearInterval(this.timerId);
       if (this.activeSlide === this.quiz.length - 1) return;
-      this.timer_id = setInterval(() => {
-        this.activeQuestion_time =
-          new Date().getTime() - this.activeQuestion_start_time;
+      this.timerId = setInterval(() => {
+        this.activeQuestionTime =
+          new Date().getTime() - this.activeQuestionStartTime;
         if (this.TIMERMODE_QUESTION_LENGTH) {
-          if (this.activeQuestion_time >= this.TIMERMODE_QUESTION_LENGTH)
+          if (this.activeQuestionTime >= this.TIMERMODE_QUESTION_LENGTH)
             this.next();
         }
       }, 100);
     },
 
     // update active slide index
-    updateSlideIndex() {
+    update_slide_index() {
       this.$store.commit("setQuestionTime", {
         questionNumber: this.activeSlide,
-        time: this.activeQuestion_time,
+        time: this.activeQuestionTime,
       });
 
-      this.startTimer();
+      this.start_timer();
       // @ts-ignore
       const swiper = document.querySelector(".swiper")?.swiper;
       this.activeSlide = swiper.activeIndex;
@@ -128,36 +128,36 @@ export default defineComponent({
 
 <template>
   <Swiper
-    class="swiper"
+    class="Swiper"
     ref="swiperRef"
     :centeredSlides="true"
     :slidesPerView="1"
     :spaceBetween="60"
     :threshold="30"
     :allowSlidePrev="false"
-    @slideChange="updateSlideIndex"
+    @slideChange="update_slide_index"
   >
     <swiper-slide v-for="(item, index) in quiz" v-bind:key="index">
-      <div class="quiz-head">
-        <p class="quiz-question">{{ decode(item?.question) }}</p>
-        <div class="quiz-info">
+      <div class="QuizHead">
+        <p class="QuizQuestion">{{ decode(item?.question) }}</p>
+        <div class="QuizInfo">
           <p>{{ decode(item.category) }}</p>
           <p>, {{ decode(item.difficulty) }}</p>
         </div>
       </div>
-      <div class="quiz-answers" v-bind:class="item.type">
-        <div v-for="ask in item?.answers" class="quiz-answer" v-bind:key="ask">
+      <div class="QuizAnswers" v-bind:class="item.type">
+        <div v-for="ask in item?.answers" class="QuizAnswer" v-bind:key="ask">
           <input
             type="radio"
-            v-on:change="setAnswers"
+            v-on:change="set_answers"
             v-bind:id="ask + index"
             v-bind:value="ask"
             v-bind:name="item.question"
             v-model="answers[item.question]"
           />
           <label
-            class="quiz-answer-label"
-            :class="{ false: ask === 'False', true: ask === 'True' }"
+            class="QuizAnswerLabel"
+            :class="{ False: ask === 'False', True: ask === 'True' }"
             v-bind:for="ask + index"
             v-bind:name="item?.question"
             >{{ decode(ask) }}</label
@@ -166,21 +166,21 @@ export default defineComponent({
       </div>
     </swiper-slide>
     <swiper-slide>
-      <div class="final-slide"></div>
+      <div class="FinalSlide"></div>
     </swiper-slide>
   </Swiper>
-  <div class="swiper-buttons">
+  <div class="SwiperButtons">
     <div
-      class="swiper-button swiper-button-next"
-      :class="{ hide: activeSlide >= quiz.length }"
+      class="SwiperButton SwiperButtonNext"
+      :class="{ Hide: activeSlide >= quiz.length }"
       @click="next()"
     >
       next
     </div>
   </div>
   <Icon
-    class="swipe-icon swipe-icon-left"
-    :class="{ hide: activeSlide === quiz.length }"
+    class="SwipeIcon SwipeIconLeft"
+    :class="{ Hide: activeSlide === quiz.length }"
     icon="ic:outline-swipe-left"
     color="var(--color-green-light)"
     height="50"
@@ -189,7 +189,7 @@ export default defineComponent({
     :time="time"
     :answers="Object.keys(answers).length"
     :quiz_lenght="TIMERMODE_QUESTION_LENGTH"
-    v-model:question_time="activeQuestion_time"
+    v-model:question_time="activeQuestionTime"
     :questions="quiz.length"
   />
 </template>
@@ -197,7 +197,7 @@ export default defineComponent({
 <style lang="scss">
 // Swiper
 
-.swiper {
+.Swiper {
   width: 80%;
   min-height: 60%;
   // margin: 7rem 0;
@@ -207,12 +207,12 @@ export default defineComponent({
   justify-content: center;
 }
 
-.swiper-wrapper {
+.SwiperWrapper {
   align-items: center;
   height: 100%;
 }
 
-.swiper-slide {
+.SwiperSlide {
   min-height: 60vh;
   display: flex;
   flex-direction: column;
@@ -224,7 +224,7 @@ export default defineComponent({
 
 // Swipe icons
 
-.swipe-icon {
+.SwipeIcon {
   position: fixed;
   bottom: 3.5rem;
   opacity: 0.4;
@@ -232,8 +232,8 @@ export default defineComponent({
   height: 5vh;
 }
 
-.swipe-icon-center,
-.swipe-icon-left {
+.SwipeIconCenter,
+.SwipeIconLeft {
   transition: all 0.3s ease-in-out;
   transform-origin: bottom;
   &:hover,
@@ -242,7 +242,7 @@ export default defineComponent({
   }
 }
 
-.swipe-icon-right {
+.SwipeIconRight {
   transition: all 0.3s ease-in-out;
   transform-origin: bottom;
   &:hover,
@@ -285,7 +285,7 @@ export default defineComponent({
 
 // Swiper custom buttons
 
-.swiper-buttons {
+.SwiperButtons {
   position: fixed;
   width: 80%;
   display: flex;
@@ -295,7 +295,7 @@ export default defineComponent({
   z-index: 3;
 }
 
-.swiper-button {
+.SwiperButton {
   color: var(--color-green-light);
   cursor: pointer;
   &:hover {
@@ -306,17 +306,17 @@ export default defineComponent({
   }
 }
 
-.swiper-button-next {
+.SwiperButtonNext {
   margin-left: auto;
 }
 
-.swiper-button-prev {
+.SwiperButtonPrev {
   margin-right: auto;
 }
 
 // One question
 
-.quiz-button {
+.QuizButton {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -340,14 +340,14 @@ export default defineComponent({
   }
 }
 
-.quiz-question {
+.QuizQuestion {
   font-size: 1.5rem;
   color: #fff;
   text-align: center;
   letter-spacing: 0.08em;
 }
 
-.quiz-answers {
+.QuizAnswers {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -356,7 +356,7 @@ export default defineComponent({
   align-items: center;
 }
 
-.quiz-head {
+.QuizHead {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -364,7 +364,7 @@ export default defineComponent({
   &:active {
     cursor: grabbing;
   }
-  .quiz-info {
+  .QuizInfo {
     opacity: 0.5;
     color: var(--color-green-light);
     display: flex;
@@ -375,7 +375,7 @@ export default defineComponent({
   }
 }
 
-.quiz-answer {
+.QuizAnswer {
   border: 0px solid;
   border-radius: 10px;
   font-size: 1.5rem;
@@ -384,7 +384,7 @@ export default defineComponent({
   align-items: center;
   justify-content: center;
 
-  .quiz-answer-label {
+  .QuizAnswerLabel {
     display: block;
     width: 90%;
     cursor: pointer;
@@ -394,12 +394,12 @@ export default defineComponent({
     background-color: var(--color-green-light);
     letter-spacing: 0.1em;
     color: var(--color-green-dark);
-    &.false {
+    &.False {
       background-color: var(--color-orange);
       color: var(--color-green-dark);
       text-align: center;
     }
-    &.true {
+    &.True {
       text-align: center;
       background-color: var(--color-green-light);
       color: var(--color-green-dark);
@@ -407,12 +407,12 @@ export default defineComponent({
   }
 }
 
-input[type="radio"]:checked + .quiz-answer-label {
+input[type="radio"]:checked + .QuizAnswerLabel {
   color: #fff;
   opacity: 1;
 }
 
-input[type="radio"]:not(:checked) + .quiz-answer-label {
+input[type="radio"]:not(:checked) + .QuizAnswerLabel {
   opacity: 0.5;
   &:hover {
     opacity: 1;
@@ -425,7 +425,7 @@ input[type="radio"] {
 
 // Slide with finish button
 
-.final-slide {
+.FinalSlide {
   min-height: 60vh;
   display: flex;
   align-items: center;
@@ -435,30 +435,30 @@ input[type="radio"] {
 // responsive design
 
 @media screen and (min-width: 1024px) {
-  .quiz-question {
+  .QuizQuestion {
     font-size: 1.1rem;
   }
 
-  .timer-mode {
+  .TimerMode {
     height: 2rem;
     width: 70%;
   }
-  .quiz-answer {
+  .QuizAnswer {
     font-size: 1.2rem;
     width: 100%;
-    .quiz-answer-label {
+    .QuizAnswerLabel {
       width: 60%;
       padding: 0.4rem 1rem;
       letter-spacing: 0.1em;
     }
   }
-  .swiper-buttons {
+  .SwiperButtons {
     width: 80%;
   }
-  .swiper-button {
+  .SwiperButton {
     font-size: 1.7rem;
   }
-  .quiz-button {
+  .QuizButton {
     height: 3rem;
     font-size: 1.5rem;
     width: 30%;
@@ -466,33 +466,33 @@ input[type="radio"] {
 }
 
 @media screen and (max-width: 1023px) and (min-width: 768px) {
-  .quiz-question {
+  .QuizQuestion {
     font-size: 1.1rem;
   }
-  .quiz-answer {
+  .QuizAnswer {
     font-size: 1rem;
     width: 100%;
-    .quiz-answer-label {
+    .QuizAnswerLabel {
       width: 80%;
       padding: 0.2rem 0.5rem;
       letter-spacing: 0.1em;
     }
   }
-  .timer-mode {
+  .TimerMode {
     height: 2rem;
     width: 30%;
   }
-  .swiper-buttons {
+  .SwiperButtons {
     width: 90%;
   }
-  .swiper-button {
+  .SwiperButton {
     font-size: 1.5rem;
   }
-  .quiz-button {
+  .QuizButton {
     height: 3rem;
     font-size: 1.5rem;
     width: 40%;
-    &.timer-mode {
+    &.TimerMode {
       height: 2rem;
       width: 25%;
     }
@@ -500,26 +500,26 @@ input[type="radio"] {
 }
 
 @media screen and (max-width: 767px) {
-  .quiz-question {
+  .QuizQuestion {
     font-size: 1rem;
   }
-  .quiz-answer {
+  .QuizAnswer {
     font-size: 1rem;
     width: 100%;
-    .quiz-answer-label {
+    .QuizAnswerLabel {
       width: 100%;
       padding: 0.5rem 1rem;
       letter-spacing: 0.1em;
     }
   }
-  .swiper-buttons {
+  .SwiperButtons {
     width: 100%;
   }
-  .swiper-button {
+  .SwiperButton {
     font-size: 1.3rem;
   }
 
-  .quiz-button {
+  .QuizButton {
     height: 3rem;
     font-size: 1.5rem;
     width: 40%;

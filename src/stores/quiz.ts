@@ -15,7 +15,7 @@ export const store = createStore({
     setQuiz(state, prop) {
       prop.data.results.map((quiz: Quiz) => {
         quiz.answers = arrayShuffle(
-          quiz?.incorrect_answers.concat(quiz.correct_answer)
+          quiz?.incorrectAnswers.concat(quiz.correctAnswer)
         );
       });
       state.quiz = prop.data;

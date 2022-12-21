@@ -2,8 +2,8 @@ export interface Quiz {
   answers: string[];
   category: string;
   difficulty: string;
-  correct_answer: string;
-  incorrect_answers: string[];
+  correctAnswer: string;
+  incorrectAnswers: string[];
   question: string;
   type: string;
   playerAnswer?: string;
