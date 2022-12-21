@@ -70,7 +70,7 @@ export default defineComponent({
     next() {
       // @ts-ignore
       const swiper = document.querySelector(".swiper")?.swiper;
-      if(swiper) swiper.slideNext();
+      if (swiper) swiper.slideNext();
     },
 
     startTimer() {
@@ -81,9 +81,9 @@ export default defineComponent({
       this.timer_id = setInterval(() => {
         this.activeQuestion_time =
           new Date().getTime() - this.activeQuestion_start_time;
-        if(this.TIMERMODE_QUESTION_LENGTH){
+        if (this.TIMERMODE_QUESTION_LENGTH) {
           if (this.activeQuestion_time >= this.TIMERMODE_QUESTION_LENGTH)
-          this.next();
+            this.next();
         }
       }, 100);
     },
@@ -99,7 +99,7 @@ export default defineComponent({
       // @ts-ignore
       const swiper = document.querySelector(".swiper")?.swiper;
       this.activeSlide = swiper.activeIndex;
-      if(this.activeSlide === this.quiz.length) this.finish();
+      if (this.activeSlide === this.quiz.length) this.finish();
     },
   },
   components: {
@@ -137,7 +137,7 @@ export default defineComponent({
     :allowSlidePrev="false"
     @slideChange="updateSlideIndex"
   >
-    <swiper-slide v-for="(item, index) in quiz">
+    <swiper-slide v-for="(item, index) in quiz" v-bind:key="index">
       <div class="quiz-head">
         <p class="quiz-question">{{ decode(item?.question) }}</p>
         <div class="quiz-info">
@@ -146,7 +146,7 @@ export default defineComponent({
         </div>
       </div>
       <div class="quiz-answers" v-bind:class="item.type">
-        <div v-for="ask in item?.answers" class="quiz-answer">
+        <div v-for="ask in item?.answers" class="quiz-answer" v-bind:key="ask">
           <input
             type="radio"
             v-on:change="setAnswers"
@@ -166,8 +166,7 @@ export default defineComponent({
       </div>
     </swiper-slide>
     <swiper-slide>
-      <div class="final-slide">
-      </div>
+      <div class="final-slide"></div>
     </swiper-slide>
   </Swiper>
   <div class="swiper-buttons">

@@ -10,12 +10,12 @@ export default defineComponent({
     decode(str: string) {
       return decode(str);
     },
-    
+
     // convert milliseconds to good looking time format
     convertMsToTime(milliseconds: number) {
       const seconds = Math.floor(milliseconds / 1000);
 
-      return `${(seconds % 60)}.${(milliseconds % 1000).toString().slice(0, 1)}`;
+      return `${seconds % 60}.${(milliseconds % 1000).toString().slice(0, 1)}`;
     },
   },
   props: {
@@ -36,12 +36,13 @@ export default defineComponent({
             correct: answer === question?.correct_answer,
             player_answer: answer === question?.player_answer,
           }"
+          v-bind:key="answer"
         >
           {{ decode(answer) }}
         </p>
       </div>
       <p v-if="question?.playerTime" class="card-time">
-        Your time on this question: {{ convertMsToTime(question.playerTime)}} s
+        Your time on this question: {{ convertMsToTime(question.playerTime) }} s
       </p>
     </div>
   </div>
@@ -89,7 +90,7 @@ export default defineComponent({
   font-size: 1.5rem;
 }
 
-.card-time{
+.card-time {
   margin-top: 0.5rem;
 }
 

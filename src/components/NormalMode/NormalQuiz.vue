@@ -139,7 +139,7 @@ export default defineComponent({
     :threshold="30"
     @slideChange="updateSlideIndex"
   >
-    <swiper-slide v-for="(item, index) in quiz">
+    <swiper-slide v-for="(item, index) in quiz" v-bind:key="index">
       <div class="quiz-head">
         <p class="quiz-question">{{ decode(item?.question) }}</p>
         <div class="quiz-info">
@@ -148,7 +148,7 @@ export default defineComponent({
         </div>
       </div>
       <div class="quiz-answers" v-bind:class="item.type">
-        <div v-for="ask in item?.answers" class="quiz-answer">
+        <div v-for="ask in item?.answers" class="quiz-answer" v-bind:key="ask">
           <input
             type="radio"
             v-on:change="setAnswers"
