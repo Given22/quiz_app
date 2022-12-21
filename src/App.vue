@@ -1,5 +1,5 @@
 <script lang="ts">
-import Loading from "@/components/Loading.vue";
+import Loading from "@/components/LoadingScreen.vue";
 import { defineComponent } from "vue";
 
 export default defineComponent({

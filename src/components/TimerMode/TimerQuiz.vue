@@ -190,7 +190,7 @@ export default defineComponent({
     :time="time"
     :answers="Object.keys(answers).length"
     :quiz_lenght="TIMERMODE_QUESTION_LENGTH"
-    :question_time.sync="activeQuestion_time"
+    v-model:question_time="activeQuestion_time"
     :questions="quiz.length"
   />
 </template>
