@@ -68,10 +68,10 @@ export default defineComponent({
       this.timer = setInterval(() => {
         this.activeQuestionTime =
           new Date().getTime() - this.activeQuestionStartTime;
-        if (this.mode === "timer" && this.TIMERMODE_QUESTION_LENGTH) {
-          if (this.activeQuestionTime >= this.TIMERMODE_QUESTION_LENGTH)
-            this.next();
-        }
+        // if (this.mode === "timer" && this.TIMERMODE_QUESTION_LENGTH) {
+        //   if (this.activeQuestionTime >= this.TIMERMODE_QUESTION_LENGTH)
+        //     this.next();
+        // }
       }, 100);
     },
     // Swiper navigation methods
@@ -122,10 +122,12 @@ export default defineComponent({
     if (quiz.length === 0) window.location.href = "/";
 
     const mode = store.getters.mode;
+    const allowSlidePrev = mode == "timer" ? false : true
 
     return {
       quiz,
       mode,
+      allowSlidePrev,
     };
   },
 });
@@ -139,10 +141,10 @@ export default defineComponent({
     :slidesPerView="1"
     :spaceBetween="60"
     :threshold="30"
-    :allowSlidePrev="false"
+    :allowSlidePrev=allowSlidePrev
     @slideChange="update_slide_index"
   >
-    <swiper-slide v-for="(item, index) in quiz" v-bind:key="index">
+    <swiper-slide v-for="(item, index) in quiz" v-bind:key="index" class="SwiperSlide">
       <div class="QuizHead">
         <p class="QuizQuestion">{{ decode(item?.question) }}</p>
         <div class="QuizInfo">
@@ -170,13 +172,21 @@ export default defineComponent({
         </div>
       </div>
     </swiper-slide>
-    <swiper-slide>
+    <swiper-slide class="SwiperSlide">
       <div class="FinalSlide" v-if="mode === 'normal'">
         <button class="QuizButton" @click="finish">Finish</button>
       </div>
     </swiper-slide>
   </Swiper>
   <div class="SwiperButtons">
+    <div
+      class="SwiperButton SwiperButtonPrev"
+      :class="{ Hide: activeSlide === 0 }"
+      @click="prev()"
+      v-if="mode === 'normal'"
+    >
+      prev
+    </div>
     <div
       class="SwiperButton SwiperButtonNext"
       :class="{ Hide: activeSlide >= quiz.length }"
@@ -186,9 +196,33 @@ export default defineComponent({
     </div>
   </div>
   <Icon
+    class="SwipeIcon SwipeIconCenter"
+    :class="{ Hide: activeSlide === 0 || activeSlide === quiz.length }"
+    icon="ic:outline-swipe"
+    color="var(--color-green-light)"
+    height="50"
+    v-if="mode === 'normal'"
+  />
+  <Icon
+    class="SwipeIcon SwipeIconLeft"
+    :class="{ Hide: activeSlide !== 0 }"
+    icon="ic:outline-swipe-left"
+    color="var(--color-green-light)"
+    height="50"
+    v-if="mode === 'normal'"
+  />
+  <Icon
     class="SwipeIcon SwipeIconLeft"
     :class="{ Hide: activeSlide === quiz.length }"
     icon="ic:outline-swipe-left"
+    color="var(--color-green-light)"
+    height="50"
+    v-if="mode === 'timer'"
+  />
+  <Icon
+    class="SwipeIcon SwipeIconRight"
+    :class="{ Hide: activeSlide !== quiz.length }"
+    icon="ic:outline-swipe-right"
     color="var(--color-green-light)"
     height="50"
   />
@@ -227,7 +261,7 @@ export default defineComponent({
 }
 
 .SwiperSlide {
-  min-height: 60vh;
+  height: 60vh;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
@@ -441,7 +475,8 @@ input[type="radio"] {
 // Slide with finish button
 
 .FinalSlide {
-  min-height: 60vh;
+  // height: 100%;
+  // min-height: 70vh;
   display: flex;
   align-items: center;
   justify-content: center;
