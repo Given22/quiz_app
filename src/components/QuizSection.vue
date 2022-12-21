@@ -4,7 +4,8 @@ import { defineComponent } from "vue";
 import { Swiper, SwiperSlide } from "swiper/vue";
 import { Icon } from "@iconify/vue";
 
-import NormalFooter from "@/components/NormalMode/NormalFooter.vue";
+import TimerFooter from "@/components/TimerFooter.vue";
+import NormalFooter from "@/components/NormalFooter.vue";
 
 import { decode_text, convert_ms_to_time } from "@/utils/functions";
 
@@ -30,12 +31,15 @@ export default defineComponent({
     activeQuestionTime: 0,
     activeQuestionStartTime: 0,
   }),
+  props: {
+    TIMERMODE_QUESTION_LENGTH: Number,
+  },
   methods: {
-    // decode html entities *****
+    // decode html entities
     decode(text: string) {
       return decode_text(text);
     },
-    // start quiz and timer ******
+    // start quiz and timer
     start() {
       this.start_timer();
       this.timerStart = new Date().getTime();
@@ -46,16 +50,16 @@ export default defineComponent({
         this.$store.commit("setTime", { time: this.time });
       }, 1000);
     },
-    // set answers to store *****
+    // set answers to store
     set_answers() {
       this.$store.commit("setAnswers", { answers: this.answers });
     },
-    // finish quiz and redirect to results *****
+    // finish quiz and redirect to results
     finish() {
       this.set_answers();
+      clearInterval(this.timer);
       this.$router.push("/answers");
     },
-    // ******
     start_timer() {
       this.activeQuestionStartTime = new Date().getTime();
 
@@ -64,9 +68,12 @@ export default defineComponent({
       this.timer = setInterval(() => {
         this.activeQuestionTime =
           new Date().getTime() - this.activeQuestionStartTime;
+        if (this.mode === "timer" && this.TIMERMODE_QUESTION_LENGTH) {
+          if (this.activeQuestionTime >= this.TIMERMODE_QUESTION_LENGTH)
+            this.next();
+        }
       }, 100);
     },
-
     // Swiper navigation methods
     // previous slide
     prev() {
@@ -93,6 +100,8 @@ export default defineComponent({
       // @ts-ignore
       const swiper = document.querySelector(".swiper")?.swiper;
       if (swiper) this.activeSlide = swiper.activeIndex;
+      if (this.mode === "timer" && this.activeSlide === this.quiz.length)
+        this.finish();
     },
   },
   components: {
@@ -100,6 +109,7 @@ export default defineComponent({
     Swiper,
     SwiperSlide,
     NormalFooter,
+    TimerFooter,
   },
   beforeMount() {
     this.start();
@@ -111,8 +121,11 @@ export default defineComponent({
 
     if (quiz.length === 0) window.location.href = "/";
 
+    const mode = store.getters.mode;
+
     return {
       quiz,
+      mode,
     };
   },
 });
@@ -126,6 +139,7 @@ export default defineComponent({
     :slidesPerView="1"
     :spaceBetween="60"
     :threshold="30"
+    :allowSlidePrev="false"
     @slideChange="update_slide_index"
   >
     <swiper-slide v-for="(item, index) in quiz" v-bind:key="index">
@@ -148,7 +162,7 @@ export default defineComponent({
           />
           <label
             class="QuizAnswerLabel"
-            :class="{ false: ask === 'False', true: ask === 'True' }"
+            :class="{ False: ask === 'False', True: ask === 'True' }"
             v-bind:for="ask + index"
             v-bind:name="item?.question"
             >{{ decode(ask) }}</label
@@ -157,19 +171,12 @@ export default defineComponent({
       </div>
     </swiper-slide>
     <swiper-slide>
-      <div class="FinalSlide">
+      <div class="FinalSlide" v-if="mode === 'normal'">
         <button class="QuizButton" @click="finish">Finish</button>
       </div>
     </swiper-slide>
   </Swiper>
   <div class="SwiperButtons">
-    <div
-      class="SwiperButton SwiperButtonPrev"
-      :class="{ Hide: activeSlide === 0 }"
-      @click="prev()"
-    >
-      prev
-    </div>
     <div
       class="SwiperButton SwiperButtonNext"
       :class="{ Hide: activeSlide >= quiz.length }"
@@ -179,27 +186,22 @@ export default defineComponent({
     </div>
   </div>
   <Icon
-    class="SwipeIcon SwipeIconCenter"
-    :class="{ Hide: activeSlide === 0 || activeSlide === quiz.length }"
-    icon="ic:outline-swipe"
-    color="var(--color-green-light)"
-    height="50"
-  />
-  <Icon
     class="SwipeIcon SwipeIconLeft"
-    :class="{ Hide: activeSlide !== 0 }"
+    :class="{ Hide: activeSlide === quiz.length }"
     icon="ic:outline-swipe-left"
     color="var(--color-green-light)"
     height="50"
   />
-  <Icon
-    class="SwipeIcon SwipeIconRight"
-    :class="{ Hide: activeSlide !== quiz.length }"
-    icon="ic:outline-swipe-right"
-    color="var(--color-green-light)"
-    height="50"
+  <TimerFooter
+    v-if="mode === 'timer'"
+    :time="time"
+    :answers="Object.keys(answers).length"
+    :quiz_lenght="TIMERMODE_QUESTION_LENGTH"
+    v-model:question_time="activeQuestionTime"
+    :questions="quiz.length"
   />
   <NormalFooter
+    v-if="mode === 'normal'"
     :time="time"
     :answers="Object.keys(answers).length"
     :questions="quiz.length"
@@ -373,6 +375,7 @@ export default defineComponent({
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
+  margin-bottom: 1rem;
   &:active {
     cursor: grabbing;
   }

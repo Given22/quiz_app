@@ -6,9 +6,9 @@ interface cssVars {
 }
 
 export default {
-  props: ["time", "answers", "questions", 'quiz_lenght', 'question_time'],
+  props: ["time", "answers", "questions", "quiz_lenght", "question_time"],
   computed: {
-    cssVars(): cssVars {  
+    cssVars(): cssVars {
       return {
         // @ts-ignore
         "--width": (this.answers / this.questions) * 100 + "%",
@@ -29,14 +29,14 @@ export default {
   </div>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .Footer {
   position: fixed;
   bottom: 0;
   width: 100%;
-  background-color: rgba($color: #2A9D8F, $alpha: 0.4);
+  background-color: rgba($color: #2a9d8f, $alpha: 0.4);
   height: 2.5rem;
-  &:after{
+  &:after {
     content: "";
     height: 2.5rem;
     position: relative;

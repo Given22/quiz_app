@@ -2,21 +2,18 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { decode } from "html-entities";
+import { decode_text, convert_ms_to_time } from "@/utils/functions";
 
 export default defineComponent({
   methods: {
     // decode html entities
     decode(str: string) {
-      return decode(str);
+      return decode_text(str);
     },
-
-    // convert milliseconds to good looking time format
-    convert_ms_to_time(milliseconds: number) {
-      const seconds = Math.floor(milliseconds / 1000);
-
-      return `${seconds % 60}.${(milliseconds % 1000).toString().slice(0, 1)}`;
-    },
+    
+    convert(time: number) {
+      return convert_ms_to_time(time);
+    }
   },
   props: {
     question: Object,
@@ -33,7 +30,7 @@ export default defineComponent({
           class="CardText"
           v-for="answer in question?.answers"
           v-bind:class="{
-            Correct: answer === question?.correctAnswer,
+            Correct: answer === question?.correct_answer,
             PlayerAnswer: answer === question?.playerAnswer,
           }"
           v-bind:key="answer"
@@ -42,7 +39,8 @@ export default defineComponent({
         </p>
       </div>
       <p v-if="question?.playerTime" class="CardTime">
-        Your time on this question: {{ convert_ms_to_time(question.playerTime) }} s
+        Your time on this question:
+        {{ convert(question.playerTime) }} s
       </p>
     </div>
   </div>

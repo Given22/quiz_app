@@ -1,11 +1,12 @@
 <script lang="ts">
 import { useStore } from "vuex";
 import { defineComponent } from "vue";
-import { decode } from "html-entities";
 import { Swiper, SwiperSlide } from "swiper/vue";
 import { Icon } from "@iconify/vue";
 
 import TimerFooter from "@/components/TimerMode/TimerFooter.vue";
+
+import { decode_text, convert_ms_to_time } from "@/utils/functions";
 
 import "swiper/css";
 
@@ -17,7 +18,9 @@ export default defineComponent({
     timerStart: 0,
     activeQuestionTime: 0,
     activeQuestionStartTime: 0,
-    timerId: setInterval(() => {console.log("timer work")}, 1000),
+    timerId: setInterval(() => {
+      console.log("timer work");
+    }, 1000),
     time: "00:00:00",
     activeSlide: 0,
   }),
@@ -25,10 +28,6 @@ export default defineComponent({
     TIMERMODE_QUESTION_LENGTH: Number,
   },
   methods: {
-    // decode html entities
-    decode(str: string) {
-      return decode(str);
-    },
     // start quiz and timer
     start() {
       this.start_timer();
@@ -36,7 +35,7 @@ export default defineComponent({
 
       setInterval(() => {
         const time = new Date().getTime() - this.timerStart;
-        this.time = this.convert_ms_to_time(time);
+        this.time = convert_ms_to_time(time);
         this.$store.commit("setTime", { time: this.time });
       }, 1000);
     },
@@ -50,20 +49,10 @@ export default defineComponent({
       clearInterval(this.timerId);
       this.$router.push("/answers");
     },
-    // convert milliseconds to good looking time format
-    convert_ms_to_time(milliseconds: number) {
-      const seconds = Math.floor(milliseconds / 1000);
-      const minutes = Math.floor(seconds / 60);
-      const hours = Math.floor(minutes / 60);
 
-      return `${this.pad_to_2_digits(hours % 24)}:${this.pad_to_2_digits(
-        minutes % 60
-      )}:${this.pad_to_2_digits(seconds % 60)}`;
+    decode(text: string) {
+      return decode_text(text)
     },
-    pad_to_2_digits(num: number) {
-      return num.toString().padStart(2, "0");
-    },
-
     // Swiper navigation methods
 
     // next slide
@@ -120,7 +109,6 @@ export default defineComponent({
 
     return {
       quiz,
-      store,
     };
   },
 });

@@ -2,8 +2,7 @@
 import { useStore } from "vuex";
 import { defineComponent } from "vue";
 
-import NormalQuiz from "@/components/NormalMode/NormalQuiz.vue";
-import TimerQuiz from "@/components/TimerMode/TimerQuiz.vue";
+import QuizSection from "@/components/QuizSection.vue";
 
 import "swiper/css";
 
@@ -18,19 +17,18 @@ export default defineComponent({
     TIMERMODE_QUESTION_LENGTH: 10000,
   }),
   methods: {
-    // start quiz and timer
+    // start quiz and set mode
     start_normal_mode() {
-      this.normalMode = true;
+      this.$store.commit("setQuizMode", { mode: "normal" });
       this.started = true;
     },
     start_timer_mode() {
-      this.timerMode = true;
+      this.$store.commit("setQuizMode", { mode: "timer" });
       this.started = true;
     },
   },
   components: {
-    NormalQuiz,
-    TimerQuiz,
+    QuizSection,
   },
   setup() {
     // get data form store
@@ -48,52 +46,55 @@ export default defineComponent({
 
 <template>
   <Suspense>
-    <div class="Quiz">
-      <div class="StartPage" v-if="!started">
-        <button class="QuizButton" @click="start_normal_mode">Normal Mode</button>
-        <button class="QuizButton TimerMode" @click="start_timer_mode()">
-          Timer mode
-        </button>
-        <p class="SettingButton" @click="timerInfo = !timerInfo">
-          Timer mode settings
-        </p>
-        <div class="TimerInfo" v-if="timerInfo">
-          <input
-            type="radio"
-            id="5"
-            value="5000"
-            v-model="TIMERMODE_QUESTION_LENGTH"
-          />
-          <label class="TimerSetlabel" for="5">5s</label>
-          <input
-            type="radio"
-            id="10"
-            value="10000"
-            v-model="TIMERMODE_QUESTION_LENGTH"
-          />
-          <label class="TimerSetlabel" for="10">10s</label>
-          <input
-            type="radio"
-            id="20"
-            value="20000"
-            v-model="TIMERMODE_QUESTION_LENGTH"
-          />
-          <label class="TimerSetlabel" for="20">20s</label>
-          <input
-            type="radio"
-            id="30"
-            value="30000"
-            v-model="TIMERMODE_QUESTION_LENGTH"
-          />
-          <label class="TimerSetlabel" for="30">30s</label>
+    <template #default>
+      <div class="Quiz">
+        <div class="StartPage" v-if="!started">
+          <button class="QuizButton" @click="start_normal_mode">
+            Normal Mode
+          </button>
+          <button class="QuizButton TimerMode" @click="start_timer_mode()">
+            Timer mode
+          </button>
+          <p class="SettingButton" @click="timerInfo = !timerInfo">
+            Timer mode settings
+          </p>
+          <div class="TimerInfo" v-if="timerInfo">
+            <input
+              type="radio"
+              id="5"
+              value="5000"
+              v-model="TIMERMODE_QUESTION_LENGTH"
+            />
+            <label class="TimerSetlabel" for="5">5s</label>
+            <input
+              type="radio"
+              id="10"
+              value="10000"
+              v-model="TIMERMODE_QUESTION_LENGTH"
+            />
+            <label class="TimerSetlabel" for="10">10s</label>
+            <input
+              type="radio"
+              id="20"
+              value="20000"
+              v-model="TIMERMODE_QUESTION_LENGTH"
+            />
+            <label class="TimerSetlabel" for="20">20s</label>
+            <input
+              type="radio"
+              id="30"
+              value="30000"
+              v-model="TIMERMODE_QUESTION_LENGTH"
+            />
+            <label class="TimerSetlabel" for="30">30s</label>
+          </div>
         </div>
+        <QuizSection
+          v-if="started"
+          :TIMERMODE_QUESTION_LENGTH="TIMERMODE_QUESTION_LENGTH"
+        />
       </div>
-      <NormalQuiz v-if="normalMode" />
-      <TimerQuiz
-        v-if="timerMode"
-        :TIMERMODE_QUESTION_LENGTH="TIMERMODE_QUESTION_LENGTH"
-      />
-    </div>
+    </template>
   </Suspense>
 </template>
 
@@ -157,14 +158,14 @@ export default defineComponent({
   transform: translate(-50%, -50%);
 }
 
-input[type="radio"]:checked + .timer-setlabel {
+input[type="radio"]:checked + .TimerSetlabel {
   opacity: 1;
   &:hover {
     color: var(--color-green-light);
   }
 }
 
-input[type="radio"]:not(:checked) + .timer-setlabel {
+input[type="radio"]:not(:checked) + .TimerSetlabel {
   opacity: 0.5;
   transform: translateY(5px);
   box-shadow: 0px 0px 0px rgba(233, 196, 106, 0.25),

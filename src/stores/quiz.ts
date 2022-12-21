@@ -9,13 +9,14 @@ export const store = createStore({
     quiz: { results: [] as Quiz[] },
     playerAnswers: [] as Answers[],
     time: "",
+    mode: "" as "normal" | "timer", 
   },
   mutations: {
     //Set the state of quiz
     setQuiz(state, prop) {
       prop.data.results.map((quiz: Quiz) => {
         quiz.answers = arrayShuffle(
-          quiz?.incorrectAnswers.concat(quiz.correctAnswer)
+          quiz?.incorrect_answers.concat(quiz.correct_answer)
         );
       });
       state.quiz = prop.data;
@@ -29,6 +30,10 @@ export const store = createStore({
     // Set the state of time
     setTime(state, prop) {
       state.time = prop.time;
+    },
+    
+    setQuizMode(state, prop) {
+      state.mode = prop.mode;
     },
     
     // Set the time of questions
@@ -45,5 +50,6 @@ export const store = createStore({
     quiz: (state) => state.quiz,
     answers: (state) => state.playerAnswers,
     time: (state) => state.time,
+    mode: (state) => state.mode,
   },
 });
