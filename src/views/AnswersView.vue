@@ -28,15 +28,15 @@ export default defineComponent({
     decode(str: string) {
       return decode(str);
     },
-    
+
     // check if answer is correct
     check_answer(question: string) {
       const que = this.quiz.find((q) => q.question === question);
-      if(!this.answers[question]) return;
-      if (que && que.correctAnswer === this.answers[question]) return true; 
+      if (!this.answers[question]) return;
+      if (que && que.correct_answer === this.answers[question]) return true;
       return false;
     },
-    
+
     // check all questions and calculate percentage of correct answers
     check_answers() {
       this.quiz.forEach((question: Quiz) => {
@@ -44,12 +44,12 @@ export default defineComponent({
           this.correctAnswers++;
         }
       });
-      
+
       // calculate percentage of correct answers
       this.percents = Math.floor(
         (this.correctAnswers / this.quiz.length) * 100
       );
-      
+
       // set trophy Color and message
       if (this.percents >= 80) {
         this.trophyColor = "var(--color-yellow)";
@@ -62,7 +62,7 @@ export default defineComponent({
         this.endMsg = "Next time will be better!";
       }
     },
-    
+
     // show card with question and answers
     show_card(id: number) {
       this.quiz[id].playerAnswer = this.answers[this.quiz[id].question];
@@ -70,7 +70,7 @@ export default defineComponent({
       this.show = true;
       this.activeCard = this.quiz[id];
     },
-    
+
     // hide card with question and answers
     hide_card() {
       this.show = false;
@@ -88,8 +88,7 @@ export default defineComponent({
     const time: string = store.getters.time;
 
     // IF quiz is empty, go to home page
-    if (quiz.length === 0)
-      window.location.href = "/";
+    if (quiz.length === 0) window.location.href = "/";
 
     return {
       quiz,

@@ -27,7 +27,7 @@ export default {
   </div>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .Footer {
   position: fixed;
   bottom: 0;
