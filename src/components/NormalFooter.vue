@@ -40,7 +40,7 @@ export default {
     top: -0.3rem;
     left: 0;
     width: var(--width);
-    transition: all 0.3s ease-out;
+    transition: width 0.3s ease-out;
     height: 0.3rem;
     background-color: var(--color-yellow);
   }

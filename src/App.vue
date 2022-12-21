@@ -57,7 +57,7 @@ export default defineComponent({
   font-weight: bold;
   box-shadow: 0px 5px 0px rgba(233, 196, 106, 0.3),
     3px 10px 5px rgba(0, 0, 0, 0.25);
-  transition: all 0.3s ease-in-out;
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
   &:hover {
     transform: translateY(5px);
     box-shadow: 0px 0px 0px rgba(233, 196, 106, 0.25),
@@ -69,7 +69,7 @@ export default defineComponent({
     font-weight: bold;
     text-decoration: none;
     padding: 10px;
-    transition: all 0.3s ease-in-out;
+    transition: color 0.3s ease-in-out;
     font-family: "Righteous";
     font-style: normal;
     font-weight: 400;

@@ -227,7 +227,7 @@ export default defineComponent({
     display: flex;
     justify-content: center;
     align-items: center;
-    transition: all 0.3s ease-in-out;
+    transition: transform 0.3s ease-in-out,box-shadow 0.3s ease-in-out;
     border-radius: 10px;
     &:hover {
       cursor: pointer;
