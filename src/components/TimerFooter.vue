@@ -44,7 +44,7 @@ export default {
     width: var(--width-timer);
     display: flex;
     z-index: -1;
-    transition: all 0.1s linear;
+    transition: width 0.2s linear;
     background-color: var(--color-green-light);
   }
   .ProgressBar {
@@ -52,7 +52,7 @@ export default {
     top: -0.3rem;
     left: 0;
     width: var(--width);
-    transition: all 1s ease-out;
+    transition: width 1s ease-out;
     height: 0.3rem;
     background-color: var(--color-yellow);
   }

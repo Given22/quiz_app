@@ -68,10 +68,10 @@ export default defineComponent({
       this.timer = setInterval(() => {
         this.activeQuestionTime =
           new Date().getTime() - this.activeQuestionStartTime;
-        // if (this.mode === "timer" && this.TIMERMODE_QUESTION_LENGTH) {
-        //   if (this.activeQuestionTime >= this.TIMERMODE_QUESTION_LENGTH)
-        //     this.next();
-        // }
+        if (this.mode === "timer" && this.TIMERMODE_QUESTION_LENGTH) {
+          if (this.activeQuestionTime >= this.TIMERMODE_QUESTION_LENGTH)
+            this.next();
+        }
       }, 100);
     },
     // Swiper navigation methods
@@ -122,7 +122,7 @@ export default defineComponent({
     if (quiz.length === 0) window.location.href = "/";
 
     const mode = store.getters.mode;
-    const allowSlidePrev = mode == "timer" ? false : true
+    const allowSlidePrev = mode == "timer" ? false : true;
 
     return {
       quiz,
@@ -141,10 +141,14 @@ export default defineComponent({
     :slidesPerView="1"
     :spaceBetween="60"
     :threshold="30"
-    :allowSlidePrev=allowSlidePrev
+    :allowSlidePrev="allowSlidePrev"
     @slideChange="update_slide_index"
   >
-    <swiper-slide v-for="(item, index) in quiz" v-bind:key="index" class="SwiperSlide">
+    <swiper-slide
+      v-for="(item, index) in quiz"
+      v-bind:key="index"
+      class="SwiperSlide"
+    >
       <div class="QuizHead">
         <p class="QuizQuestion">{{ decode(item?.question) }}</p>
         <div class="QuizInfo">
@@ -282,7 +286,7 @@ export default defineComponent({
 
 .SwipeIconCenter,
 .SwipeIconLeft {
-  transition: all 0.3s ease-in-out;
+  transition: animation 0.3s ease-in-out;
   transform-origin: bottom;
   &:hover,
   &:active {
@@ -291,7 +295,7 @@ export default defineComponent({
 }
 
 .SwipeIconRight {
-  transition: all 0.3s ease-in-out;
+  transition: animation 0.3s ease-in-out;
   transform-origin: bottom;
   &:hover,
   &:active {
@@ -379,7 +383,7 @@ export default defineComponent({
   padding: 0.5rem 2rem;
   box-shadow: 0px 5px 0px rgba(233, 196, 106, 0.3),
     3px 10px 5px rgba(0, 0, 0, 0.25);
-  transition: all 0.3s ease-in-out;
+  transition: transform 0.3s ease-in-out, color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
   &:hover {
     transform: translateY(5px);
     box-shadow: 0px 0px 0px rgba(233, 196, 106, 0.25),
@@ -439,7 +443,6 @@ export default defineComponent({
     cursor: pointer;
     border-radius: 10px;
     padding: 0.5rem 1rem;
-    transition: all 0.3s ease-in-out;
     background-color: var(--color-green-light);
     letter-spacing: 0.1em;
     color: var(--color-green-dark);
@@ -449,9 +452,9 @@ export default defineComponent({
       text-align: center;
     }
     &.True {
-      text-align: center;
       background-color: var(--color-green-light);
       color: var(--color-green-dark);
+      text-align: center;
     }
   }
 }
