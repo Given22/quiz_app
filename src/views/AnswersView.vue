@@ -5,7 +5,7 @@ import { useStore } from "vuex";
 import { defineComponent } from "vue";
 import { decode } from "html-entities";
 import { Icon } from "@iconify/vue";
-import Card from "@/components/Card.vue";
+import Card from "@/components/CardComp.vue";
 
 import type { Quiz, Answers } from "@/types/types";
 
@@ -199,6 +199,7 @@ export default defineComponent({
 
   &.incorrect {
     color: var(--color-green-darker);
+    // color: #fff;
   }
 
   .answers-card-incorrect {

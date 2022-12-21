@@ -1,7 +1,7 @@
 import { createStore } from "vuex";
 import arrayShuffle from "array-shuffle";
 
-import type { Quiz, Answers, Times } from "@/types/types";
+import type { Quiz, Answers } from "@/types/types";
 
 // Create a new store instance.
 export const store = createStore({
