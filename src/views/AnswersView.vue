@@ -6,6 +6,8 @@ import { defineComponent } from "vue";
 import { decode } from "html-entities";
 import { Icon } from "@iconify/vue";
 import Card from "@/components/Cards/CardComp.vue";
+// import NavBar from "@/components/NavBar.vue";
+import NavBar from "@/components/NavBar.vue";
 
 import type { Quiz, Answers } from "@/types/types";
 
@@ -22,6 +24,7 @@ export default defineComponent({
   components: {
     Card,
     Icon,
+    NavBar,
   },
   methods: {
     // decode html entities
@@ -84,11 +87,12 @@ export default defineComponent({
     // get data from Vuex store
     const store = useStore();
     const quiz: Quiz[] = store.getters.quiz.results;
-    const answers: Answers = store.getters.answers;
-    const time: string = store.getters.time;
 
     // IF quiz is empty, go to home page
     if (quiz.length === 0) window.location.href = "/";
+
+    const answers: Answers = store.getters.answers;
+    const time: string = store.getters.time;
 
     return {
       quiz,
@@ -100,6 +104,7 @@ export default defineComponent({
 </script>
 
 <template>
+  <NavBar />
   <div class="Answers">
     <div class="AnswersHead">
       <Icon icon="fluent:trophy-48-filled" height="100" class="Trophy" />
@@ -227,7 +232,7 @@ export default defineComponent({
     display: flex;
     justify-content: center;
     align-items: center;
-    transition: transform 0.3s ease-in-out,box-shadow 0.3s ease-in-out;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
     border-radius: 10px;
     &:hover {
       cursor: pointer;
