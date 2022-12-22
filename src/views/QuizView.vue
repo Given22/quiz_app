@@ -11,9 +11,7 @@ import type { Quiz } from "@/types/types";
 export default defineComponent({
   data: () => ({
     started: false,
-    timerMode: false,
     timerInfo: false,
-    normalMode: false,
     TIMERMODE_QUESTION_LENGTH: 10000,
   }),
   methods: {

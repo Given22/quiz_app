@@ -10,7 +10,6 @@ export default {
   computed: {
     cssVars(): cssVars {
       return {
-        // @ts-ignore
         "--width": (this.answers / this.questions) * 100 + "%",
       };
     },
