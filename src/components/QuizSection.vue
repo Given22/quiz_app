@@ -4,8 +4,8 @@ import { defineComponent } from "vue";
 import { Swiper, SwiperSlide } from "swiper/vue";
 import { Icon } from "@iconify/vue";
 
-import TimerFooter from "@/components/TimerFooter.vue";
-import NormalFooter from "@/components/NormalFooter.vue";
+import TimerFooter from "@/components/Footers/TimerFooter.vue.js";
+import NormalFooter from "@/components/Footers/NormalFooter.vue.js";
 
 import { decode_text, convert_ms_to_time } from "@/utils/functions";
 
@@ -81,23 +81,23 @@ export default defineComponent({
       const swiper = (document.querySelector(".swiper") as any).swiper;
       if (swiper) swiper.slidePrev();
     },
-    
+
     // next slide
     next() {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const swiper = (document.querySelector(".swiper") as any).swiper;
-    if (swiper) swiper.slideNext();
-  },
-  
-  // update active slide index
-  update_slide_index() {
-    this.$store.commit("setQuestionTime", {
-      questionNumber: this.activeSlide,
-      time: this.activeQuestionTime,
-    });
-    
-    this.start_timer();
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const swiper = (document.querySelector(".swiper") as any).swiper;
+      if (swiper) swiper.slideNext();
+    },
+
+    // update active slide index
+    update_slide_index() {
+      this.$store.commit("setQuestionTime", {
+        questionNumber: this.activeSlide,
+        time: this.activeQuestionTime,
+      });
+
+      this.start_timer();
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const swiper = (document.querySelector(".swiper") as any).swiper;
       if (swiper) this.activeSlide = swiper.activeIndex;
       if (this.mode === "timer" && this.activeSlide === this.quiz.length)

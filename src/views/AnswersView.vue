@@ -5,7 +5,7 @@ import { useStore } from "vuex";
 import { defineComponent } from "vue";
 import { decode } from "html-entities";
 import { Icon } from "@iconify/vue";
-import Card from "@/components/CardComp.vue";
+import Card from "@/components/Cards/CardComp.vue.js";
 
 import type { Quiz, Answers } from "@/types/types";
 
