@@ -1,28 +1,10 @@
-<script lang="ts">
-import Loading from "@/components/LoadingScreen.vue";
-import { defineComponent } from "vue";
-
-export default defineComponent({
-  components: {
-    Loading,
-  },
-});
-</script>
-
 <template>
-  <router-view v-slot="{ Component }">
-    <suspense timeout="0">
-      <!-- Default  -->
-      <template v-slot:default>
-        <component :is="Component" />
-      </template>
-
-      <!-- Loading  -->
-      <template v-slot:fallback>
-        <Loading />
-      </template>
-    </suspense>
-  </router-view>
+  <nav id="navbar">
+    <h3 class="NavbarHeader">Quiz App</h3>
+    <div class="NavbarButton">
+      <a class="NavbarButtonLink" href="/form">Next Quiz</a>
+    </div>
+  </nav>
 </template>
 
 <style lang="scss">

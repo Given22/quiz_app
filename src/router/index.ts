@@ -2,31 +2,35 @@ import { createRouter, createWebHistory } from "vue-router";
 import { defineAsyncComponent } from "vue";
 
 const routes = [
-  // Home page with form to search quiz
+  // Home page
   {
     path: "/",
     name: "home",
-    component: () => Promise.resolve(defineAsyncComponent(() => import("../views/HomeView.vue"))),
+    component: () => import("../views/HomeView.vue"),
   },
   // If path not exist it shows home page
   {
     path: "/:pathMatch(.*)*",
     name: "different",
-    component: () => Promise.resolve(defineAsyncComponent(() => import("../views/HomeView.vue"))),
+    component: defineAsyncComponent(() => import("../views/FormView.vue")),
   },
-  // Page with quiz 
+  // Page with form
+  {
+    path: "/form",
+    name: "form",
+    component: defineAsyncComponent(() => import("@/views/FormView.vue")),
+  },
+  // Page with quiz
   {
     path: "/quiz",
     name: "quiz",
-    component: () => Promise.resolve(defineAsyncComponent(() =>
-      import("@/views/QuizView.vue"))),
+    component: defineAsyncComponent(() => import("@/views/QuizView.vue")),
   },
   // Page with final stats and answers
   {
     path: "/answers",
     name: "answers",
-    component: () => Promise.resolve(defineAsyncComponent(() =>
-      import("@/views/AnswersView.vue"))),
+    component: defineAsyncComponent(() => import("@/views/AnswersView.vue")),
   },
 ];
 

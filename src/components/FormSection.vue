@@ -7,7 +7,7 @@ import { Icon } from "@iconify/vue";
 
 import arrayShuffle from "array-shuffle";
 
-import Alert from "@/components/Cards/AlertCard.vue.js";
+import Alert from "@/components/Cards/AlertCard.vue";
 
 export default defineComponent({
   data: () => ({

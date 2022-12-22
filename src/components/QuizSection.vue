@@ -4,8 +4,8 @@ import { defineComponent } from "vue";
 import { Swiper, SwiperSlide } from "swiper/vue";
 import { Icon } from "@iconify/vue";
 
-import TimerFooter from "@/components/Footers/TimerFooter.vue.js";
-import NormalFooter from "@/components/Footers/NormalFooter.vue.js";
+import TimerFooter from "@/components/Footers/TimerFooter.vue";
+import NormalFooter from "@/components/Footers/NormalFooter.vue";
 
 import { decode_text, convert_ms_to_time } from "@/utils/functions";
 

@@ -3,6 +3,7 @@ import { useStore } from "vuex";
 import { defineComponent } from "vue";
 
 import QuizSection from "@/components/QuizSection.vue";
+import NavBar from "@/components/NavBar.vue";
 
 import "swiper/css";
 
@@ -27,6 +28,7 @@ export default defineComponent({
   },
   components: {
     QuizSection,
+    NavBar,
   },
   setup() {
     // get data form store
@@ -43,57 +45,52 @@ export default defineComponent({
 </script>
 
 <template>
-  <Suspense>
-    <template #default>
-      <div class="Quiz">
-        <div class="StartPage" v-if="!started">
-          <button class="QuizButton" @click="start_normal_mode">
-            Normal Mode
-          </button>
-          <button class="QuizButton TimerMode" @click="start_timer_mode()">
-            Timer mode
-          </button>
-          <p class="SettingButton" @click="timerInfo = !timerInfo">
-            Timer mode settings
-          </p>
-          <div class="TimerInfo" v-if="timerInfo">
-            <input
-              type="radio"
-              id="5"
-              value="5000"
-              v-model="TIMERMODE_QUESTION_LENGTH"
-            />
-            <label class="TimerSetlabel" for="5">5s</label>
-            <input
-              type="radio"
-              id="10"
-              value="10000"
-              v-model="TIMERMODE_QUESTION_LENGTH"
-            />
-            <label class="TimerSetlabel" for="10">10s</label>
-            <input
-              type="radio"
-              id="20"
-              value="20000"
-              v-model="TIMERMODE_QUESTION_LENGTH"
-            />
-            <label class="TimerSetlabel" for="20">20s</label>
-            <input
-              type="radio"
-              id="30"
-              value="30000"
-              v-model="TIMERMODE_QUESTION_LENGTH"
-            />
-            <label class="TimerSetlabel" for="30">30s</label>
-          </div>
-        </div>
-        <QuizSection
-          v-if="started"
-          :TIMERMODE_QUESTION_LENGTH="TIMERMODE_QUESTION_LENGTH"
+  <NavBar />
+  <div class="Quiz">
+    <div class="StartPage" v-if="!started">
+      <button class="QuizButton" @click="start_normal_mode">Normal Mode</button>
+      <button class="QuizButton TimerMode" @click="start_timer_mode()">
+        Timer mode
+      </button>
+      <p class="SettingButton" @click="timerInfo = !timerInfo">
+        Timer mode settings
+      </p>
+      <div class="TimerInfo" v-if="timerInfo">
+        <input
+          type="radio"
+          id="5"
+          value="5000"
+          v-model="TIMERMODE_QUESTION_LENGTH"
         />
+        <label class="TimerSetlabel" for="5">5s</label>
+        <input
+          type="radio"
+          id="10"
+          value="10000"
+          v-model="TIMERMODE_QUESTION_LENGTH"
+        />
+        <label class="TimerSetlabel" for="10">10s</label>
+        <input
+          type="radio"
+          id="20"
+          value="20000"
+          v-model="TIMERMODE_QUESTION_LENGTH"
+        />
+        <label class="TimerSetlabel" for="20">20s</label>
+        <input
+          type="radio"
+          id="30"
+          value="30000"
+          v-model="TIMERMODE_QUESTION_LENGTH"
+        />
+        <label class="TimerSetlabel" for="30">30s</label>
       </div>
-    </template>
-  </Suspense>
+    </div>
+    <QuizSection
+      v-if="started"
+      :TIMERMODE_QUESTION_LENGTH="TIMERMODE_QUESTION_LENGTH"
+    />
+  </div>
 </template>
 
 <style lang="scss" scoped>
