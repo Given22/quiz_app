@@ -6,13 +6,13 @@ const routes = [
   {
     path: "/",
     name: "home",
-    component: () => import("../views/HomeView.vue"),
+    component: () => import("@/views/HomeView.vue"),
   },
   // If path not exist it shows home page
   {
     path: "/:pathMatch(.*)*",
     name: "different",
-    component: defineAsyncComponent(() => import("../views/FormView.vue")),
+    component: defineAsyncComponent(() => import("@/views/HomeView.vue")),
   },
   // Page with form
   {
