@@ -1,7 +1,6 @@
 export const saveState = (key: string, value: string) => {
   try {
     localStorage.setItem(key, value);
-    console.log('saveState', value)
   }
   catch (err) {
     console.error(err);
@@ -15,4 +14,8 @@ export const getState = (key: string) => {
   catch (err) {
     console.error(err);
   }
+};
+
+export const clearState = (key: string) => {
+  localStorage.removeItem(key);
 };

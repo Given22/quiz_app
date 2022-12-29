@@ -14,7 +14,14 @@ import LoadingScreen from "@/components/LoadingScreen.vue";
 
 import { convert_ms_to_time } from "@/utils/functions";
 
-import type { Quiz, Answers, Statistic } from "@/types/types";
+import type {
+  Quiz,
+  Answers,
+  Statistic,
+  Categories,
+  Type,
+  Difficulty,
+} from "@/types/types";
 
 export default defineComponent({
   data: () => ({
@@ -60,8 +67,6 @@ export default defineComponent({
         }
       });
 
-      console.log(this.correctAnswers, this.quiz.length);
-
       // calculate percentage of correct answers
       return (this.percents = Math.floor(
         (this.correctAnswers / this.quiz.length) * 100
@@ -81,17 +86,72 @@ export default defineComponent({
       this.show = false;
     },
 
+    sum(name: string) {
+      const quiz = this.$store.getters.quiz;
+      let sum = 0;
+      quiz.results.forEach((q: Quiz) => {
+        q.category === name ? (sum += 1) : 0;
+      });
+      return sum;
+    },
+
     //Conver data to statistics
     create_new_statistic() {
       const store = useStore();
       const stats = store.getters.stats;
-      if (stats.mode === "timer") {
-        const quiz = store.getters.quiz;
+      const quiz = store.getters.quiz;
 
+      const category: Categories = {
+        "General Knowledge": 0,
+        "Entertainment: Books": 0,
+        "Entertainment: Film": 0,
+        "Entertainment: Music": 0,
+        "Entertainment: Musicals & Theatres": 0,
+        "Entertainment: Television": 0,
+        "Entertainment: Video Games": 0,
+        "Entertainment: Board Games": 0,
+        "Science & Nature": 0,
+        "Science: Computers": 0,
+        "Science: Mathematics": 0,
+        Mythology: 0,
+        Sports: 0,
+        Geography: 0,
+        History: 0,
+        Politics: 0,
+        Art: 0,
+        Celebrities: 0,
+        Animals: 0,
+        Vehicles: 0,
+        "Entertainment: Comics": 0,
+        "Science: Gadgets": 0,
+        "Entertainment: Japanese Anime & Manga": 0,
+        "Entertainment: Cartoon & Animations": 0,
+      };
+
+      const difficulty = {
+        easy: 0,
+        medium: 0,
+        hard: 0,
+      };
+
+      const type = {
+        multiple: 0,
+        boolean: 0,
+      };
+
+      quiz.results.forEach((q: Quiz) => {
+        difficulty[q.difficulty as keyof Difficulty] += 1;
+        category[q.category as keyof Categories] += 1;
+        type[q.type as keyof Type] += 1;
+      });
+
+      if (stats.mode === "timer") {
         let avg_time = 0;
+
         quiz.results.forEach((q: Quiz) => {
           avg_time += q.playerTime ? q.playerTime : 0;
         });
+
         avg_time = Math.round(avg_time / quiz.results.length);
 
         return {
@@ -99,11 +159,11 @@ export default defineComponent({
           date: new Date(),
           percents: this.check_answers(),
           questions_number: stats.questionNumber,
-          category: stats.category,
-          difficulty: stats.difficulty,
-          type: stats.type,
+          category: category,
+          difficulty: difficulty,
+          type: type,
           avg_time: avg_time,
-          timer_timeout: stats.timerTimeout,
+          timer_timeout: stats.timer_timeout,
         };
       }
       return {
@@ -111,15 +171,16 @@ export default defineComponent({
         date: new Date(),
         percents: this.check_answers(),
         questions_number: stats.questionNumber,
-        category: stats.category,
-        difficulty: stats.difficulty,
-        type: stats.type,
+        category: category,
+        difficulty: difficulty,
+        type: type,
         time: store.getters.time,
       };
     },
   },
   mounted() {
     const newStatistic: Statistic = this.create_new_statistic();
+    if (!newStatistic.mode) return;
     const storage = getState("previous");
     if (storage) {
       const previous = JSON.parse(storage);
@@ -127,7 +188,6 @@ export default defineComponent({
     } else {
       this.stats = [newStatistic];
     }
-    console.log(newStatistic);
 
     saveState("previous", JSON.stringify(this.stats));
     this.isLoading = false;
@@ -156,162 +216,31 @@ export default defineComponent({
   <div v-if="isLoading">
     <LoadingScreen />
   </div>
-  <div v-if="!isLoading">
+  <div v-if="!isLoading" class="FinalView">
     <NavBar />
     <AnswersSection />
-    <StatsSection />
+    <StatsSection :stats="stats" />
   </div>
 </template>
 
 <style lang="scss">
-.Answers {
-  min-height: 50vh;
-  color: rgb(207, 207, 207);
-  font-size: 1.5rem;
+.FinalView {
   display: flex;
   flex-direction: column;
+  margin-top: 4rem;
   align-items: center;
-  gap: 1.5rem;
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  padding-top: 20vh;
-}
-
-.AnswersQuestions {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 20px;
-  margin-bottom: 10vh;
-}
-
-.AnswersHead {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  font-size: 1.2rem;
-  svg path {
-    color: v-bind(trophyColor);
-  }
-}
-
-.AnswersCard {
-  display: flex;
-  font-size: 1rem;
-  gap: 1rem;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  &.Correct {
-    color: rgb(207, 207, 207);
-  }
-
-  &.Incorrect {
-    color: var(--color-green-darker);
-    // color: #fff;
-  }
-
-  .AnswersCardIncorrect {
-    background-color: var(--color-orange);
-    box-shadow: 0px 5px 0px rgba(233, 196, 106, 0.25),
-      4px 10px 3px rgba(0, 0, 0, 0.25);
-    &:active,
-    &:hover {
-      box-shadow: 0px 0px 0px rgba(233, 196, 106, 0.25),
-        0px 0px 0px rgba(0, 0, 0, 0.25);
-      transform: translateY(5px);
-    }
-  }
-  .AnswersCardCorrect {
-    background-color: var(--color-green-light);
-    box-shadow: 0px 5px 0px rgba(83, 182, 132, 0.25),
-      4px 10px 3px rgba(0, 0, 0, 0.25);
-    &:active,
-    &:hover {
-      box-shadow: 0px 0px 0px rgba(83, 182, 132, 0.25),
-        0px 0px 0px rgba(0, 0, 0, 0.25);
-      transform: translateY(5px);
-    }
-  }
-
-  .AnswersCardIncorrect,
-  .AnswersCardCorrect {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-    border-radius: 10px;
-    &:hover {
-      cursor: pointer;
-    }
-  }
-}
-
-.AnswerIcon {
-  height: 4rem;
-  width: 6rem;
+  width: 100%;
+  gap: 3rem;
 }
 
 // responsive design
 
 @media screen and (min-width: 1024px) {
-  .Answers {
-    width: 70%;
-  }
-  .AnswerIcon {
-    height: 2rem;
-    width: 5vw;
-  }
-  .AnswersQuestions {
-    max-width: 90%;
-  }
-  .AnswersHead {
-    font-size: 1.2rem;
-    svg {
-      height: 5rem;
-    }
-  }
 }
 
 @media screen and (max-width: 1023px) and (min-width: 768px) {
-  .Answers {
-    width: 100%;
-  }
-  .AnswerIcon {
-    height: 2rem;
-    width: 8vw;
-  }
-  .AnswersQuestions {
-    max-width: 60%;
-  }
-  .AnswersHead {
-    font-size: 1.2rem;
-    svg {
-      height: 5rem;
-    }
-  }
 }
 
 @media screen and (max-width: 767px) {
-  .Answers {
-    width: 100%;
-  }
-  .AnswerIcon {
-    height: 2rem;
-    width: 17vw;
-  }
-  .AnswersQuestions {
-    max-width: 90%;
-  }
-  .AnswersHead {
-    font-size: 1.2rem;
-    svg {
-      height: 5rem;
-    }
-  }
 }
 </style>

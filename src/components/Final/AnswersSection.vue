@@ -131,14 +131,14 @@ export default defineComponent({
             v-if="check_answer(question.question)"
             icon="bi:check"
             color="white"
-            height="100"
+            height="150"
             class="AnswerIcon"
           />
           <Icon
             v-if="!check_answer(question.question)"
             icon="bi:x"
             color="black"
-            height="100"
+            height="150"
             class="AnswerIcon"
           />
         </div>
@@ -150,17 +150,12 @@ export default defineComponent({
 
 <style lang="scss">
 .Answers {
-  min-height: 50vh;
-  color: rgb(207, 207, 207);
-  font-size: 1.5rem;
+  min-height: 80vh;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   gap: 1.5rem;
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  padding-top: 20vh;
 }
 
 .AnswersQuestions {
@@ -170,7 +165,6 @@ export default defineComponent({
   justify-content: center;
   flex-wrap: wrap;
   gap: 20px;
-  margin-bottom: 10vh;
 }
 
 .AnswersHead {
@@ -185,8 +179,8 @@ export default defineComponent({
 
 .AnswersCard {
   display: flex;
-  font-size: 1rem;
-  gap: 1rem;
+  font-size: 1.2rem;
+  gap: 0.3rem;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -197,7 +191,6 @@ export default defineComponent({
 
   &.Incorrect {
     color: var(--color-green-darker);
-    // color: #fff;
   }
 
   .AnswersCardIncorrect {
@@ -237,7 +230,7 @@ export default defineComponent({
 }
 
 .AnswerIcon {
-  height: 4rem;
+  height: 2rem;
   width: 6rem;
 }
 
@@ -248,7 +241,6 @@ export default defineComponent({
     width: 70%;
   }
   .AnswerIcon {
-    height: 2rem;
     width: 5vw;
   }
   .AnswersQuestions {
@@ -267,7 +259,6 @@ export default defineComponent({
     width: 100%;
   }
   .AnswerIcon {
-    height: 2rem;
     width: 8vw;
   }
   .AnswersQuestions {
@@ -286,7 +277,6 @@ export default defineComponent({
     width: 100%;
   }
   .AnswerIcon {
-    height: 2rem;
     width: 17vw;
   }
   .AnswersQuestions {
