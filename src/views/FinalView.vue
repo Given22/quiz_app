@@ -4,12 +4,17 @@
 import { useStore } from "vuex";
 import { defineComponent } from "vue";
 import { decode } from "html-entities";
-import { Icon } from "@iconify/vue";
-import Card from "@/components/Cards/CardComp.vue";
-// import NavBar from "@/components/NavBar.vue";
-import NavBar from "@/components/NavBar.vue";
+import { saveState, getState } from "@/stores/localStorage";
 
-import type { Quiz, Answers } from "@/types/types";
+import NavBar from "@/components/NavBar.vue";
+import AnswersSection from "@/components/Final/AnswersSection.vue";
+import StatsSection from "@/components/Final/StatsSection.vue";
+
+import LoadingScreen from "@/components/LoadingScreen.vue";
+
+import { convert_ms_to_time } from "@/utils/functions";
+
+import type { Quiz, Answers, Statistic } from "@/types/types";
 
 export default defineComponent({
   data: () => ({
@@ -20,16 +25,23 @@ export default defineComponent({
     percents: 0,
     endMsg: "",
     trophyColor: "",
+    isLoading: true,
+    stats: [] as Statistic[],
   }),
   components: {
-    Card,
-    Icon,
     NavBar,
+    StatsSection,
+    AnswersSection,
+    LoadingScreen,
   },
   methods: {
     // decode html entities
     decode(str: string) {
       return decode(str);
+    },
+
+    convert_ms_to_time(number: number) {
+      return convert_ms_to_time(number);
     },
 
     // check if answer is correct
@@ -48,22 +60,12 @@ export default defineComponent({
         }
       });
 
-      // calculate percentage of correct answers
-      this.percents = Math.floor(
-        (this.correctAnswers / this.quiz.length) * 100
-      );
+      console.log(this.correctAnswers, this.quiz.length);
 
-      // set trophy Color and message
-      if (this.percents >= 80) {
-        this.trophyColor = "var(--color-yellow)";
-        this.endMsg = "You are a true Quiz Master!";
-      } else if (this.percents >= 60) {
-        this.trophyColor = "var(--color-silver)";
-        this.endMsg = "That was close to be a Quiz Master!";
-      } else {
-        this.trophyColor = "var(--color-green-light)";
-        this.endMsg = "Next time will be better!";
-      }
+      // calculate percentage of correct answers
+      return (this.percents = Math.floor(
+        (this.correctAnswers / this.quiz.length) * 100
+      ));
     },
 
     // show card with question and answers
@@ -78,10 +80,57 @@ export default defineComponent({
     hide_card() {
       this.show = false;
     },
+
+    //Conver data to statistics
+    create_new_statistic() {
+      const store = useStore();
+      const stats = store.getters.stats;
+      if (stats.mode === "timer") {
+        const quiz = store.getters.quiz;
+
+        let avg_time = 0;
+        quiz.results.forEach((q: Quiz) => {
+          avg_time += q.playerTime ? q.playerTime : 0;
+        });
+        avg_time = Math.round(avg_time / quiz.results.length);
+
+        return {
+          mode: stats.mode,
+          date: new Date(),
+          percents: this.check_answers(),
+          questions_number: stats.questionNumber,
+          category: stats.category,
+          difficulty: stats.difficulty,
+          type: stats.type,
+          avg_time: avg_time,
+          timer_timeout: stats.timerTimeout,
+        };
+      }
+      return {
+        mode: stats.mode,
+        date: new Date(),
+        percents: this.check_answers(),
+        questions_number: stats.questionNumber,
+        category: stats.category,
+        difficulty: stats.difficulty,
+        type: stats.type,
+        time: store.getters.time,
+      };
+    },
   },
-  beforeMount() {
-    // check answers before component is mounted
-    this.check_answers();
+  mounted() {
+    const newStatistic: Statistic = this.create_new_statistic();
+    const storage = getState("previous");
+    if (storage) {
+      const previous = JSON.parse(storage);
+      this.stats = [newStatistic, ...previous];
+    } else {
+      this.stats = [newStatistic];
+    }
+    console.log(newStatistic);
+
+    saveState("previous", JSON.stringify(this.stats));
+    this.isLoading = false;
   },
   setup() {
     // get data from Vuex store
@@ -104,51 +153,13 @@ export default defineComponent({
 </script>
 
 <template>
-  <NavBar />
-  <div class="Answers">
-    <div class="AnswersHead">
-      <Icon icon="fluent:trophy-48-filled" height="100" class="Trophy" />
-      <p>{{ endMsg }}</p>
-      <br />
-      <p>Your score is: {{ percents }}%</p>
-      <p>Your time: {{ time }}</p>
-    </div>
-    <section class="AnswersQuestions">
-      <div
-        v-for="question in quiz"
-        :key="question.question"
-        class="AnswersCard"
-        v-bind:class="{
-          Correct: check_answer(question.question),
-          Incorrect: !check_answer(question.question),
-        }"
-      >
-        <p>#{{ quiz.indexOf(question) + 1 }}</p>
-        <div
-          @click="show_card(quiz.indexOf(question))"
-          v-bind:class="{
-            AnswersCardCorrect: check_answer(question.question),
-            AnswersCardIncorrect: !check_answer(question.question),
-          }"
-        >
-          <Icon
-            v-if="check_answer(question.question)"
-            icon="bi:check"
-            color="white"
-            height="100"
-            class="AnswerIcon"
-          />
-          <Icon
-            v-if="!check_answer(question.question)"
-            icon="bi:x"
-            color="black"
-            height="100"
-            class="AnswerIcon"
-          />
-        </div>
-      </div>
-    </section>
-    <Card v-if="show" :question="activeCard" @click="hide_card" />
+  <div v-if="isLoading">
+    <LoadingScreen />
+  </div>
+  <div v-if="!isLoading">
+    <NavBar />
+    <AnswersSection />
+    <StatsSection />
   </div>
 </template>
 

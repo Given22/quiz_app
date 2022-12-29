@@ -7,13 +7,22 @@ export interface Quiz {
   question: string;
   type: string;
   playerAnswer?: string;
-  playerTime?: string;
+  playerTime?: number;
 }
 
 export interface Answers {
   [key: string]: string;
 }
 
-export interface Times {
-  [key: string]: string;
+export interface Statistic {
+  mode: "normal" | "timer";
+  date: Date;
+  percents: number;
+  questions_number: number;
+  category: string;
+  difficulty: string;
+  type: string;
+  avg_time?: number;
+  timer_timeout?: number;
+  time?: string;
 }
