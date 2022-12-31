@@ -22,7 +22,7 @@ export interface Statistic {
   category: Categories;
   difficulty: Difficulty;
   type: Type;
-  avg_time?: number;
+  avg_time?: string;
   timer_timeout?: number;
   time?: string;
 }
@@ -62,4 +62,36 @@ export interface Difficulty {
 export interface Type {
   multiple: number;
   boolean: number;
+}
+
+export interface NormalModesStats {
+  percentage: number[];
+  questions: number[];
+  difficulty: Difficulty;
+}
+
+export interface TimerModeStats {
+  percentage: number[];
+  avg_times: string[];
+  timeouts: {
+    '5s': number;
+    '10s': number;
+    '20s': number;
+    '30s': number;
+  };
+  difficulty: Difficulty;
+}
+
+export interface AllModesStats {
+  percentages: {
+    name: string;
+    data: number[]
+  }[];
+  categories: Categories;
+  types: Type;
+  difficulties: Difficulty;
+  modes: {
+    normal: number;
+    timer: number;
+  }
 }

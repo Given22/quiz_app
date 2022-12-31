@@ -12,7 +12,7 @@ import StatsSection from "@/components/Final/StatsSection.vue";
 
 import LoadingScreen from "@/components/LoadingScreen.vue";
 
-import { convert_ms_to_time } from "@/utils/functions";
+import { convert_ms_to_time, convert_ms_to_sec } from "@/utils/functions";
 
 import type {
   Quiz,
@@ -152,7 +152,9 @@ export default defineComponent({
           avg_time += q.playerTime ? q.playerTime : 0;
         });
 
-        avg_time = Math.round(avg_time / quiz.results.length);
+        const avg_time_str = convert_ms_to_sec(
+          Math.round(avg_time / quiz.results.length)
+        );
 
         return {
           mode: stats.mode,
@@ -162,7 +164,7 @@ export default defineComponent({
           category: category,
           difficulty: difficulty,
           type: type,
-          avg_time: avg_time,
+          avg_time: avg_time_str,
           timer_timeout: stats.timer_timeout,
         };
       }
