@@ -527,7 +527,7 @@ input[type="radio"] {
     width: 100%;
     .QuizAnswerLabel {
       width: 80%;
-      padding: 0.2rem 0.5rem;
+      padding: 0.55rem 0.5rem;
       letter-spacing: 0.1em;
     }
   }

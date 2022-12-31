@@ -150,7 +150,7 @@ export default defineComponent({
 
 <style lang="scss">
 .Answers {
-  min-height: 80vh;
+  min-height: 83vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -257,9 +257,10 @@ export default defineComponent({
 @media screen and (max-width: 1023px) and (min-width: 768px) {
   .Answers {
     width: 100%;
+    min-height: 77vh;
   }
   .AnswerIcon {
-    width: 8vw;
+    width: 9vw;
   }
   .AnswersQuestions {
     max-width: 60%;
@@ -275,6 +276,8 @@ export default defineComponent({
 @media screen and (max-width: 767px) {
   .Answers {
     width: 100%;
+    padding-top: 4rem;
+    min-height: 80vh;
   }
   .AnswerIcon {
     width: 17vw;
