@@ -15,3 +15,7 @@ export const getState = (key: string) => {
     console.error(err);
   }
 };
+
+export const clearState = (key: string) => {
+  localStorage.removeItem(key);
+};

@@ -9,7 +9,15 @@ export const store = createStore({
     quiz: { results: [] as Quiz[] },
     playerAnswers: [] as Answers[],
     time: "",
-    mode: "" as "normal" | "timer", 
+    mode: "" as "normal" | "timer",
+    stats: {
+      questionNumber: 0,
+      category: "",
+      difficulty: "",
+      type: "",
+      mode: "",
+      timer_timeout: 0,
+    },
   },
   mutations: {
     //Set the state of quiz
@@ -31,25 +39,35 @@ export const store = createStore({
     setTime(state, prop) {
       state.time = prop.time;
     },
-    
+
     setQuizMode(state, prop) {
       state.mode = prop.mode;
+      state.stats.mode = prop.mode
+      state.stats.timer_timeout = prop.timer_timeout
     },
-    
+
     // Set the time of questions
     setQuestionTime(state, prop) {
-      if(!state.quiz.results[prop.questionNumber]) return;
-      if(state.quiz.results[prop.questionNumber]?.playerTime){
+      if (!state.quiz.results[prop.questionNumber]) return;
+      if (state.quiz.results[prop.questionNumber]?.playerTime) {
         state.quiz.results[prop.questionNumber].playerTime += prop.time;
       } else {
         state.quiz.results[prop.questionNumber].playerTime = prop.time;
       }
-    }
+    },
+
+    setStatsQuiz(state, prop) {
+      state.stats.questionNumber = prop.questionNumber;
+      state.stats.category = prop.category;
+      state.stats.difficulty = prop.difficulty;
+      state.stats.type = prop.type;
+    },
   },
   getters: {
     quiz: (state) => state.quiz,
     answers: (state) => state.playerAnswers,
     time: (state) => state.time,
     mode: (state) => state.mode,
+    stats: (state) => state.stats,
   },
 });

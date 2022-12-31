@@ -1,13 +1,10 @@
 <script lang="ts">
-import { useStore } from "vuex";
-import { defineComponent } from "vue";
-
-import QuizSection from "@/components/QuizSection.vue";
 import NavBar from "@/components/NavBar.vue";
-
-import "swiper/css";
-
+import QuizSection from "@/components/QuizSection.vue";
 import type { Quiz } from "@/types/types";
+import "swiper/css";
+import { defineComponent } from "vue";
+import { useStore } from "vuex";
 
 export default defineComponent({
   data: () => ({
@@ -17,12 +14,11 @@ export default defineComponent({
   }),
   methods: {
     // start quiz and set mode
-    start_normal_mode() {
-      this.$store.commit("setQuizMode", { mode: "normal" });
-      this.started = true;
-    },
-    start_timer_mode() {
-      this.$store.commit("setQuizMode", { mode: "timer" });
+    start(mode: string) {
+      this.$store.commit("setQuizMode", {
+        mode: mode,
+        timer_timeout: this.TIMERMODE_QUESTION_LENGTH,
+      });
       this.started = true;
     },
   },
@@ -48,8 +44,8 @@ export default defineComponent({
   <NavBar />
   <div class="Quiz">
     <div class="StartPage" v-if="!started">
-      <button class="QuizButton" @click="start_normal_mode">Normal Mode</button>
-      <button class="QuizButton TimerMode" @click="start_timer_mode()">
+      <button class="QuizButton" @click="start('normal')">Normal Mode</button>
+      <button class="QuizButton TimerMode" @click="start('timer')">
         Timer mode
       </button>
       <p class="SettingButton" @click="timerInfo = !timerInfo">

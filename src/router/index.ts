@@ -30,7 +30,7 @@ const routes = [
   {
     path: "/answers",
     name: "answers",
-    component: defineAsyncComponent(() => import("@/views/AnswersView.vue")),
+    component: defineAsyncComponent(() => import("@/views/FinalView.vue")),
   },
 ];
 
