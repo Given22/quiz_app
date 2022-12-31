@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, toRaw } from "vue";
 
 export default defineComponent({
   data: () => ({
@@ -8,6 +8,7 @@ export default defineComponent({
   props: {
     seriesData: Array,
     labels: Array,
+    notShowLegend: Boolean,
   },
   beforeMount() {
     this.options = {
@@ -44,13 +45,15 @@ export default defineComponent({
       legend: {
         position: "bottom",
         // showForZeroSeries: false,
+        show: toRaw(this.notShowLegend) ? false : true,
+        width: "100%",
       },
       responsive: [
         {
           breakpoint: 1024,
           options: {
             chart: {
-              width: "525",
+              width: "110%",
             },
           },
         },
@@ -59,9 +62,6 @@ export default defineComponent({
           options: {
             chart: {
               width: "100%",
-            },
-            legend: {
-              show: false,
             },
           },
         },

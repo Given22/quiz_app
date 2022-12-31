@@ -230,6 +230,7 @@ export default defineComponent({
           <DonutChart
             :seriesData="Object.values(allStats.categories)"
             :labels="Object.keys(allStats.categories)"
+            :notShowLegend="true"
           />
         </div>
         <div class="ChartBox">
@@ -345,6 +346,14 @@ export default defineComponent({
   flex-direction: column;
   align-items: center;
   justify-content: center;
+}
+
+h3{
+  letter-spacing: 0.1rem;
+}
+
+.ChartName{
+  letter-spacing: 0.05rem;
 }
 
 .StatsIcon {
@@ -469,7 +478,10 @@ input[type="radio"]:not(:checked) + .StatsSetlabel {
     height: 1.7rem;
   }
   .ChartsSections {
-    width: 80%;
+    width: 60%;
+  }
+  .StatsSInfo .StatsSetlabel {
+    min-width: 9rem;
   }
 }
 
@@ -479,9 +491,6 @@ input[type="radio"]:not(:checked) + .StatsSetlabel {
   }
   .ChartsSections {
     width: 90%;
-  }
-  .ChartBox {
-    width: 100%;
   }
   .StatsSInfo .StatsSetlabel {
     min-width: 8rem;

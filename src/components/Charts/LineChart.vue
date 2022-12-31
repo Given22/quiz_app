@@ -69,7 +69,7 @@ export default defineComponent({
           breakpoint: 1024,
           options: {
             chart:{
-              width: "150%",
+              width: "125%",
             }
           },
         },
