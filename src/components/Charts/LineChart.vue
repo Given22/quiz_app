@@ -10,6 +10,7 @@ export default defineComponent({
     categoriesY: Array,
     colorData: Array,
     seriesData: Array,
+    max: Number,
   },
   beforeMount() {
     this.options = {
@@ -50,6 +51,8 @@ export default defineComponent({
       },
       yaxis: {
         categories: this.categoriesY,
+        min: 0,
+        max: this.max,
         axisBorder: {
           show: true,
           color: "#fff",
@@ -57,6 +60,7 @@ export default defineComponent({
         labels: {
           style: {
             colors: "#fff",
+            fontSize: "16px",
           },
         },
       },
@@ -68,17 +72,17 @@ export default defineComponent({
         {
           breakpoint: 1024,
           options: {
-            chart:{
+            chart: {
               width: "125%",
-            }
+            },
           },
         },
         {
           breakpoint: 767,
           options: {
-            chart:{
+            chart: {
               width: "100%",
-            }
+            },
           },
         },
       ],

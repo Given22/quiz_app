@@ -5,6 +5,7 @@ import { Icon } from "@iconify/vue";
 
 import LineChart from "@/components/Charts/LineChart.vue";
 import DonutChart from "../Charts/DonutChart.vue";
+import ColumnChart from "../Charts/ColumnChart.vue";
 
 import { clearState } from "@/stores/localStorage";
 
@@ -121,6 +122,7 @@ export default defineComponent({
     Icon,
     LineChart,
     DonutChart,
+    ColumnChart,
   },
   mounted() {
     const all = toRaw(this.stats) as Statistic[];
@@ -221,6 +223,7 @@ export default defineComponent({
           <h3 class="ChartName">Percentage Results</h3>
           <LineChart
             :categoriesY="categoriesY"
+            :max="100"
             :colorData="['#E9C46A', '#fff']"
             :seriesData="allStats.percentages"
           />
@@ -247,12 +250,28 @@ export default defineComponent({
             :labels="Object.keys(allStats.difficulties)"
           />
         </div>
+        <div class="ChartBox">
+          <h3 class="ChartName">Selected Modes</h3>
+          <ColumnChart
+            :seriesData="[
+              {
+                name: 'normal',
+                data: [allStats.modes.normal],
+              },
+              {
+                name: 'timer',
+                data: [allStats.modes.timer],
+              },
+            ]"
+          />
+        </div>
       </div>
       <div v-if="MODE === 'normal'" class="ChartsSection">
         <div class="ChartBox">
           <h3 class="ChartName">Percentage Results</h3>
           <LineChart
             :categoriesY="categoriesY"
+            :max="100"
             :colorData="['#E9C46A']"
             :seriesData="[
               {
@@ -267,6 +286,7 @@ export default defineComponent({
           <LineChart
             :categoriesY="categoriesY"
             :colorData="colors"
+            :max="25"
             :seriesData="[
               {
                 name: 'normal',
@@ -296,6 +316,7 @@ export default defineComponent({
           <LineChart
             :categoriesY="categoriesY"
             :colorData="['#fff']"
+            :max="100"
             :seriesData="[
               {
                 name: 'timer',
@@ -308,6 +329,7 @@ export default defineComponent({
           <h3 class="ChartName">Average One question Time</h3>
           <LineChart
             :categoriesY="categoriesY"
+            :max="30"
             :colorData="['#fff']"
             :seriesData="[
               {
@@ -348,11 +370,11 @@ export default defineComponent({
   justify-content: center;
 }
 
-h3{
+h3 {
   letter-spacing: 0.1rem;
 }
 
-.ChartName{
+.ChartName {
   letter-spacing: 0.05rem;
 }
 
