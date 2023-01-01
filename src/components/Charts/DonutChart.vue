@@ -42,11 +42,21 @@ export default defineComponent({
         },
       },
       labels: this.labels,
+      dataLabels: {
+        style: {
+          // colors: "#fff",
+          fontSize: "16px",
+        },
+      },
       legend: {
         position: "bottom",
         // showForZeroSeries: false,
         show: toRaw(this.notShowLegend) ? false : true,
         width: "100%",
+        fontSize: "16px",
+        labels: {
+          colors: "#fff",
+        },
       },
       responsive: [
         {
@@ -54,6 +64,17 @@ export default defineComponent({
           options: {
             chart: {
               width: "110%",
+            },
+            dataLabels: {
+              style: {
+                fontSize: "14px",
+              },
+            },
+            legend: {
+              fontSize: "14px",
+              labels: {
+                colors: "#fff",
+              },
             },
           },
         },
