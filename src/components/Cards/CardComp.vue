@@ -6,14 +6,8 @@ import { decode_text, convert_ms_to_time } from "@/utils/functions";
 
 export default defineComponent({
   methods: {
-    // decode html entities
-    decode(str: string) {
-      return decode_text(str);
-    },
-    
-    convert(time: number) {
-      return convert_ms_to_time(time);
-    }
+    decode: decode_text,
+    convert: convert_ms_to_time,
   },
   props: {
     question: Object,

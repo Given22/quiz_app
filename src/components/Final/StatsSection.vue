@@ -105,18 +105,9 @@ export default defineComponent({
     ],
   }),
   methods: {
-    // decode html entities
-    decode(str: string) {
-      return decode_text(str);
-    },
-
-    convert(time: number) {
-      return convert_ms_to_time(time);
-    },
-
-    clearState(string: string) {
-      clearState(string);
-    },
+    decode: decode_text,
+    convert: convert_ms_to_time,
+    clearState,
   },
   props: {
     stats: Array,
@@ -199,12 +190,12 @@ export default defineComponent({
         }
       });
       resolve(true);
-    }).then(() => (this.isLoading = false));
-
-    this.ColumnSeries[0].data = [this.allStats.modes.normal];
-    this.ColumnSeries[1].data = [this.allStats.modes.timer];
-    setTimeout(() => (this.isLoading = false), 1);
-    // this.isLoading = false;
+    })
+      .then(() => {
+        this.ColumnSeries[0].data = [this.allStats.modes.normal];
+        this.ColumnSeries[1].data = [this.allStats.modes.timer];
+      })
+      .then(() => (this.isLoading = false));
   },
 });
 </script>
