@@ -17,7 +17,7 @@ export const convert_ms_to_time = (milliseconds: number) => {
 export const convert_ms_to_sec = (milliseconds: number) => {
   const seconds = Math.floor(milliseconds / 1000);
 
-  return `${pad_to_digits(seconds % 60)}.${pad_to_digits(milliseconds % 1000)}`;
+  return `${seconds % 60}.${pad_to_digits(milliseconds % 1000, 3)}`;
 };
 
 export const pad_to_digits = (num: number, digits = 2) => {

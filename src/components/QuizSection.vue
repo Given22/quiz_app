@@ -35,10 +35,7 @@ export default defineComponent({
     TIMERMODE_QUESTION_LENGTH: Number,
   },
   methods: {
-    // decode html entities
-    decode(text: string) {
-      return decode_text(text);
-    },
+    decode: decode_text,
     // start quiz and timer
     start() {
       this.start_timer();

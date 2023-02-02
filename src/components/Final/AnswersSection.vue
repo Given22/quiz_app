@@ -3,7 +3,7 @@
 <script lang="ts">
 import { useStore } from "vuex";
 import { defineComponent } from "vue";
-import { decode } from "html-entities";
+import { decode_text } from "@/utils/functions";
 import { Icon } from "@iconify/vue";
 import Card from "@/components/Cards/CardComp.vue";
 
@@ -24,10 +24,7 @@ export default defineComponent({
     Icon,
   },
   methods: {
-    // decode html entities
-    decode(str: string) {
-      return decode(str);
-    },
+    decode: decode_text,
 
     // check if answer is correct
     check_answer(question: string) {
