@@ -1,6 +1,6 @@
 <template>
   <nav id="navbar">
-    <h3 class="NavbarHeader">Quiz App</h3>
+    <a class="NavbarHeader" href="/home">Quiz App</a>
     <div class="NavbarButton">
       <a class="NavbarButtonLink" href="/form">Next Quiz</a>
     </div>
@@ -23,6 +23,7 @@
   font-size: 1.5rem;
   font-weight: bold;
   color: var(--color-yellow);
+  text-decoration-line: none;
 }
 .NavbarButton {
   display: flex;

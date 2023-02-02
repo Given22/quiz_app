@@ -144,6 +144,10 @@ export default defineComponent({
         </div>
       </div>
     </section>
+    <div class="sign">
+      <h3>Statistics</h3>
+      <Icon icon="fa6-solid:arrow-down-long" height="150" class="StatsIcon" />
+    </div>
     <Card v-if="show" :question="activeCard" @click="hide_card" />
   </div>
 </template>
@@ -151,6 +155,7 @@ export default defineComponent({
 <style lang="scss">
 .Answers {
   min-height: 83vh;
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -229,6 +234,14 @@ export default defineComponent({
   }
 }
 
+.sign {
+  position: absolute;
+  bottom: -10%;
+  > h3 {
+    text-align: center;
+  }
+}
+
 .AnswerIcon {
   height: 2rem;
   width: 6rem;
@@ -257,7 +270,6 @@ export default defineComponent({
 @media screen and (max-width: 1023px) and (min-width: 768px) {
   .Answers {
     width: 100%;
-    min-height: 77vh;
   }
   .AnswerIcon {
     width: 9vw;
@@ -277,7 +289,6 @@ export default defineComponent({
   .Answers {
     width: 100%;
     padding-top: 4rem;
-    min-height: 80vh;
   }
   .AnswerIcon {
     width: 17vw;

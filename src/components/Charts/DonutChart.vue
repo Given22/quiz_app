@@ -24,6 +24,7 @@ export default defineComponent({
         id: "DonutChart",
         fontFamily: "Righteous, Arial, sans-serif",
         background: "transparent",
+        width: "70%",
         toolbar: {
           show: false,
         },
@@ -63,11 +64,12 @@ export default defineComponent({
           breakpoint: 1024,
           options: {
             chart: {
-              width: "110%",
+              width: "130%",
             },
             dataLabels: {
               style: {
-                fontSize: "14px",
+                fontSize: "12px",
+                fontWeight: "normal"
               },
             },
             legend: {
@@ -82,7 +84,8 @@ export default defineComponent({
           breakpoint: 767,
           options: {
             chart: {
-              width: "100%",
+              width: "150%",
+              height: "100%",
             },
           },
         },
@@ -94,7 +97,7 @@ export default defineComponent({
 
 <template>
   <apexchart
-    width="500px"
+    width="350px"
     type="donut"
     :options="options"
     :series="seriesData"

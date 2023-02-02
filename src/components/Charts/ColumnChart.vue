@@ -14,10 +14,11 @@ export default defineComponent({
     this.options = {
       chart: {
         type: "bar",
-        height: 350,
         toolbar: {
           show: false,
         },
+        width: "70%",
+        height: "60%",
       },
       plotOptions: {
         bar: {
@@ -75,7 +76,8 @@ export default defineComponent({
           breakpoint: 1024,
           options: {
             chart: {
-              width: "125%",
+              width: "150%",
+              height: "100%",
             },
             xaxis: {
               labels: {
@@ -112,6 +114,7 @@ export default defineComponent({
           options: {
             chart: {
               width: "100%",
+              height: "100%",
             },
           },
         },
@@ -123,8 +126,8 @@ export default defineComponent({
 
 <template>
   <apexchart
-    width="500px"
-    height="350"
+    width="300px"
+    height="300px"
     type="bar"
     :options="options"
     :series="seriesData"

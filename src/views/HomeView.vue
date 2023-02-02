@@ -1,8 +1,26 @@
+<script lang="ts">
+import { defineComponent } from "vue";
+import { getState } from "@/stores/localStorage";
+export default defineComponent({
+  data: () => ({}),
+  setup() {
+    const stats = getState("previous");
+
+    return {
+      stats,
+    };
+  },
+});
+</script>
+
 <template>
   <p class="HomeHeader">Quiz App</p>
   <main id="Home">
     <div class="HomeButton">
       <a class="HomeButtonLink" href="/form">Start Quiz</a>
+    </div>
+    <div class="HomeButton" v-if="stats">
+      <a class="HomeButtonLink" href="/statistics">Statistics</a>
     </div>
   </main>
 </template>
@@ -16,6 +34,7 @@
   box-sizing: border-box;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
 }
 .HomeHeader {
   font-size: 3rem;
@@ -55,7 +74,7 @@
     display: flex;
     align-items: center;
     text-align: center;
-    
+
     &:hover {
       color: var(--color-green-light);
     }
