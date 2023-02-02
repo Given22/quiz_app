@@ -231,6 +231,7 @@ export default defineComponent({
   flex-direction: column;
   margin-top: 4rem;
   align-items: center;
+  justify-content: center;
   width: 100%;
   gap: 3rem;
 }
@@ -244,5 +245,8 @@ export default defineComponent({
 }
 
 @media screen and (max-width: 767px) {
+  .FinalView {
+    gap: 5rem;
+  }
 }
 </style>

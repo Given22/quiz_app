@@ -1,7 +1,6 @@
 <script lang="ts">
 import { defineComponent, toRaw } from "vue";
 import { decode_text, convert_ms_to_time } from "@/utils/functions";
-import { Icon } from "@iconify/vue";
 
 import LineChart from "@/components/Charts/LineChart.vue";
 import DonutChart from "../Charts/DonutChart.vue";
@@ -100,6 +99,10 @@ export default defineComponent({
     categoriesY: [0, 20, 40, 60, 80, 90, 100],
     colors: ["#E9C46A", "#fff"],
     isLoading: true,
+    ColumnSeries: [
+      { name: "normal", data: [0] },
+      { name: "time", data: [0] },
+    ],
   }),
   methods: {
     // decode html entities
@@ -119,82 +122,89 @@ export default defineComponent({
     stats: Array,
   },
   components: {
-    Icon,
     LineChart,
     DonutChart,
     ColumnChart,
   },
   mounted() {
-    const all = toRaw(this.stats) as Statistic[];
+    new Promise((resolve, reject) => {
+      const all = toRaw(this.stats) as Statistic[];
+      if (!all) reject(new Error("No Statistics at localstore"));
 
-    if (!all) return;
+      all.forEach((q) => {
+        if (q.mode) this.allStats.modes[q.mode] += 1;
+        if (q.difficulty) {
+          for (const dif in q.difficulty) {
+            this.allStats.difficulties[dif as keyof Difficulty] +=
+              q.difficulty[dif as keyof Difficulty];
+            if (q.mode === "normal")
+              this.normalStats.difficulty[dif as keyof Difficulty] +=
+                q.difficulty[dif as keyof Difficulty];
+            if (q.mode === "timer")
+              this.timerStats.difficulty[dif as keyof Difficulty] +=
+                q.difficulty[dif as keyof Difficulty];
+          }
+        }
+        if (q.type) {
+          for (const typ in q.type) {
+            this.allStats.types[typ as keyof Type] += q.type[typ as keyof Type];
+          }
+        }
+        if (q.category) {
+          for (const category in q.category) {
+            this.allStats.categories[category as keyof Categories] +=
+              q.category[category as keyof Categories];
+          }
+        }
+        if (q.percents !== undefined) {
+          if (q.mode === "normal") {
+            this.allStats.percentages[0].data = [
+              q.percents,
+              ...this.allStats.percentages[0].data,
+            ];
+            this.normalStats.percentage = [
+              q.percents,
+              ...this.normalStats.percentage,
+            ];
+          }
+          if (q.mode === "timer") {
+            this.allStats.percentages[1].data = [
+              q.percents,
+              ...this.allStats.percentages[1].data,
+            ];
+            this.timerStats.percentage = [
+              q.percents,
+              ...this.timerStats.percentage,
+            ];
+          }
+        }
+        if (q.questions_number && q.mode === "normal") {
+          this.normalStats.questions = [
+            q.questions_number,
+            ...this.normalStats.questions,
+          ];
+        }
+        if (q.avg_time && q.mode === "timer") {
+          this.timerStats.avg_times = [
+            q.avg_time,
+            ...this.timerStats.avg_times,
+          ];
+        }
+        if (q.timer_timeout && q.mode === "timer") {
+          this.timerStats.timeouts[
+            `${
+              Number(q.timer_timeout) / 1000
+            }s` as keyof TimerModeStats["timeouts"]
+          ] += 1;
+        }
+      });
+      resolve(true);
+    }).then(() => (this.isLoading = false));
 
-    all.forEach((q) => {
-      if (q.mode) this.allStats.modes[q.mode] += 1;
-      if (q.difficulty) {
-        for (const dif in q.difficulty) {
-          this.allStats.difficulties[dif as keyof Difficulty] +=
-            q.difficulty[dif as keyof Difficulty];
-          if (q.mode === "normal")
-            this.normalStats.difficulty[dif as keyof Difficulty] +=
-              q.difficulty[dif as keyof Difficulty];
-          if (q.mode === "timer")
-            this.timerStats.difficulty[dif as keyof Difficulty] +=
-              q.difficulty[dif as keyof Difficulty];
-        }
-      }
-      if (q.type) {
-        for (const typ in q.type) {
-          this.allStats.types[typ as keyof Type] += q.type[typ as keyof Type];
-        }
-      }
-      if (q.category) {
-        for (const category in q.category) {
-          this.allStats.categories[category as keyof Categories] +=
-            q.category[category as keyof Categories];
-        }
-      }
-      if (q.percents !== undefined) {
-        if (q.mode === "normal") {
-          this.allStats.percentages[0].data = [
-            q.percents,
-            ...this.allStats.percentages[0].data,
-          ];
-          this.normalStats.percentage = [
-            q.percents,
-            ...this.normalStats.percentage,
-          ];
-        }
-        if (q.mode === "timer") {
-          this.allStats.percentages[1].data = [
-            q.percents,
-            ...this.allStats.percentages[1].data,
-          ];
-          this.timerStats.percentage = [
-            q.percents,
-            ...this.timerStats.percentage,
-          ];
-        }
-      }
-      if (q.questions_number && q.mode === "normal") {
-        this.normalStats.questions = [
-          q.questions_number,
-          ...this.normalStats.questions,
-        ];
-      }
-      if (q.avg_time && q.mode === "timer") {
-        this.timerStats.avg_times = [q.avg_time, ...this.timerStats.avg_times];
-      }
-      if (q.timer_timeout && q.mode === "timer") {
-        this.timerStats.timeouts[
-          `${
-            Number(q.timer_timeout) / 1000
-          }s` as keyof TimerModeStats["timeouts"]
-        ] += 1;
-      }
-    });
-    console.log(this.allStats, this.timerStats, this.normalStats);
-    this.isLoading = false;
+    this.ColumnSeries[0].data = [this.allStats.modes.normal];
+    this.ColumnSeries[1].data = [this.allStats.modes.timer];
+    setTimeout(() => (this.isLoading = false), 1);
+    // this.isLoading = false;
   },
 });
 </script>
@@ -202,8 +212,6 @@ export default defineComponent({
 <template>
   <div class="StatsSection">
     <header class="StatsHeader">
-      <h3>Statistics</h3>
-      <Icon icon="fa6-solid:arrow-down-long" height="150" class="StatsIcon" />
       <div class="StatsSInfo">
         <input type="radio" id="all" value="all" v-model="MODE" />
         <label class="StatsSetlabel" for="all">All</label>
@@ -252,18 +260,7 @@ export default defineComponent({
         </div>
         <div class="ChartBox">
           <h3 class="ChartName">Selected Modes</h3>
-          <ColumnChart
-            :seriesData="[
-              {
-                name: 'normal',
-                data: [allStats.modes.normal],
-              },
-              {
-                name: 'timer',
-                data: [allStats.modes.timer],
-              },
-            ]"
-          />
+          <ColumnChart :seriesData="ColumnSeries" />
         </div>
       </div>
       <div v-if="MODE === 'normal'" class="ChartsSection">
@@ -409,6 +406,10 @@ h3 {
   }
 }
 
+input[type="radio"] {
+  display: none;
+}
+
 input[type="radio"]:checked + .StatsSetlabel {
   opacity: 1;
   &:hover {
@@ -438,7 +439,8 @@ input[type="radio"]:not(:checked) + .StatsSetlabel {
 }
 
 .ChartBox {
-  flex: 1 1 250px;
+  flex-basis: 150px;
+  flex-grow: 1;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
@@ -493,6 +495,9 @@ input[type="radio"]:not(:checked) + .StatsSetlabel {
   .StatsIcon {
     height: 2rem;
   }
+  .ChartsSections {
+    width: 70%;
+  }
 }
 
 @media screen and (max-width: 1023px) and (min-width: 768px) {
@@ -500,7 +505,7 @@ input[type="radio"]:not(:checked) + .StatsSetlabel {
     height: 1.7rem;
   }
   .ChartsSections {
-    width: 60%;
+    width: 70%;
   }
   .StatsSInfo .StatsSetlabel {
     min-width: 9rem;

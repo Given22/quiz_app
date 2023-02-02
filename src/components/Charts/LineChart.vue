@@ -60,7 +60,8 @@ export default defineComponent({
         labels: {
           style: {
             colors: "#fff",
-            fontSize: "16px",
+            fontSize: "14px",
+            fontWeight: "normal",
           },
         },
       },
@@ -73,7 +74,16 @@ export default defineComponent({
           breakpoint: 1024,
           options: {
             chart: {
-              width: "125%",
+              width: "100%",
+              height: "90%",
+            },
+            yaxis: {
+              labels: {
+                style: {
+                  colors: "#fff",
+                  fontSize: "14px",
+                },
+              },
             },
           },
         },
@@ -81,7 +91,8 @@ export default defineComponent({
           breakpoint: 767,
           options: {
             chart: {
-              width: "100%",
+              width: "150%",
+              height: "100%",
             },
           },
         },
@@ -93,7 +104,8 @@ export default defineComponent({
 
 <template>
   <apexchart
-    width="500px"
+    width="350px"
+    height="275px"
     type="line"
     :options="options"
     :series="seriesData"
