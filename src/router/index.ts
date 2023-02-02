@@ -4,7 +4,7 @@ import { defineAsyncComponent } from "vue";
 const routes = [
   // Home page
   {
-    path: "/",
+    path: "/home",
     name: "home",
     component: () => import("@/views/HomeView.vue"),
   },
@@ -12,7 +12,7 @@ const routes = [
   {
     path: "/:pathMatch(.*)*",
     name: "different",
-    component: defineAsyncComponent(() => import("@/views/HomeView.vue")),
+    redirect: '/home'
   },
   // Page with form
   {
@@ -31,6 +31,11 @@ const routes = [
     path: "/answers",
     name: "answers",
     component: defineAsyncComponent(() => import("@/views/FinalView.vue")),
+  },
+  {
+    path: "/statistics",
+    name: "statistics",
+    component: defineAsyncComponent(() => import("@/views/StatisticsView.vue")),
   },
 ];
 
