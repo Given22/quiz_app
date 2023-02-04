@@ -27,6 +27,15 @@ export interface Statistic {
   time?: string;
 }
 
+export interface SmallStatistic {
+  questionNumber: number;
+  category: string;
+  difficulty: string;
+  type: string;
+  mode: string;
+  timer_timeout: number,
+}
+
 export interface Categories {
   "General Knowledge": number;
   "Entertainment: Books": number;
@@ -64,7 +73,7 @@ export interface Type {
   boolean: number;
 }
 
-export interface NormalModesStats {
+export interface NormalModeStats {
   percentage: number[];
   questions: number[];
   difficulty: Difficulty;
@@ -94,4 +103,10 @@ export interface AllModesStats {
     normal: number;
     timer: number;
   }
+}
+
+export interface DisplayableStatistic {
+  allStats: AllModesStats;
+  timerStats: TimerModeStats;
+  normalStats: NormalModeStats;
 }

@@ -2,16 +2,15 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { decode } from "html-entities";
 import { getState } from "@/stores/localStorage";
 
 import NavBar from "@/components/NavBar.vue";
-import StatsSection from "@/components/Final/StatsSection.vue";
+import StatsSection from "@/components/StatsSection.vue";
 
 import LoadingScreen from "@/components/LoadingScreen.vue";
 
-import { convert_ms_to_time } from "@/utils/functions";
-
+import { convert_ms_to_time, decode_text } from "@/utils/functions";
+import { isArrayOfStatistics } from "@/utils/statistics";
 import type { Quiz, Statistic } from "@/types/types";
 
 export default defineComponent({
@@ -32,24 +31,29 @@ export default defineComponent({
     LoadingScreen,
   },
   methods: {
-    // decode html entities
-    decode(str: string) {
-      return decode(str);
-    },
-
-    convert_ms_to_time(number: number) {
-      return convert_ms_to_time(number);
-    },
+    decode: decode_text,
+    convert_ms_to_time,
   },
   async mounted() {
-    const storage = getState("previous");
-    if (storage) {
-      const previous = await JSON.parse(storage);
-      this.stats = await [...previous];
-      this.isLoading = await false;
-    } else {
-      window.location.href = "/";
-    }
+    new Promise((resolve, reject) => {
+      const storage = getState("previous");
+      if (storage) {
+        resolve(JSON.parse(storage));
+      } else {
+        reject(new Error("No data at localstorage"));
+      }
+    })
+      .then((value) => {
+        if (isArrayOfStatistics(value)) {
+          this.stats = [...value];
+        }
+      })
+      .then(() => {
+        this.isLoading = false;
+      })
+      .catch(() => {
+        window.location.href = "/home";
+      });
   },
 });
 </script>

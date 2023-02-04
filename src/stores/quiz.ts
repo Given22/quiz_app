@@ -1,7 +1,7 @@
 import { createStore } from "vuex";
 import arrayShuffle from "array-shuffle";
 
-import type { Quiz, Answers } from "@/types/types";
+import type { Quiz, Answers, SmallStatistic } from "@/types/types";
 
 // Create a new store instance.
 export const store = createStore({
@@ -17,7 +17,7 @@ export const store = createStore({
       type: "",
       mode: "",
       timer_timeout: 0,
-    },
+    } as SmallStatistic,
   },
   mutations: {
     //Set the state of quiz
@@ -42,8 +42,8 @@ export const store = createStore({
 
     setQuizMode(state, prop) {
       state.mode = prop.mode;
-      state.stats.mode = prop.mode
-      state.stats.timer_timeout = prop.timer_timeout
+      state.stats.mode = prop.mode;
+      state.stats.timer_timeout = prop.timer_timeout;
     },
 
     // Set the time of questions

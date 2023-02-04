@@ -1,9 +1,10 @@
 <!-- Form component for creating request to Trivia API -->
 
 <script lang="ts">
-import { store } from "@/stores/quiz";
 import { defineComponent } from "vue";
 import { Icon } from "@iconify/vue";
+
+import { get_questions } from "@/utils/functions";
 
 import arrayShuffle from "array-shuffle";
 
@@ -24,55 +25,19 @@ export default defineComponent({
   },
   methods: {
     // Create request to Trivia API
-    get_questions() {
-      const URL = "https://opentdb.com/api.php?";
-      //Amount of questions
-      const amount = this.amount ? `amount=${this.amount}` : "";
 
-      // Category paremeter
-      const category =
-        this.category && this.category !== "any"
-          ? `category=${this.category}`
-          : "";
-
-      // Difficulty parameter
-      const difficulty =
-        this.difficulty && this.difficulty !== "any"
-          ? `difficulty=${this.difficulty}`
-          : "";
-
-      // Type parameter
-      const type = this.type && this.type !== "any" ? `type=${this.type}` : "";
-
-      // Combine all parameters into one string and filter out empty values
-      const options = [amount, category, difficulty, type]
-        .filter(Boolean)
-        .join("&");
-
-      // Combine URL and options and send request to Trivia API
-      fetch(`${URL}${options}`)
-        .then((response) => response.json())
-        // check if response is successful
-        .then((data) => {
-          if (data.response_code !== 0) throw new Error("quiz not found");
-          return data;
-        })
-        .then((data) => {
-          store.commit("setQuiz", { data: data });
-        })
+    search() {
+      new Promise((resolve) => {
+        resolve(
+          get_questions(this.amount, this.category, this.difficulty, this.type)
+        );
+      })
         .then(() => this.$router.push("/quiz"))
         .catch((err) => {
           this.notFound = true;
           this.searching = false;
           console.error("error: ", err);
         });
-
-      store.commit("setStatsQuiz", {
-        questionNumber: this.amount,
-        category: this.category,
-        difficulty: this.difficulty,
-        type: this.type,
-      });
     },
 
     // Randomize Form questions
@@ -166,7 +131,7 @@ export default defineComponent({
     <button
       v-if="!searching"
       class="FormSubmit"
-      @click="get_questions(), (searching = true)"
+      @click="search(), (searching = true)"
     >
       Search Quiz
     </button>
