@@ -87,7 +87,7 @@ export const emptyDisplayStatistics = {
   } as NormalModeStats,
 } as DisplayableStatistic;
 
-export const createDisplayStats = (data: Statistic[]) => {
+export const create_display_stats = (data: Statistic[]) => {
   const stats = emptyDisplayStatistics;
 
   data.forEach((q: Statistic) => {

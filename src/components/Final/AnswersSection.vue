@@ -9,6 +9,8 @@ import Card from "@/components/Cards/CardComp.vue";
 
 import type { Quiz, Answers } from "@/types/types";
 
+import { check_answers, check_answer } from "@/utils/answers";
+
 export default defineComponent({
   data: () => ({
     correctAnswers: 0,
@@ -25,40 +27,7 @@ export default defineComponent({
   },
   methods: {
     decode: decode_text,
-
-    // check if answer is correct
-    check_answer(question: string) {
-      const que = this.quiz.find((q) => q.question === question);
-      if (!this.answers[question]) return;
-      if (que && que.correct_answer === this.answers[question]) return true;
-      return false;
-    },
-
-    // check all questions and calculate percentage of correct answers
-    check_answers() {
-      this.quiz.forEach((question: Quiz) => {
-        if (this.check_answer(question.question)) {
-          this.correctAnswers++;
-        }
-      });
-
-      // calculate percentage of correct answers
-      this.percents = Math.floor(
-        (this.correctAnswers / this.quiz.length) * 100
-      );
-
-      // set trophy Color and message
-      if (this.percents >= 80) {
-        this.trophyColor = "var(--color-yellow)";
-        this.endMsg = "You are a true Quiz Master!";
-      } else if (this.percents >= 60) {
-        this.trophyColor = "var(--color-silver)";
-        this.endMsg = "That was close to be a Quiz Master!";
-      } else {
-        this.trophyColor = "var(--color-green-light)";
-        this.endMsg = "Next time will be better!";
-      }
-    },
+    check_answer,
 
     // show card with question and answers
     show_card(id: number) {
@@ -75,7 +44,22 @@ export default defineComponent({
   },
   beforeMount() {
     // check answers before component is mounted
-    this.check_answers();
+    const { correctAnswers, percents } = check_answers(this.quiz, this.answers);
+
+    // set trophy Color and message
+    if (percents >= 80) {
+      this.trophyColor = "var(--color-yellow)";
+      this.endMsg = "You are a true Quiz Master!";
+    } else if (percents >= 60) {
+      this.trophyColor = "var(--color-silver)";
+      this.endMsg = "That was close to be a Quiz Master!";
+    } else {
+      this.trophyColor = "var(--color-green-light)";
+      this.endMsg = "Next time will be better!";
+    }
+
+    this.correctAnswers = correctAnswers;
+    this.percents = percents;
   },
   setup() {
     // get data from Vuex store
@@ -108,31 +92,31 @@ export default defineComponent({
     </div>
     <section class="AnswersQuestions">
       <div
-        v-for="question in quiz"
-        :key="question.question"
+        v-for="Q in quiz"
+        :key="Q.question"
         class="AnswersCard"
         v-bind:class="{
-          Correct: check_answer(question.question),
-          Incorrect: !check_answer(question.question),
+          Correct: check_answer(Q.question, quiz, answers),
+          Incorrect: !check_answer(Q.question, quiz, answers),
         }"
       >
-        <p>#{{ quiz.indexOf(question) + 1 }}</p>
+        <p>#{{ quiz.indexOf(Q) + 1 }}</p>
         <div
-          @click="show_card(quiz.indexOf(question))"
+          @click="show_card(quiz.indexOf(Q))"
           v-bind:class="{
-            AnswersCardCorrect: check_answer(question.question),
-            AnswersCardIncorrect: !check_answer(question.question),
+            AnswersCardCorrect: check_answer(Q.question, quiz, answers),
+            AnswersCardIncorrect: !check_answer(Q.question, quiz, answers),
           }"
         >
           <Icon
-            v-if="check_answer(question.question)"
+            v-if="check_answer(Q.question, quiz, answers)"
             icon="bi:check"
             color="white"
             height="150"
             class="AnswerIcon"
           />
           <Icon
-            v-if="!check_answer(question.question)"
+            v-if="!check_answer(Q.question, quiz, answers)"
             icon="bi:x"
             color="black"
             height="150"

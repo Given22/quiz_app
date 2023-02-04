@@ -9,7 +9,7 @@ import ColumnChart from "./Charts/ColumnChart.vue";
 import { clearState } from "@/stores/localStorage";
 
 import {
-  createDisplayStats,
+  create_display_stats,
   isDisStat,
   emptyDisplayStatistics,
 } from "@/utils/statistics";
@@ -46,7 +46,7 @@ export default defineComponent({
       try {
         const all = toRaw(this.stats) as Statistic[];
         if (!all) throw new Error("No Statistics at state management");
-        resolve(createDisplayStats(all));
+        resolve(create_display_stats(all));
       } catch (e) {
         reject(e);
       }
