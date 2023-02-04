@@ -5,6 +5,8 @@ import { store } from "@/stores/quiz";
 import { defineComponent } from "vue";
 import { Icon } from "@iconify/vue";
 
+import { create_url } from "@/utils/functions";
+
 import arrayShuffle from "array-shuffle";
 
 import Alert from "@/components/Cards/AlertCard.vue";
@@ -25,32 +27,8 @@ export default defineComponent({
   methods: {
     // Create request to Trivia API
     get_questions() {
-      const URL = "https://opentdb.com/api.php?";
-      //Amount of questions
-      const amount = this.amount ? `amount=${this.amount}` : "";
-
-      // Category paremeter
-      const category =
-        this.category && this.category !== "any"
-          ? `category=${this.category}`
-          : "";
-
-      // Difficulty parameter
-      const difficulty =
-        this.difficulty && this.difficulty !== "any"
-          ? `difficulty=${this.difficulty}`
-          : "";
-
-      // Type parameter
-      const type = this.type && this.type !== "any" ? `type=${this.type}` : "";
-
-      // Combine all parameters into one string and filter out empty values
-      const options = [amount, category, difficulty, type]
-        .filter(Boolean)
-        .join("&");
-
       // Combine URL and options and send request to Trivia API
-      fetch(`${URL}${options}`)
+      fetch(create_url(this.amount, this.category, this.difficulty, this.type))
         .then((response) => response.json())
         // check if response is successful
         .then((data) => {
