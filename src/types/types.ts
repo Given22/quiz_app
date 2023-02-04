@@ -27,6 +27,15 @@ export interface Statistic {
   time?: string;
 }
 
+export interface SmallStatistic {
+  questionNumber: number;
+  category: string;
+  difficulty: string;
+  type: string;
+  mode: string;
+  timer_timeout: number,
+}
+
 export interface Categories {
   "General Knowledge": number;
   "Entertainment: Books": number;

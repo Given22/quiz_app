@@ -17,7 +17,7 @@ export default defineComponent({
     show: false,
     activeCard: {} as Quiz,
     activeAnswer: "",
-    percents: 0,
+    percentages: 0,
     endMsg: "",
     trophyColor: "",
   }),
@@ -44,13 +44,13 @@ export default defineComponent({
   },
   beforeMount() {
     // check answers before component is mounted
-    const { correctAnswers, percents } = check_answers(this.quiz, this.answers);
+    const { correctAnswers, percentages } = check_answers(this.quiz, this.answers);
 
     // set trophy Color and message
-    if (percents >= 80) {
+    if (percentages >= 80) {
       this.trophyColor = "var(--color-yellow)";
       this.endMsg = "You are a true Quiz Master!";
-    } else if (percents >= 60) {
+    } else if (percentages >= 60) {
       this.trophyColor = "var(--color-silver)";
       this.endMsg = "That was close to be a Quiz Master!";
     } else {
@@ -59,7 +59,7 @@ export default defineComponent({
     }
 
     this.correctAnswers = correctAnswers;
-    this.percents = percents;
+    this.percentages = percentages;
   },
   setup() {
     // get data from Vuex store
@@ -67,7 +67,7 @@ export default defineComponent({
     const quiz: Quiz[] = store.getters.quiz.results;
 
     // IF quiz is empty, go to home page
-    if (quiz.length === 0) window.location.href = "/";
+    if (quiz.length === 0) window.location.href = "/home";
 
     const answers: Answers = store.getters.answers;
     const time: string = store.getters.time;
@@ -87,7 +87,7 @@ export default defineComponent({
       <Icon icon="fluent:trophy-48-filled" height="100" class="Trophy" />
       <p>{{ endMsg }}</p>
       <br />
-      <p>Your score is: {{ percents }}%</p>
+      <p>Your score is: {{ percentages }}%</p>
       <p>Your time: {{ time }}</p>
     </div>
     <section class="AnswersQuestions">

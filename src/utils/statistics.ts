@@ -7,7 +7,14 @@ import type {
   Type,
   Difficulty,
   DisplayableStatistic,
+  Quiz,
+  Answers,
 } from "@/types/types";
+
+import { useStore } from "vuex";
+
+import { convert_ms_to_sec } from "./functions";
+import { check_answers } from "./answers";
 
 export const emptyDisplayStatistics = {
   allStats: {
@@ -156,9 +163,107 @@ export const create_display_stats = (data: Statistic[]) => {
   return stats;
 };
 
-
 export function isDisStat(obj: unknown): obj is DisplayableStatistic {
   return (
-    typeof obj === 'object' && obj !== null && 'allStats' in obj && 'timerStats' in obj && 'normalStats' in obj
+    typeof obj === "object" &&
+    obj !== null &&
+    "allStats" in obj &&
+    "timerStats" in obj &&
+    "normalStats" in obj
   );
 }
+export function isStatistic(obj: unknown): obj is Statistic {
+  return (
+    typeof obj === "object" &&
+    obj !== null &&
+    "mode" in obj &&
+    "date" in obj &&
+    "percents" in obj &&
+    "questions_number" in obj &&
+    "category" in obj &&
+    "type" in obj &&
+    "difficulty" in obj
+  );
+}
+
+export function isArrayOfStatistics(obj: unknown): obj is Statistic[] {
+  let isArrayOfStatistics = true;
+  if (Array.isArray(obj) && obj !== null) {
+    obj.forEach((statistic) => {
+      if (!isStatistic(statistic)) isArrayOfStatistics = false;
+    });
+  }
+  return typeof obj === "object" && obj !== null && isArrayOfStatistics;
+}
+
+export const create_new_statistic = (answers: Answers, time: string) => {
+  const store = useStore();
+  const stats = store.getters.stats;
+  const quiz = store.getters.quiz.results;
+
+  const category: Categories = {
+    "General Knowledge": 0,
+    "Entertainment: Books": 0,
+    "Entertainment: Film": 0,
+    "Entertainment: Music": 0,
+    "Entertainment: Musicals & Theatres": 0,
+    "Entertainment: Television": 0,
+    "Entertainment: Video Games": 0,
+    "Entertainment: Board Games": 0,
+    "Science & Nature": 0,
+    "Science: Computers": 0,
+    "Science: Mathematics": 0,
+    Mythology: 0,
+    Sports: 0,
+    Geography: 0,
+    History: 0,
+    Politics: 0,
+    Art: 0,
+    Celebrities: 0,
+    Animals: 0,
+    Vehicles: 0,
+    "Entertainment: Comics": 0,
+    "Science: Gadgets": 0,
+    "Entertainment: Japanese Anime & Manga": 0,
+    "Entertainment: Cartoon & Animations": 0,
+  };
+
+  const difficulty = {
+    easy: 0,
+    medium: 0,
+    hard: 0,
+  };
+
+  const type = {
+    multiple: 0,
+    boolean: 0,
+  };
+
+  quiz.forEach((q: Quiz) => {
+    difficulty[q.difficulty as keyof Difficulty] += 1;
+    category[q.category as keyof Categories] += 1;
+    type[q.type as keyof Type] += 1;
+  });
+
+  const { percentages } = check_answers(quiz, answers);
+
+  let avg_time = 0;
+  if (stats.mode === "timer") {
+    quiz.forEach((q: Quiz) => {
+      avg_time += q.playerTime ? q.playerTime : 0;
+    });
+  }
+
+  return {
+    type: type,
+    time: time,
+    mode: stats.mode,
+    date: new Date(),
+    category: category,
+    percents: percentages,
+    difficulty: difficulty,
+    timer_timeout: stats.timer_timeout,
+    questions_number: stats.questionNumber,
+    avg_time: convert_ms_to_sec(Math.round(avg_time / quiz.length)),
+  } as Statistic;
+};

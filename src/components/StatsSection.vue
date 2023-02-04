@@ -32,6 +32,11 @@ export default defineComponent({
     decode: decode_text,
     convert: convert_ms_to_time,
     clearState,
+
+    clear() {
+      clearState("previous");
+      window.location.reload();
+    },
   },
   props: {
     stats: Array,
@@ -215,7 +220,7 @@ export default defineComponent({
         </div>
       </div>
     </section>
-    <button type="button" @click="clearState('previous')" class="CleanBtn">
+    <button type="button" @click="clear()" class="CleanBtn">
       Clear Statistics
     </button>
   </div>
