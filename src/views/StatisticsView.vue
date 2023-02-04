@@ -6,7 +6,7 @@ import { decode } from "html-entities";
 import { getState } from "@/stores/localStorage";
 
 import NavBar from "@/components/NavBar.vue";
-import StatsSection from "@/components/Final/StatsSection.vue";
+import StatsSection from "@/components/StatsSection.vue";
 
 import LoadingScreen from "@/components/LoadingScreen.vue";
 

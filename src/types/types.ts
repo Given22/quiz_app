@@ -64,7 +64,7 @@ export interface Type {
   boolean: number;
 }
 
-export interface NormalModesStats {
+export interface NormalModeStats {
   percentage: number[];
   questions: number[];
   difficulty: Difficulty;
@@ -94,4 +94,10 @@ export interface AllModesStats {
     normal: number;
     timer: number;
   }
+}
+
+export interface DisplayableStatistic {
+  allStats: AllModesStats;
+  timerStats: TimerModeStats;
+  normalStats: NormalModeStats;
 }

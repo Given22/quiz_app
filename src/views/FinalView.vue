@@ -8,7 +8,7 @@ import { saveState, getState } from "@/stores/localStorage";
 
 import NavBar from "@/components/NavBar.vue";
 import AnswersSection from "@/components/Final/AnswersSection.vue";
-import StatsSection from "@/components/Final/StatsSection.vue";
+import StatsSection from "@/components/StatsSection.vue";
 
 import LoadingScreen from "@/components/LoadingScreen.vue";
 
