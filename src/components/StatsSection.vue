@@ -8,13 +8,17 @@ import ColumnChart from "./Charts/ColumnChart.vue";
 
 import { clearState } from "@/stores/localStorage";
 
-import { createDisplayStats, isDisStat } from "@/utils/statistics";
+import {
+  createDisplayStats,
+  isDisStat,
+  emptyDisplayStatistics,
+} from "@/utils/statistics";
 
-import type { Statistic, DisplayableStatistic } from "@/types/types";
+import type { Statistic } from "@/types/types";
 
 export default defineComponent({
   data: () => ({
-    displayableStatistics: {} as DisplayableStatistic,
+    displayableStatistics: emptyDisplayStatistics,
     MODE: "all" as "all" | "normal" | "timer",
     categoriesY: [0, 20, 40, 60, 80, 90, 100],
     colors: ["#E9C46A", "#fff"],
@@ -66,7 +70,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="StatsSection">
+  <div class="StatsSection" v-if="displayableStatistics">
     <header class="StatsHeader">
       <div class="StatsSInfo">
         <input type="radio" id="all" value="all" v-model="MODE" />
@@ -95,7 +99,9 @@ export default defineComponent({
         <div class="ChartBox">
           <h3 class="ChartName">Category Percentage Distribution</h3>
           <DonutChart
-            :seriesData="Object.values(displayableStatistics.allStats.categories)"
+            :seriesData="
+              Object.values(displayableStatistics.allStats.categories)
+            "
             :labels="Object.keys(displayableStatistics.allStats.categories)"
             :notShowLegend="true"
           />
@@ -110,7 +116,9 @@ export default defineComponent({
         <div class="ChartBox">
           <h3 class="ChartName">Difficulty Percentage Distribution</h3>
           <DonutChart
-            :seriesData="Object.values(displayableStatistics.allStats.difficulties)"
+            :seriesData="
+              Object.values(displayableStatistics.allStats.difficulties)
+            "
             :labels="Object.keys(displayableStatistics.allStats.difficulties)"
           />
         </div>
@@ -151,7 +159,9 @@ export default defineComponent({
         <div class="ChartBox">
           <h3 class="ChartName">Difficulty Percentage Distribution</h3>
           <DonutChart
-            :seriesData="Object.values(displayableStatistics.normalStats.difficulty)"
+            :seriesData="
+              Object.values(displayableStatistics.normalStats.difficulty)
+            "
             :labels="Object.keys(displayableStatistics.normalStats.difficulty)"
           />
         </div>
@@ -160,7 +170,9 @@ export default defineComponent({
         <div class="ChartBox">
           <h3 class="ChartName">Selected Timeouts</h3>
           <DonutChart
-            :seriesData="Object.values(displayableStatistics.timerStats.timeouts)"
+            :seriesData="
+              Object.values(displayableStatistics.timerStats.timeouts)
+            "
             :labels="Object.keys(displayableStatistics.timerStats.timeouts)"
           />
         </div>
@@ -195,7 +207,9 @@ export default defineComponent({
         <div class="ChartBox">
           <h3 class="ChartName">Difficulty Percentage Distribution</h3>
           <DonutChart
-            :seriesData="Object.values(displayableStatistics.timerStats.difficulty)"
+            :seriesData="
+              Object.values(displayableStatistics.timerStats.difficulty)
+            "
             :labels="Object.keys(displayableStatistics.timerStats.difficulty)"
           />
         </div>

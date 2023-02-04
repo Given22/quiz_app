@@ -9,84 +9,86 @@ import type {
   DisplayableStatistic,
 } from "@/types/types";
 
+export const emptyDisplayStatistics = {
+  allStats: {
+    percentages: [
+      {
+        name: "Normal mode",
+        data: [],
+      },
+      {
+        name: "Timer mode",
+        data: [],
+      },
+    ],
+    categories: {
+      "General Knowledge": 0,
+      "Entertainment: Books": 0,
+      "Entertainment: Film": 0,
+      "Entertainment: Music": 0,
+      "Entertainment: Musicals & Theatres": 0,
+      "Entertainment: Television": 0,
+      "Entertainment: Video Games": 0,
+      "Entertainment: Board Games": 0,
+      "Science & Nature": 0,
+      "Science: Computers": 0,
+      "Science: Mathematics": 0,
+      Mythology: 0,
+      Sports: 0,
+      Geography: 0,
+      History: 0,
+      Politics: 0,
+      Art: 0,
+      Celebrities: 0,
+      Animals: 0,
+      Vehicles: 0,
+      "Entertainment: Comics": 0,
+      "Science: Gadgets": 0,
+      "Entertainment: Japanese Anime & Manga": 0,
+      "Entertainment: Cartoon & Animations": 0,
+    } as Categories,
+    types: {
+      multiple: 0,
+      boolean: 0,
+    } as Type,
+    difficulties: {
+      easy: 0,
+      medium: 0,
+      hard: 0,
+    } as Difficulty,
+    modes: {
+      normal: 0,
+      timer: 0,
+    },
+  } as AllModesStats,
+  timerStats: {
+    percentage: [],
+    avg_times: [],
+    timeouts: {
+      "5s": 0,
+      "10s": 0,
+      "20s": 0,
+      "30s": 0,
+    },
+    difficulty: {
+      easy: 0,
+      medium: 0,
+      hard: 0,
+    },
+  } as TimerModeStats,
+  normalStats: {
+    percentage: [],
+    questions: [],
+    difficulty: {
+      easy: 0,
+      medium: 0,
+      hard: 0,
+    },
+  } as NormalModeStats,
+} as DisplayableStatistic;
+
 export const createDisplayStats = (data: Statistic[]) => {
-  const stats = {
-    allStats: {
-      percentages: [
-        {
-          name: "Normal mode",
-          data: [],
-        },
-        {
-          name: "Timer mode",
-          data: [],
-        },
-      ],
-      categories: {
-        "General Knowledge": 0,
-        "Entertainment: Books": 0,
-        "Entertainment: Film": 0,
-        "Entertainment: Music": 0,
-        "Entertainment: Musicals & Theatres": 0,
-        "Entertainment: Television": 0,
-        "Entertainment: Video Games": 0,
-        "Entertainment: Board Games": 0,
-        "Science & Nature": 0,
-        "Science: Computers": 0,
-        "Science: Mathematics": 0,
-        Mythology: 0,
-        Sports: 0,
-        Geography: 0,
-        History: 0,
-        Politics: 0,
-        Art: 0,
-        Celebrities: 0,
-        Animals: 0,
-        Vehicles: 0,
-        "Entertainment: Comics": 0,
-        "Science: Gadgets": 0,
-        "Entertainment: Japanese Anime & Manga": 0,
-        "Entertainment: Cartoon & Animations": 0,
-      } as Categories,
-      types: {
-        multiple: 0,
-        boolean: 0,
-      } as Type,
-      difficulties: {
-        easy: 0,
-        medium: 0,
-        hard: 0,
-      } as Difficulty,
-      modes: {
-        normal: 0,
-        timer: 0,
-      },
-    } as AllModesStats,
-    timerStats: {
-      percentage: [],
-      avg_times: [],
-      timeouts: {
-        "5s": 0,
-        "10s": 0,
-        "20s": 0,
-        "30s": 0,
-      },
-      difficulty: {
-        easy: 0,
-        medium: 0,
-        hard: 0,
-      },
-    } as TimerModeStats,
-    normalStats: {
-      percentage: [],
-      questions: [],
-      difficulty: {
-        easy: 0,
-        medium: 0,
-        hard: 0,
-      },
-    } as NormalModeStats,
-  } as DisplayableStatistic;
+  const stats = emptyDisplayStatistics;
 
   data.forEach((q: Statistic) => {
     if (q.mode)
