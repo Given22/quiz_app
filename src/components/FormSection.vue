@@ -1,11 +1,10 @@
 <!-- Form component for creating request to Trivia API -->
 
 <script lang="ts">
-import { store } from "@/stores/quiz";
 import { defineComponent } from "vue";
 import { Icon } from "@iconify/vue";
 
-import { create_url } from "@/utils/functions";
+import { get_questions } from "@/utils/functions";
 
 import arrayShuffle from "array-shuffle";
 
@@ -26,31 +25,19 @@ export default defineComponent({
   },
   methods: {
     // Create request to Trivia API
-    get_questions() {
-      // Combine URL and options and send request to Trivia API
-      fetch(create_url(this.amount, this.category, this.difficulty, this.type))
-        .then((response) => response.json())
-        // check if response is successful
-        .then((data) => {
-          if (data.response_code !== 0) throw new Error("quiz not found");
-          return data;
-        })
-        .then((data) => {
-          store.commit("setQuiz", { data: data });
-        })
+
+    search() {
+      new Promise((resolve) => {
+        resolve(
+          get_questions(this.amount, this.category, this.difficulty, this.type)
+        );
+      })
         .then(() => this.$router.push("/quiz"))
         .catch((err) => {
           this.notFound = true;
           this.searching = false;
           console.error("error: ", err);
         });
-
-      store.commit("setStatsQuiz", {
-        questionNumber: this.amount,
-        category: this.category,
-        difficulty: this.difficulty,
-        type: this.type,
-      });
     },
 
     // Randomize Form questions
@@ -144,7 +131,7 @@ export default defineComponent({
     <button
       v-if="!searching"
       class="FormSubmit"
-      @click="get_questions(), (searching = true)"
+      @click="search(), (searching = true)"
     >
       Search Quiz
     </button>

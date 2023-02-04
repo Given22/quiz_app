@@ -14,9 +14,7 @@ export const check_answer = (
 // check all questions and calculate percentage of correct answers
 export const check_answers = (quiz: Quiz[], answers: Answers) => {
   let correctAnswers = 0;
-  console.log(correctAnswers, quiz, answers);
   if (Array.isArray(quiz)) {
-    console.log('hi')
     quiz.forEach((Q: Quiz) => {
       if (check_answer(Q.question, quiz, answers)) {
         correctAnswers++;

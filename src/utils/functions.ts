@@ -1,5 +1,6 @@
 import { decode } from "html-entities";
-import { URL } from "@/utils/constans"
+import { URL } from "@/utils/constans";
+import { store } from "@/stores/quiz";
 
 export const decode_text = (str: string) => {
   return decode(str);
@@ -25,7 +26,12 @@ export const pad_to_digits = (num: number, digits = 2) => {
   return num.toString().padStart(digits, "0");
 };
 
-export const create_url = (amount: number, category: string, difficulty: string, type: string) => {
+export const create_url = (
+  amount: number,
+  category: string,
+  difficulty: string,
+  type: string
+) => {
   //Amount of questions
   const amountText = amount ? `amount=${amount}` : "";
 
@@ -35,9 +41,7 @@ export const create_url = (amount: number, category: string, difficulty: string,
 
   // Difficulty parameter
   const difficultyText =
-    difficulty && difficulty !== "any"
-      ? `difficulty=${difficulty}`
-      : "";
+    difficulty && difficulty !== "any" ? `difficulty=${difficulty}` : "";
 
   // Type parameter
   const typeText = type && type !== "any" ? `type=${type}` : "";
@@ -46,5 +50,38 @@ export const create_url = (amount: number, category: string, difficulty: string,
   const options = [amountText, categoryText, difficultyText, typeText]
     .filter(Boolean)
     .join("&");
-  return `${URL}${options}`
+  return `${URL}${options}`;
+};
+
+export const get_questions = async (
+  amount: number,
+  category: string,
+  difficulty: string,
+  type: string
+) => {
+  // Combine URL and options and send request to Trivia API
+  return await fetch(create_url(amount, category, difficulty, type))
+    .then((response) => response.json())
+    // check if response is successful
+    .then((data) => {
+      if (data.response_code !== 0) throw new Error("quiz not found");
+      return data;
+    })
+    .then((data) => {
+      store.commit("setQuiz", { data: data });
+    })
+    .then(() => {
+      store.commit("setStatsQuiz", {
+        questionNumber: amount,
+        category: category,
+        difficulty: difficulty,
+        type: type,
+      });
+    })
+    .then(() => {
+      return true;
+    })
+    .catch((err) => {
+      console.error("error: ", err);
+    });
 };
