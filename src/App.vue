@@ -77,6 +77,19 @@ export default defineComponent({
   }
 }
 
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-yellow);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: none;
+}
+
 @media screen and (min-width: 1024px) {
   #navbar {
     width: 80%;
