@@ -84,7 +84,7 @@ export default defineComponent({
           breakpoint: 767,
           options: {
             chart: {
-              width: "150%",
+              width: "80%",
               height: "100%",
             },
           },

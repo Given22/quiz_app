@@ -76,7 +76,7 @@ export default defineComponent({
           breakpoint: 1024,
           options: {
             chart: {
-              width: "150%",
+              width: "120%",
               height: "100%",
             },
             xaxis: {
@@ -113,7 +113,7 @@ export default defineComponent({
           breakpoint: 767,
           options: {
             chart: {
-              width: "100%",
+              width: "80%",
               height: "100%",
             },
           },
